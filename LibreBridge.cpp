@@ -111,7 +111,20 @@ Card Player::playCard(Suit firstSuit) // If firstSuit is NoTrump, this is the fi
 }
 Card Player::playRandomCard(Suit firstSuit)
 {
-	//TODO
+	vector<Card> playableCards = getPlayableCards(firstSuit);
+	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	auto engine = default_random_engine{seed};
+	shuffle(begin(playableCards), end(playableCards), engine);
+	cout << positionToString(position) << " is playing ";
+	playableCards[0].printCard();
+	cout << "\n";
+	return playableCards[0];
+}
+vector<Card> Player::getPlayableCards(Suit firstSuit)
+{
+	vector<Card> playableCards;
+	for (auto &card : hand) if(isValidPlay(card, firstSuit)) playableCards.push_back(card);
+	return playableCards;
 }
 void Player::addCardToHand(Card card)
 {
@@ -177,48 +190,73 @@ void Player::clearHand()
 
 int16_t Contract::calculateScore(Position pos, uint8_t tricks)
 {
+	if((int(pos) % 2) != int(declarer) % 2) tricks = 13-tricks;
 	int16_t score = 0;
-	tricks -= 6;
-	uint8_t underOrOverTricks = tricks - level;
-	uint8_t i = 0;
-	bool vulnerable = isTeamVulnerable(pos);
+	int8_t underOrOverTricks = tricks - 6 - level;
+	int8_t i = 0;
+	bool vulnerable = isTeamVulnerable(declarer);
 	if(underOrOverTricks < 0) // Contract was defeated
 	{
 		if(vulnerable)
 		{
-			if(!doubled) while(i-- >= underOrOverTricks) score += 100;
+			if(!doubled) while(i-- > underOrOverTricks) score += 100;
 			else if(!redoubled)
 			{
-				while(i-- >= underOrOverTricks && i >= -1) score += 200;
-				while(i-- >= underOrOverTricks) score += 300;
+				while(i > underOrOverTricks && i > -1)
+				{
+					score += 200;
+					i--;
+				}
+				while(i-- > underOrOverTricks) score += 300;
 			}
 			else
 			{
-				while(i-- >= underOrOverTricks && i >= -1) score += 400;
-				while(i-- >= underOrOverTricks) score += 600;
+				while(i > underOrOverTricks && i > -1)
+				{
+					score += 400;
+					i--;
+				}
+				while(i-- > underOrOverTricks) score += 600;
 			}
 		}
 		else
 		{
-			if(!doubled) while(i-- >= underOrOverTricks) score += 50;
+			if(!doubled) while(i-- > underOrOverTricks) score += 50;
 			else if(!redoubled)
 			{
-				while(i-- >= underOrOverTricks && i >= -1) score += 100;
-				while(i-- >= underOrOverTricks && i >= -3) score += 200;
-				while(i-- >= underOrOverTricks) score += 300;
+				while(i > underOrOverTricks && i > -1)
+				{
+					score += 100;
+					i--;
+				}
+				while(i > underOrOverTricks && i > -3)
+				{
+					score += 200;
+					i--;
+				}
+				while(i-- > underOrOverTricks) score += 300;
 			}
 			else
 			{
-				while(i-- >= underOrOverTricks && i >= -1) score += 200;
-				while(i-- >= underOrOverTricks && i >= -3) score += 400;
-				while(i-- >= underOrOverTricks) score += 600;
+				while(i > underOrOverTricks && i > -1)
+				{
+					score += 200;
+					i--;
+				}
+				while(i > underOrOverTricks && i > -3)
+				{
+					score += 400;
+					i--;
+				}
+				while(i-- > underOrOverTricks) score += 600;
 			}
 		}
 	}
 	else // Contract was made
 	{
+		bool game = false;
 		//Contract points
-		while(i++<underOrOverTricks && i<=level)
+		while(i<level)
 		{
 			switch(suit)
 			{
@@ -241,12 +279,14 @@ int16_t Contract::calculateScore(Position pos, uint8_t tricks)
 				}
 				default: break;
 			}
+			i++;
 		}
+		if(score >= 100) game = true;
 		if(doubled) score *= 2;
 		if(redoubled) score *= 2;
 		
 		// Overtrick points
-		while(i++<underOrOverTricks)
+		while(i<underOrOverTricks+level)
 		{
 			if(!doubled)
 			{
@@ -270,21 +310,23 @@ int16_t Contract::calculateScore(Position pos, uint8_t tricks)
 			}
 			else if(!redoubled) score += (vulnerable ? 200 : 100);
 			else score += (vulnerable ? 400 : 200);
+			i++;
 		}
 		
 		// Slam bonus
-		if(tricks == 7 && level == 7) score += (vulnerable ? 1500 : 1000);
-		if(tricks >= 6 && level == 6) score += (vulnerable ? 750 : 500);
+		if(tricks == 13 && level == 7) score += (vulnerable ? 1500 : 1000);
+		if(tricks >= 12 && level == 6) score += (vulnerable ? 750 : 500);
 		
 		// Doubled and redoubled bonus
 		if(doubled) score += 50;
 		if(redoubled) score += 50;
 		
 		// Game or part game bonus
-		if(score < 100) score += 50;
-		else score += (vulnerable ? 500 : 300);
+		if(game) score += (vulnerable ? 500 : 300);
+		else score += 50;
 	}
-	if((int(pos) % 2) != int(declarer) % 2) score *= -1; // Contract was not made by this guy's team
+	if(underOrOverTricks < 0 && (int(pos) % 2) == int(declarer) % 2) score *= -1; // This team didn't make the contract
+	if(underOrOverTricks >= 0 && (int(pos) % 2) != int(declarer) % 2) score *= -1; // The other team made their contract
 	return score;
 }
 uint16_t Contract::calculateIMP(int16_t score)
@@ -358,6 +400,7 @@ void Game::deal()
 	for(int i=0; i<4; ++i) 
 	{
 		players[i].setPosition(Position(i));
+		players[i].clearHand();
 		for(int j = 0; j<13; ++j)
 		{
 			players[i].addCardToHand(deck.back());
@@ -503,10 +546,12 @@ void Game::playCards()
 		for(uint8_t j = 0; j<4; ++j) playedCardsHistory.push_back(playedCards[j]);
 		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer);
 		player = whoWonTheTrick;
+		cout << positionToString(player) << " won the trick!\n";
 		tricksMade[whoWonTheTrick%2]++;
 	}
-	// Afficher le score pis toute
-	// finir play random card
+	cout << "NS has made " << to_string(tricksMade[0]) << " tricks and " << contract.calculateScore(North, tricksMade[0]) << " points (" << Contract::calculateIMP(contract.calculateScore(North, tricksMade[0])) << " IMP)!\n";
+	cout << "EW has made " << to_string(tricksMade[1]) << " tricks and " << contract.calculateScore(East, tricksMade[1]) << " points (" << Contract::calculateIMP(contract.calculateScore(East, tricksMade[1])) << " IMP)!\n";
+	cout << "----------------- New game -----------------\n";
 }
 Position Game::whoWinsTheTrick(Card playedCards[], Position firstPlayer) const
 {
@@ -516,8 +561,6 @@ Position Game::whoWinsTheTrick(Card playedCards[], Position firstPlayer) const
 		if(	(playedCards[i].getSuit() == playedCards[winnerIndex].getSuit() && playedCards[i].getValue() > playedCards[winnerIndex].getValue())
 		||	(playedCards[i].getSuit() == contract.getSuit() && playedCards[winnerIndex].getSuit() != contract.getSuit())	)
 		{
-			playedCards[i].printCard();
-			playedCards[winnerIndex].printCard();
 			winnerIndex = i;
 		}
 	}
@@ -538,7 +581,7 @@ void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSui
 		if(!lastLevel || !doubled || redoubled) return;
 		betType = Redouble;
 	}
-	else if(stringBid == "Pass") betType = Pass;
+	else if(stringBid == "Pass" || stringBid == "") betType = Pass;
 	else
 	{
 		if(stringBid.length() < 2 || stringBid.length() > 3) return;

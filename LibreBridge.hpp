@@ -88,6 +88,7 @@ class Player
 		Card playRandomCard(Suit firstSuit);
 		bool hasCard(Card c) const;
 		bool isValidPlay(Card c, Suit firstSuit) const;
+		vector<Card> getPlayableCards(Suit firstSuit);
 };
 
 class HumanPlayer: public Player
