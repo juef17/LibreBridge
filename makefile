@@ -2,4 +2,4 @@ all:
 	+$(MAKE) -C src
 
 clean:
-	rm LibreBridge
+	rm -f LibreBridge
