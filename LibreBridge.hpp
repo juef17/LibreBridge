@@ -173,3 +173,4 @@ Position nextPosition(Position p);
 Suit charToSuit(char stringSuit);
 string suitToString(Suit suit);
 string positionToString(Position position);
+void generateScoringChart();

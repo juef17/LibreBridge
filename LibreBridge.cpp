@@ -46,6 +46,7 @@ char Card::suitToChar(Suit suit)
 		case Diamonds: return 'D';
 		case Hearts: return 'H';
 		case Spades: return 'S';
+		case NoTrump: return 'N';
 		default: return 'X';
 	}
 }
@@ -281,9 +282,9 @@ int16_t Contract::calculateScore(Position pos, uint8_t tricks)
 			}
 			i++;
 		}
-		if(score >= 100) game = true;
 		if(doubled) score *= 2;
 		if(redoubled) score *= 2;
+		if(score >= 100) game = true;
 		
 		// Overtrick points
 		while(i<underOrOverTricks+level)
@@ -675,9 +676,98 @@ string suitToString(Suit suit)
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-	Game game;
+	if(argc == 1) Game game;
+	else if(argc > 1)
+	{
+		for(uint8_t i=1; i<argc; i++)
+		{
+			if(!strcmp(argv[i], "-C"))
+			{
+				generateScoringChart();
+			}
+		}
+	}
 
 	return 0;
+}
+
+void generateScoringChart()
+{
+	cout << "<html><body><table border=1>";
+		cout << "<tr>";
+			cout << "<th>Result</th>";
+			cout << "<th>NV</th>";
+			cout << "<th>NVX</th>";
+			cout << "<th>NVXX</th>";
+			cout << "<th>V</th>";
+			cout << "<th>VX</th>";
+			cout << "<th>VXX</th>";
+		cout << "</tr>";
+		for(uint8_t level=1; level<8; ++level)
+		{
+			for(uint8_t suit = 1; suit<6; ++suit)
+			{
+				if(suit == 1 || suit == 3) ++suit; // No need for C and D, or H and S
+				for(uint8_t made = level; made<8; ++made)
+				{
+					uint8_t vulnerable = 0;
+					bool doubled;
+					bool redoubled;
+					cout << "<tr>";
+						cout << "<td>" << to_string(level) << Card::suitToChar(Suit(suit)) << " made " << to_string(made) << "</td>";
+						do
+						{
+							do
+							{
+								do
+								{
+									Contract c;
+									c.setContract(level, Suit(suit), North, doubled, redoubled, Vulnerability(vulnerable));
+									if(!(redoubled && !doubled)) cout << "<td>" << to_string(c.calculateScore(North, made+6)) << "</td>";
+									redoubled = !redoubled;
+								} while(redoubled);
+								doubled = !doubled;
+							} while(doubled);
+							vulnerable = Vulnerability(1-vulnerable);
+						} while(vulnerable);
+					cout << "</tr>";
+				}
+			}
+		}
+		cout << "<tr>";
+			cout << "<th>Down</th>";
+			cout << "<th>NV</th>";
+			cout << "<th>NVX</th>";
+			cout << "<th>NVXX</th>";
+			cout << "<th>V</th>";
+			cout << "<th>VX</th>";
+			cout << "<th>VXX</th>";
+		cout << "</tr>";
+		for(uint8_t down=1; down<14; ++down)
+		{
+			uint8_t vulnerable = 0;
+			bool doubled;
+			bool redoubled;
+			cout << "<tr>";
+				cout << "<td>" << to_string(down) << "</td>";
+				do
+				{
+					do
+					{
+						do
+						{
+							Contract c;
+							c.setContract(7, Clubs, North, doubled, redoubled, Vulnerability(vulnerable));
+							if(!(redoubled && !doubled)) cout << "<td>" << to_string(c.calculateScore(East, down)) << "</td>";
+							redoubled = !redoubled;
+						} while(redoubled);
+						doubled = !doubled;
+					} while(doubled);
+					vulnerable = Vulnerability(1-vulnerable);
+				} while(vulnerable);
+			cout << "</tr>";
+		}
+	cout << "</table></body></html>";
 }
