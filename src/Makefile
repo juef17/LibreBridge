@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-std=c++17
-SOURCES=Bid.cpp Card.cpp Contract.cpp Game.cpp LibreBridge.cpp Misc.cpp Player.cpp
+SOURCES=Bid.cpp Card.cpp Contract.cpp Game.cpp LibreBridge.cpp Misc.cpp Player.cpp HumanPlayer.cpp AIPlayer.cpp
 
 all:
 	$(CC) $(CFLAGS) $(SOURCES) -o ../LibreBridge

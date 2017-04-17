@@ -4,10 +4,10 @@
 class Player
 {
 	private:
+	protected:
 		char name[];
 		Position position;
 		std::vector<Card> hand;
-	protected:
 	public:
 		void addCardToHand(Card card);
 		void printHand(char c);
@@ -17,25 +17,11 @@ class Player
 		uint8_t countHonorPoints(Suit suit);
 		void setPosition(Position p);
 		void clearHand();
-		Card playCard(Suit firstSuit);
+		virtual Card playCard(Suit firstSuit);
 		Card playRandomCard(Suit firstSuit);
 		bool hasCard(Card c) const;
 		bool isValidPlay(Card c, Suit firstSuit) const;
 		std::vector<Card> getPlayableCards(Suit firstSuit);
-};
-
-class HumanPlayer: public Player
-{
-	private:
-	protected:
-	public:
-};
-
-class AIPlayer: public Player
-{
-	private:
-	protected:
-	public:
 };
 
 #endif

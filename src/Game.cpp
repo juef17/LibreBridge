@@ -10,6 +10,8 @@
 #include "Card.hpp"
 #include "Contract.hpp"
 #include "Player.hpp"
+#include "HumanPlayer.hpp"
+#include "AIPlayer.hpp"
 #include "Game.hpp"
 #include "Misc.hpp"
 
@@ -42,7 +44,7 @@ void Game::deal()
 		{
 			players[i].addCardToHand(deck.back());
 			deck.pop_back();
-		}
+        }
 		players[i].sortHand();
 		players[i].printHand(' ');
 	}
@@ -77,9 +79,9 @@ Contract Game::bid()
 	Contract contract;
 	
 	while(numberOfPass < 3 || (!atLeastOneBidMade && numberOfPass < 4))
-	{
+    {
 		string playerInput;
-		Bid bid;
+        Bid bid;
 		do
 		{
 			cout << positionToString(player) << ", please enter your bid: ";
@@ -109,7 +111,7 @@ Contract Game::bid()
 		contract.setContract(0, NoTrump, North, false, false, vulnerability);
 		return contract;
 	}
-	contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), doubled, redoubled, vulnerability);
+    contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), doubled, redoubled, vulnerability);
 	return contract;
 }
 

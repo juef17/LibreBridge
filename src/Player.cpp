@@ -25,20 +25,7 @@ bool Player::isValidPlay(Card c, Suit firstSuit) const
 	return true;
 }
 
-Card Player::playCard(Suit firstSuit) // If firstSuit is NoTrump, this is the first card to be played
-{
-	Card card;
-	string playerInput;
-	do
-	{
-		cout << positionToString(position) << ", please play a card: ";
-		getline (cin, playerInput);
-		if(playerInput.length()) card = Card::stringToCard(playerInput);
-		else card = playRandomCard(firstSuit);
-	} while (!card.getValue() || !hasCard(card) || !isValidPlay(card, firstSuit));
-	hand.erase(std::remove(hand.begin(), hand.end(), card), hand.end());
-	return card;
-}
+Card Player::playCard(Suit firstSuit){} // (virtual) If firstSuit is NoTrump, this is the first card to be played
 
 Card Player::playRandomCard(Suit firstSuit)
 {

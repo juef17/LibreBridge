@@ -7,6 +7,8 @@
 #include "Card.hpp"
 #include "Contract.hpp"
 #include "Player.hpp"
+#include "HumanPlayer.hpp"
+#include "AIPlayer.hpp"
 #include "Misc.hpp"
 #include "Game.hpp"
 
