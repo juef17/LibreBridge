@@ -1,9 +1,11 @@
-CC=g++
-CFLAGS=-std=c++17
-SOURCES=Bid.cpp Card.cpp Contract.cpp Game.cpp LibreBridge.cpp Misc.cpp Player.cpp HumanPlayer.cpp AIPlayer.cpp
+SRC_SOURCES := $(wildcard *.cpp)
+SRC_OBJECTS := $(SRC_SOURCES:.cpp=.o)
+AIPLAYERS_OBJECTS := $(wildcard AIPlayers/*.o)
 
 all:
-	$(CC) $(CFLAGS) $(SOURCES) -o ../LibreBridge
+	$(CC) $(CFLAGS) $(SRC_SOURCES) -c
+	+$(MAKE) -C AIPlayers
+	$(CC) $(CFLAGS) $(SRC_OBJECTS) $(AIPLAYERS_OBJECTS) -o ../LibreBridge
 
 #all: LibreBridge
 #
