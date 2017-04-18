@@ -6,7 +6,7 @@ class AIPlayer: public Player
 	private:
 	protected:
 	public:
-		Card playCard(Suit firstSuit);
+		virtual Card playCard(Suit firstSuit);
 };
 
 #endif

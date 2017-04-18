@@ -13,7 +13,4 @@
 
 using namespace std;
 
-Card AIPlayer::playCard(Suit firstSuit)
-{
-	return playRandomCard(firstSuit);
-}
+Card AIPlayer::playCard(Suit firstSuit){};
