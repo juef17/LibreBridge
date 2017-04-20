@@ -3,7 +3,7 @@ checker si le AI fait faire 2 fois de suite la même chose, si oui, on quitte ou
 check si y'a juste des AI pour mettre un délai / user input à quelque part, et en faire une option
 délai AI de 500 ms: implanter
 command line option pour choisir le nombre de AI et leur type: http://stackoverflow.com/questions/582331/is-there-a-way-to-instantiate-objects-from-a-string-holding-their-class-name
-Seed chrono -> int de 1 à 52! -> prendre ce int comme seed pour le brassage de cartes
+Seed chrono -> int de 1 à 52! -> prendre ce int comme seed pour le brassage de cartes, incrémenter un 1 sur une nouvelle brasse (et attacher ça à la sélection des positions?)
 deal(int nbptsmin, nbptsmax, pos)
 deal(int nbptsmin, nbptsmax, pos1, pos2)
 deal(int nbCards, Suit, pos)...

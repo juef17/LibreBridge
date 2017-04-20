@@ -8,7 +8,7 @@ class HumanPlayer: public Player
 	public:
 		HumanPlayer();
 		Card playCard(Suit firstSuit);
-		void bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, std::vector<Bid> bidWar);
+		void bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, std::vector<Bid>);
 		~HumanPlayer(){}
 };
 

@@ -33,9 +33,8 @@ Card HumanPlayer::playCard(Suit firstSuit)
 	return card;
 }
 
-void HumanPlayer::bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, vector<Bid> bidWar)
+void HumanPlayer::bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, vector<Bid>)
 {
-	(void)bidWar; // Avoir unused warning
 	string playerInput;
 	cout << positionToString(position) << ", please enter your bid: ";
 	getline (cin, playerInput);
