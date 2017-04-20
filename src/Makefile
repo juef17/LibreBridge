@@ -1,6 +1,7 @@
 SRC_SOURCES := $(wildcard *.cpp)
 SRC_OBJECTS := $(SRC_SOURCES:.cpp=.o)
-AIPLAYERS_OBJECTS := $(wildcard AIPlayers/*.o)
+AIPLAYERS_SOURCES := $(wildcard AIPlayers/*.cpp)
+AIPLAYERS_OBJECTS := $(AIPLAYERS_SOURCES:.cpp=.o)
 
 all:
 	$(CC) $(CFLAGS) $(SRC_SOURCES) -c

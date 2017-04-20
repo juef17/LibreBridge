@@ -5,10 +5,9 @@ class Game
 {
 	private:
 		GameType gameType;
-		// TODO vectors pour contenir les infos des parties précédentes: scores, qui avait le contrat, y'avait tu un meilleur contrat, etc
 		uint32_t totalIMP_NS;
 		uint32_t totalIMP_AI_NS;
-		HumanPlayer players[4];
+		Player* players[4];
 		Vulnerability vulnerability;
 		Contract contract;
 		Position dealer;

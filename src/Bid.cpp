@@ -1,24 +1,25 @@
 #include <cstdint>
 #include <string>
-#include <iostream>
 #include "LibreBridge.hpp"
 #include "Bid.hpp"
 #include "Misc.hpp"
 
 using namespace std;
 
-void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSuit, bool doubled, bool redoubled)
+void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled)
 {
 	betType = Invalid;
 	player = pla;
+	suit = NoTrump;
+	level = 0;
 	if(stringBid == "X")
 	{
-		if(!lastLevel || doubled || redoubled) return;
+		if(!lastLevel || lastDoubled || lastRedoubled) return;
 		betType = Double;
 	}
 	else if(stringBid == "XX")
 	{
-		if(!lastLevel || !doubled || redoubled) return;
+		if(!lastLevel || !lastDoubled || lastRedoubled) return;
 		betType = Redouble;
 	}
 	else if(stringBid == "Pass" || stringBid == "") betType = Pass;
@@ -44,19 +45,47 @@ void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSui
 	}
 }
 
-void Bid::printBid()
+void Bid::setBid(BetType& b, Suit& s, uint8_t& l, Position position, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled)
 {
-	if(betType == Invalid)
+	if(b == Double)
 	{
-		cout << "Bid is invalid.";
-		return;
+		if(!lastLevel || lastDoubled || lastRedoubled) return;
+		betType = Double;
 	}
-	cout << "Bid is: ";
-	if(betType == Pass) cout << "Pass";
-	if(betType == Double) cout << "Double";
-	if(betType == Redouble) cout << "Redouble";
-	if(betType == Normal) cout << "Pass";
-	cout << " by " << positionToString(player) << "\n";
+	else if(b == Redouble)
+	{
+		if(!lastLevel || !lastDoubled || lastRedoubled) return;
+		betType = Redouble;
+	}
+	else if(b == Pass) betType = Pass;
+	else
+	{
+		if(l < 0 || l > 7) return;
+		level = l;
+		suit = s;
+		if(s != NoTrump)
+		{
+			if(lastLevel > level) return;
+			if(lastLevel == level && lastSuit >= suit) return;
+			betType = Normal;
+		}
+		else
+		{
+			suit = NoTrump;
+			if(lastLevel > level) return;
+			if(lastLevel == level && lastSuit == suit) return;
+			betType = Normal;
+		}
+	}
+}
+
+string Bid::toString()
+{
+	if(betType == Invalid) return "Invalid.";
+	if(betType == Pass) return "Pass";
+	if(betType == Double) return "Double";
+	if(betType == Redouble) return "Redouble";
+	return to_string(level) + suitToString(Suit(suit)); // betType == Normal
 }
 
 BetType Bid::getBetType()

@@ -10,7 +10,7 @@ enum Vulnerability {None=0, NS=1, EW=2, Both=3};
 
 struct options
 {
-	int AI_playDelay = 500;	// milliseconds
+	int AI_playDelay;	// milliseconds
 };
 
 #endif

@@ -1,3 +1,11 @@
+command line option pour choisir le nombre de AI et leur type: http://stackoverflow.com/questions/582331/is-there-a-way-to-instantiate-objects-from-a-string-holding-their-class-name
+Seed chrono -> int de 1 à 52! -> prendre ce int comme seed pour le brassage de cartes
+deal(int nbptsmin, nbptsmax, pos)
+deal(int nbptsmin, nbptsmax, pos1, pos2)
+deal(int nbCards, Suit, pos)...
+faire un struct de contraintes, et deal(vector<contraintes>)?
+vectors pour contenir les infos des parties précédentes: scores, qui avait le contrat, y'avait tu un meilleur contrat, etc
+
 Lua AI scripting? http://www.rasterbar.com/products/luabind/docs.html
 Qt interface
 Windows / Android ports

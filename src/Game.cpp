@@ -14,6 +14,7 @@
 #include "AIPlayer.hpp"
 #include "Game.hpp"
 #include "Misc.hpp"
+#include "AIPlayers/AI_Random.hpp"
 
 using namespace std;
 
@@ -38,20 +39,16 @@ void Game::deal()
 	
 	for(int i=0; i<4; ++i) 
 	{
-		players[i].setPosition(Position(i));
-		players[i].clearHand();
+		players[i]->setPosition(Position(i));
+		players[i]->clearHand();
 		for(int j = 0; j<13; ++j)
 		{
-			players[i].addCardToHand(deck.back());
+			players[i]->addCardToHand(deck.back());
 			deck.pop_back();
         }
-		players[i].sortHand();
-		players[i].printHand(' ');
+		players[i]->sortHand();
+		players[i]->printHand(' ');
 	}
-	
-	//TODO remove
-	//cout << to_string(players[0].countHonorPoints()) << "\n";
-	//cout << to_string(players[0].countHonorPoints(Clubs)) << "\n";*/
 }
 
 uint8_t Game::getVulnerability()
@@ -67,51 +64,49 @@ void Game::setVulnerability()
 Contract Game::bid()
 {
 	uint8_t firstBidsTable[2][5];	// 1st index is team %2, 2nd is suit
-	for(uint8_t i = 0; i<2; ++i) for(uint8_t j = 1; j<6; ++j) firstBidsTable[i][j] = 10; // Mark as unset
+	for(uint8_t i = 0; i<2; ++i) for(uint8_t j = 1; j<6; ++j) firstBidsTable[i][j] = 10; // Mark as unset (10)
 
 	bool atLeastOneBidMade = false;
 	uint8_t numberOfPass = 0;
 	uint8_t lastBidMade; // team % 2 who bet last
 	uint8_t lastLevel = 0;
 	Suit lastSuit;
-	Position player = dealer;
-	bool doubled = false, redoubled = false;
+	Position playerPos = dealer;
+	bool lastDoubled = false, lastRedoubled = false;
 	Contract contract;
 	
 	while(numberOfPass < 3 || (!atLeastOneBidMade && numberOfPass < 4))
     {
-		string playerInput;
         Bid bid;
 		do
 		{
-			cout << positionToString(player) << ", please enter your bid: ";
-			getline (cin, playerInput);
-			bid.setBid(playerInput, player, lastLevel, lastSuit, doubled, redoubled);
-			if(bid.getBetType() != Invalid) bidWar.push_back(bid);
-			else cout << "Invalid bet!\n";
+			players[int(playerPos)]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled);
+			if(bid.getBetType() == Invalid) cout << "Invalid bet!\n";
 		} while (bid.getBetType() == Invalid);
+		if(!players[int(playerPos)]->getIsHuman()) cout << positionToString(playerPos) << ": " << bid.toString() << "\n";
+		bidWar.push_back(bid);
 		if(bid.getBetType() == Pass) numberOfPass++;
 		else numberOfPass = 0;
 		if(bid.getBetType() == Normal)
 		{
-			lastBidMade = player%2;
+			lastBidMade = playerPos%2;
 			lastSuit = bid.getSuit();
 			lastLevel = bid.getLevel();
 			atLeastOneBidMade = true;
-			if(firstBidsTable[player%2][lastSuit] == 10) firstBidsTable[player%2][lastSuit] = player;
-			doubled = false;
-			redoubled = false;
+			if(firstBidsTable[playerPos%2][lastSuit] == 10) firstBidsTable[playerPos%2][lastSuit] = playerPos;
+			lastDoubled = false;
+			lastRedoubled = false;
 		}
-		if(bid.getBetType() == Double) doubled = true;
-		if(bid.getBetType() == Redouble) redoubled = true;
-		player = nextPosition(player);
+		if(bid.getBetType() == Double) lastDoubled = true;
+		if(bid.getBetType() == Redouble) lastRedoubled = true;
+		playerPos = nextPosition(playerPos);
 	}
 	if(numberOfPass == 4)
 	{
 		contract.setContract(0, NoTrump, North, false, false, vulnerability);
 		return contract;
 	}
-    contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), doubled, redoubled, vulnerability);
+    contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, vulnerability);
 	return contract;
 }
 
@@ -119,7 +114,7 @@ void Game::prepareForNextGame()
 {
 	dealer = nextPosition(dealer);
 	setVulnerability();
-	for(uint8_t i = 0; i<4; ++i) players[i].clearHand();
+	for(uint8_t i = 0; i<4; ++i) players[i]->clearHand();
 	bidWar.clear();
 }
 
@@ -157,6 +152,11 @@ Game::Game()
 	uniform_int_distribution<int> distribution(0,3);
 	vulnerability = Vulnerability(distribution(generator));
 	dealer = Position(distribution(generator));
+	AI_Random ai1;
+	players[0] = new HumanPlayer;
+	players[1] = new HumanPlayer;
+	players[2] = new HumanPlayer;
+	players[3] = new AI_Random;
 	do
 	{
 		deal();
@@ -167,6 +167,7 @@ Game::Game()
 		playCards();
 		prepareForNextGame();
 	} while(true);
+	for(uint8_t i=0; i<4; i++) delete players[i];
 }
 
 void Game::playCards()
@@ -178,17 +179,17 @@ void Game::playCards()
 
 	for(uint8_t i=0; i<4; ++i)
 	{
-		players[i].sortHand(contract.getSuit());
-		players[i].printHand(' ');
+		players[i]->sortHand(contract.getSuit());
+		players[i]->printHand(' ');
 	}
 	for(uint8_t i=0; i<13; ++i)
 	{
-		playedCards[0] = players[player].playCard(NoTrump);
+		playedCards[0] = players[player]->playCard(NoTrump);
 		Position firstPlayer = player;
 		for(uint8_t j = 1; j<4; ++j)
 		{
 			player = nextPosition(player);
-			playedCards[j] = players[player].playCard(playedCards[0].getSuit());
+			playedCards[j] = players[player]->playCard(playedCards[0].getSuit());
 		}
 		for(uint8_t j = 0; j<4; ++j) playedCardsHistory.push_back(playedCards[j]);
 		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer);

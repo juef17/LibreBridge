@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iomanip>
 #include "LibreBridge.hpp"
+#include "Bid.hpp"
 #include "Card.hpp"
 #include "Misc.hpp"
 #include "Player.hpp"
@@ -24,8 +25,6 @@ bool Player::isValidPlay(Card c, Suit firstSuit) const
 	for (auto &card : hand) if(card.getSuit() == firstSuit) return false;
 	return true;
 }
-
-Card Player::playCard(Suit firstSuit){} // (virtual) If firstSuit is NoTrump, this is the first card to be played
 
 Card Player::playRandomCard(Suit firstSuit)
 {
@@ -110,7 +109,17 @@ void Player::setPosition(Position p)
 	position = p;
 }
 
+Position Player::getPosition(Position p)
+{
+	return position;
+}
+
 void Player::clearHand()
 {
 	hand.clear();
+}
+
+bool Player::getIsHuman()
+{
+	return isHuman;
 }
