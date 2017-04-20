@@ -7,7 +7,7 @@ class AI_Random: public AIPlayer
 	protected:
 	public:
 		Card playCard(Suit firstSuit);
-		void makeBid(BetType& betType, Suit& suit, uint8_t& level);
+		void makeBid(BetType& betType, Suit& suit, uint8_t& level, std::vector<Bid> bidWar);
 };
 
 #endif

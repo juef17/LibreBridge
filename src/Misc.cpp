@@ -1,6 +1,8 @@
 #include <cstdint>
 #include <string>
 #include <iostream>
+#include <chrono>
+#include <algorithm>
 #include "LibreBridge.hpp"
 #include "Card.hpp"
 #include "Contract.hpp"
@@ -127,4 +129,12 @@ void generateScoringChart()
 			cout << "</tr>";
 		}
 	cout << "</table></body></html>";
+}
+
+uint8_t randomUint8(int min, int max)
+{
+	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator(seed);
+	uniform_int_distribution<int> distribution(min,max);
+	return distribution(generator);
 }

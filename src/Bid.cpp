@@ -85,7 +85,7 @@ string Bid::toString()
 	if(betType == Pass) return "Pass";
 	if(betType == Double) return "Double";
 	if(betType == Redouble) return "Redouble";
-	return to_string(level) + suitToString(Suit(suit)); // betType == Normal
+	return to_string(level) + " " + suitToString(Suit(suit)); // betType == Normal
 }
 
 BetType Bid::getBetType()

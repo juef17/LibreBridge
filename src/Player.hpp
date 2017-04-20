@@ -19,8 +19,9 @@ class Player
 		void setPosition(Position p);
 		Position getPosition(Position p);
 		void clearHand();
+		void clearCard(Card card);
 		virtual Card playCard(Suit firstSuit) = 0; // If firstSuit is NoTrump, this is the first card to be played
-		virtual void bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled) = 0;
+		virtual void bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, std::vector<Bid> bidWar) = 0;
 		Card playRandomCard(Suit firstSuit);
 		bool hasCard(Card c) const;
 		bool isValidPlay(Card c, Suit firstSuit) const;

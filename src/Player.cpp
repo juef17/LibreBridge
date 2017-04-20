@@ -119,6 +119,13 @@ void Player::clearHand()
 	hand.clear();
 }
 
+void Player::clearCard(Card card)
+{
+	printHand(' ');
+	hand.erase(remove(hand.begin(), hand.end(), card), hand.end());
+	printHand(' ');
+}
+
 bool Player::getIsHuman()
 {
 	return isHuman;

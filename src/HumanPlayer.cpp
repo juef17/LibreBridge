@@ -30,11 +30,10 @@ Card HumanPlayer::playCard(Suit firstSuit)
 		if(playerInput.length()) card = Card::stringToCard(playerInput);
 		else card = playRandomCard(firstSuit);
 	} while (!card.getValue() || !hasCard(card) || !isValidPlay(card, firstSuit));
-	hand.erase(std::remove(hand.begin(), hand.end(), card), hand.end());
 	return card;
 }
 
-void HumanPlayer::bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled)
+void HumanPlayer::bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, vector<Bid> bidWar)
 {
 	string playerInput;
 	cout << positionToString(position) << ", please enter your bid: ";

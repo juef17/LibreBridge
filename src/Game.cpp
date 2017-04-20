@@ -80,7 +80,7 @@ Contract Game::bid()
         Bid bid;
 		do
 		{
-			players[int(playerPos)]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled);
+			players[int(playerPos)]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, bidWar);
 			if(bid.getBetType() == Invalid) cout << "Invalid bet!\n";
 		} while (bid.getBetType() == Invalid);
 		if(!players[int(playerPos)]->getIsHuman()) cout << positionToString(playerPos) << ": " << bid.toString() << "\n";
@@ -116,6 +116,7 @@ void Game::prepareForNextGame()
 	setVulnerability();
 	for(uint8_t i = 0; i<4; ++i) players[i]->clearHand();
 	bidWar.clear();
+	playedCardsHistory.clear();
 }
 
 Position Contract::getDeclarer()
@@ -148,10 +149,8 @@ bool Contract::isTeamVulnerable(Position p) const
 Game::Game()
 {
 	// Generate random vulnerability and dealer
-	default_random_engine generator;
-	uniform_int_distribution<int> distribution(0,3);
-	vulnerability = Vulnerability(distribution(generator));
-	dealer = Position(distribution(generator));
+	vulnerability = Vulnerability(randomUint8(0, 3));
+	dealer = Position(randomUint8(0, 3));
 	AI_Random ai1;
 	players[0] = new HumanPlayer;
 	players[1] = new HumanPlayer;
@@ -184,14 +183,18 @@ void Game::playCards()
 	}
 	for(uint8_t i=0; i<13; ++i)
 	{
-		playedCards[0] = players[player]->playCard(NoTrump);
 		Position firstPlayer = player;
+		playedCards[0] = players[player]->playCard(NoTrump);
 		for(uint8_t j = 1; j<4; ++j)
 		{
 			player = nextPosition(player);
 			playedCards[j] = players[player]->playCard(playedCards[0].getSuit());
 		}
-		for(uint8_t j = 0; j<4; ++j) playedCardsHistory.push_back(playedCards[j]);
+		for(uint8_t j = 0; j<4; ++j)
+		{
+			playedCardsHistory.push_back(playedCards[j]);
+			players[(j+firstPlayer)%4]->clearCard(playedCards[j]);
+		}
 		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer);
 		player = whoWonTheTrick;
 		cout << positionToString(player) << " won the trick!\n";
