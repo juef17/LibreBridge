@@ -109,7 +109,7 @@ void Player::setPosition(Position p)
 	position = p;
 }
 
-Position Player::getPosition(Position p)
+Position Player::getPosition()
 {
 	return position;
 }

@@ -5,7 +5,7 @@ class Player
 {
 	private:
 	protected:
-		char name[];
+		std::string name;
 		Position position;
 		std::vector<Card> hand;
 		bool isHuman;
@@ -17,7 +17,7 @@ class Player
 		uint8_t countHonorPoints();
 		uint8_t countHonorPoints(Suit suit);
 		void setPosition(Position p);
-		Position getPosition(Position p);
+		Position getPosition();
 		void clearHand();
 		void clearCard(Card card);
 		virtual Card playCard(Suit firstSuit) = 0; // If firstSuit is NoTrump, this is the first card to be played
@@ -27,6 +27,7 @@ class Player
 		bool isValidPlay(Card c, Suit firstSuit) const;
 		std::vector<Card> getPlayableCards(Suit firstSuit);
 		bool getIsHuman();
+		virtual ~Player(){}
 };
 
 #endif

@@ -47,6 +47,7 @@ void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSui
 
 void Bid::setBid(BetType& b, Suit& s, uint8_t& l, Position position, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled)
 {
+	player = position;
 	if(b == Double)
 	{
 		if(!lastLevel || lastDoubled || lastRedoubled) return;
@@ -60,7 +61,7 @@ void Bid::setBid(BetType& b, Suit& s, uint8_t& l, Position position, uint8_t las
 	else if(b == Pass) betType = Pass;
 	else
 	{
-		if(l < 0 || l > 7) return;
+		if(l > 7) return; // No need to check for < 0 since l is uint8_t
 		level = l;
 		suit = s;
 		if(s != NoTrump)

@@ -85,7 +85,7 @@ Card Card::stringToCard(string s)
 {
 	Card card(0, NoTrump);
 	if(s.length() != 2) return card;
-	uint8_t value = value = charToValue(s[0]);
+	uint8_t value = charToValue(s[0]);
 	Suit suit = charToSuit(s[1]);
 	if(!value) return card;
 	if(suit == NoTrump) return card;
