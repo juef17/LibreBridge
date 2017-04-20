@@ -131,7 +131,7 @@ void generateScoringChart()
 	cout << "</table></body></html>";
 }
 
-uint8_t randomUint8(int min, int max)
+uint8_t randomUint8(uint8_t min, uint8_t max)
 {
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	default_random_engine generator(seed);
