@@ -13,35 +13,35 @@
 
 using namespace std;
 
-bool Player::hasCard(Card c) const
+bool Player::hasCard(Card c, vector<Card> dummyHand) const
 {
-	for (auto &card : hand) if(c == card) return true;
+	for (auto &card : (playingForDummy(dummyHand) ? dummyHand : hand)) if(c == card) return true;
 	return false;
 }
 
-bool Player::isValidPlay(Card c, Suit firstSuit) const
+bool Player::isValidPlay(Card c, Suit firstSuit, vector<Card> dummyHand) const
 {
 	if(c.getSuit() == firstSuit) return true;
-	for (auto &card : hand) if(card.getSuit() == firstSuit) return false;
+	for (auto &card : (playingForDummy(dummyHand) ? dummyHand : hand)) if(card.getSuit() == firstSuit) return false;
 	return true;
 }
 
-Card Player::playRandomCard(Suit firstSuit)
+Card Player::playRandomCard(Suit firstSuit, vector<Card> dummyHand)
 {
-	vector<Card> playableCards = getPlayableCards(firstSuit);
+	vector<Card> playableCards = getPlayableCards(firstSuit, dummyHand);
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	auto engine = default_random_engine{seed};
 	shuffle(begin(playableCards), end(playableCards), engine);
 	cout << positionToString(position) << " is playing ";
 	playableCards[0].printCard();
+	if(playingForDummy(dummyHand)) cout << " for " << positionToString(nextTeammate(position));
 	cout << "\n";
 	return playableCards[0];
 }
-
-vector<Card> Player::getPlayableCards(Suit firstSuit)
+vector<Card> Player::getPlayableCards(Suit firstSuit, vector<Card> dummyHand)
 {
 	vector<Card> playableCards;
-	for (auto &card : hand) if(isValidPlay(card, firstSuit)) playableCards.push_back(card);
+	for (auto &card : (playingForDummy(dummyHand) ? dummyHand : hand)) if(isValidPlay(card, firstSuit, dummyHand)) playableCards.push_back(card);
 	return playableCards;
 }
 
@@ -127,4 +127,14 @@ void Player::clearCard(Card card)
 bool Player::getIsHuman()
 {
 	return isHuman;
+}
+
+bool Player::playingForDummy(vector<Card> dummyHand) const
+{
+	return !dummyHand.empty();
+}
+
+vector<Card> Player::getHand()
+{
+	return hand;
 }

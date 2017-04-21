@@ -20,14 +20,16 @@ class Player
 		Position getPosition();
 		void clearHand();
 		void clearCard(Card card);
-		virtual Card playCard(Suit firstSuit) = 0; // If firstSuit is NoTrump, this is the first card to be played
+		virtual Card playCard(Suit firstSuit, std::vector<Card> dummyHand = std::vector<Card>()) = 0; // If firstSuit is NoTrump, this is the first card to be played
 		virtual void bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, std::vector<Bid> bidWar) = 0;
-		Card playRandomCard(Suit firstSuit);
-		bool hasCard(Card c) const;
-		bool isValidPlay(Card c, Suit firstSuit) const;
-		std::vector<Card> getPlayableCards(Suit firstSuit);
+		Card playRandomCard(Suit firstSuit, std::vector<Card> dummyHand = std::vector<Card>());
+		bool hasCard(Card c, std::vector<Card> dummyHand = std::vector<Card>()) const;
+		bool isValidPlay(Card c, Suit firstSuit, std::vector<Card> dummyHand = std::vector<Card>()) const;
+		std::vector<Card> getPlayableCards(Suit firstSuit, std::vector<Card> dummyHand = std::vector<Card>());
 		bool getIsHuman();
 		virtual ~Player(){}
+		bool playingForDummy(std::vector<Card> dummyHand) const;
+		std::vector<Card> getHand();
 };
 
 #endif

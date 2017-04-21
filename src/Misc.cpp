@@ -15,6 +15,11 @@ Position nextPosition(Position p)
 	return Position((p+1)%4);
 }
 
+Position nextTeammate(Position p)
+{
+	return Position((p+2)%4);
+}
+
 Suit charToSuit(char stringSuit)
 {
 	switch(stringSuit)

@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <string>
+#include <iostream>
 #include "LibreBridge.hpp"
 #include "Bid.hpp"
 #include "Misc.hpp"
@@ -26,8 +27,8 @@ void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSui
 	else
 	{
 		if(stringBid.length() < 2 || stringBid.length() > 3) return;
+		if(stringBid[0] < '1' || stringBid[0] > '7') return;
 		level = stringBid[0];
-		if(level < 0 || level > 7) return;
 		if(stringBid.length() == 2 && (stringBid[1] == 'C' || stringBid[1] == 'D' || stringBid[1] == 'H' || stringBid[1] == 'S'))
 		{
 			suit = charToSuit(stringBid[1]);
@@ -61,7 +62,7 @@ void Bid::setBid(BetType& b, Suit& s, uint8_t& l, Position position, uint8_t las
 	else if(b == Pass) betType = Pass;
 	else
 	{
-		if(l > 7) return; // No need to check for < 0 since l is uint8_t
+		if(l < 1 || l > 7) return;
 		level = l;
 		suit = s;
 		if(s != NoTrump)

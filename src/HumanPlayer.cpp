@@ -19,17 +19,16 @@ HumanPlayer::HumanPlayer()
 	isHuman = true;
 }
 
-Card HumanPlayer::playCard(Suit firstSuit)
+Card HumanPlayer::playCard(Suit firstSuit, vector<Card> dummyHand)
 {
 	Card card;
 	string playerInput;
-	do
-	{
-		cout << positionToString(position) << ", please play a card: ";
-		getline (cin, playerInput);
-		if(playerInput.length()) card = Card::stringToCard(playerInput);
-		else card = playRandomCard(firstSuit);
-	} while (!card.getValue() || !hasCard(card) || !isValidPlay(card, firstSuit));
+	cout << positionToString(position) << ", please play a card";
+	if(playingForDummy(dummyHand)) cout << " for " << positionToString(nextTeammate(position));
+	cout << ": ";
+	getline (cin, playerInput);
+	if(playerInput.length()) card = Card::stringToCard(playerInput);
+	else card = playRandomCard(firstSuit, dummyHand);
 	return card;
 }
 

@@ -15,9 +15,9 @@
 
 using namespace std;
 
-Card AI_Random::playCard(Suit firstSuit)
+Card AI_Random::playCard(Suit firstSuit, vector<Card> dummyHand)
 {
-	return playRandomCard(firstSuit);
+	return playRandomCard(firstSuit, dummyHand);
 }
 
 void AI_Random::makeBid(BetType& betType, Suit& suit, uint8_t& level, vector<Bid> bidWar)

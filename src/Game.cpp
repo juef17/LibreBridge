@@ -172,26 +172,30 @@ Game::Game()
 void Game::playCards()
 {
 	Position player = nextPosition(contract.getDeclarer());
+	Position dummyPosition = nextTeammate(contract.getDeclarer());
 	Card playedCards[4];
 	Position whoWonTheTrick;
 	uint8_t tricksMade[2] = {0}; // %2 for team
+	bool isDummy;
 
-	for(uint8_t i=0; i<4; ++i)
+	for(uint8_t k=0; k<4; ++k)
 	{
-		players[i]->sortHand(contract.getSuit());
-		players[i]->printHand(' ');
+		players[k]->sortHand(contract.getSuit());
+		players[k]->printHand(' ');
 	}
 	for(uint8_t i=0; i<13; ++i)
 	{
 		Position firstPlayer = player;
-		playedCards[0] = players[player]->playCard(NoTrump);
-		for(uint8_t j = 1; j<4; ++j)
-		{
-			player = nextPosition(player);
-			playedCards[j] = players[player]->playCard(playedCards[0].getSuit());
-		}
 		for(uint8_t j = 0; j<4; ++j)
 		{
+			Suit firstSuit = (j == 0 ? NoTrump : playedCards[0].getSuit());
+			isDummy = (player == dummyPosition);
+			Position actualPlayer = (isDummy ? contract.getDeclarer() : player);
+			do
+			{
+				playedCards[j] = (isDummy ? players[actualPlayer]->playCard(firstSuit, players[dummyPosition]->getHand()) : players[actualPlayer]->playCard(firstSuit));
+			} while(!players[player]->hasCard(playedCards[j]) || !players[player]->isValidPlay(playedCards[j], firstSuit));
+			player = nextPosition(player);
 			playedCardsHistory.push_back(playedCards[j]);
 			players[(j+firstPlayer)%4]->clearCard(playedCards[j]);
 		}
