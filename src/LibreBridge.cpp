@@ -11,6 +11,7 @@ Options options;
 int main(int argc, char *argv[])
 {
 	options.AI_playDelay = 0;
+	options.AI_letGamesRun = false;
 	
 	if(argc == 1) Game game;
 	else if(argc > 1)

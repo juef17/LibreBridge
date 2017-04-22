@@ -2,6 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <algorithm>
+#include <limits>
 #include "Game.hpp"
 #include "HumanPlayer.hpp"
 #include "AIPlayers/AI_Random.hpp"
@@ -112,6 +113,11 @@ void Game::prepareForNextGame()
 	for(uint8_t i = 0; i<4; ++i) players[i]->clearHand();
 	bidWar.clear();
 	playedCardsHistory.clear();
+	if(!options.AI_letGamesRun && isAllAI())
+	{
+		cout << "Press 'Enter' to continue: ";
+		cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+	}
 }
 
 Position Contract::getDeclarer()
@@ -147,9 +153,9 @@ Game::Game()
 	vulnerability = Vulnerability(randomUint8(0, 3));
 	dealer = Position(randomUint8(0, 3));
 	AI_Random ai1;
-	players[0] = new HumanPlayer;
-	players[1] = new HumanPlayer;
-	players[2] = new HumanPlayer;
+	players[0] = new AI_Random;
+	players[1] = new AI_Random;
+	players[2] = new AI_Random;
 	players[3] = new AI_Random;
 	do
 	{
@@ -217,4 +223,10 @@ Position Game::whoWinsTheTrick(Card playedCards[], Position firstPlayer) const
 		}
 	}
 	return Position((uint8_t(firstPlayer)+winnerIndex)%4);
+}
+
+bool Game::isAllAI() const
+{
+	for(uint8_t i=0; i<4; ++i) if(players[i]->getIsHuman()) return false;
+	return true;
 }

@@ -33,6 +33,7 @@ class Game
 		Game();
 		void prepareForNextGame();
 		Position whoWinsTheTrick(Card playedCards[], Position firstPlayer) const;
+		bool isAllAI() const;
 };
 
 class LocalGame: public Game

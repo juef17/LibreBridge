@@ -10,7 +10,8 @@ enum Vulnerability {None=0, NS=1, EW=2, Both=3};
 
 struct Options
 {
-	int AI_playDelay;	// milliseconds
+	int AI_playDelay;		// Milliseconds before each AI bid or play
+	bool AI_letGamesRun;	// If true, no user input between AI-only games
 } extern options;
 
 #endif
