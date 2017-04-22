@@ -152,11 +152,7 @@ Game::Game()
 	// Generate random vulnerability and dealer
 	vulnerability = Vulnerability(randomUint8(0, 3));
 	dealer = Position(randomUint8(0, 3));
-	AI_Random ai1;
-	players[0] = new AI_Random;
-	players[1] = new AI_Random;
-	players[2] = new AI_Random;
-	players[3] = new AI_Random;
+	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
 	do
 	{
 		deal();

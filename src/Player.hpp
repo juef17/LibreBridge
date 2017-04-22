@@ -37,6 +37,7 @@ class Player
 		virtual ~Player(){}
 		bool playingForDummy(std::vector<Card> dummyHand) const;
 		std::vector<Card> getHand();
+		static Player* getNewPlayer(std::string playerType);
 };
 
 #endif

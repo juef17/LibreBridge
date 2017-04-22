@@ -5,6 +5,10 @@
 #include "Player.hpp"
 #include "Misc.hpp"
 
+#include "HumanPlayer.hpp"
+#include "AIPlayers/AI_Random.hpp"
+// Add others
+
 using namespace std;
 
 bool Player::hasCard(Card c, vector<Card> dummyHand) const
@@ -131,4 +135,12 @@ bool Player::playingForDummy(vector<Card> dummyHand) const
 vector<Card> Player::getHand()
 {
 	return hand;
+}
+
+Player* Player::getNewPlayer(string playerType)
+{
+	if(playerType == "Human" || playerType == "HumanPlayer") return new HumanPlayer;
+	if(playerType == "AI_Random") return new AI_Random;
+	// Add others
+	return new HumanPlayer;
 }
