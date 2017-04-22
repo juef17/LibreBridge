@@ -1,6 +1,14 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <cstdint>
+#include <vector>
+#include "LibreBridge.hpp"
+#include "Bid.hpp"
+#include "Card.hpp"
+#include "Contract.hpp"
+#include "Player.hpp"
+
 class Game
 {
 	private:

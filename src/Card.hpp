@@ -1,6 +1,10 @@
 #ifndef CARD_HPP
 #define CARD_HPP
 
+#include <cstdint>
+#include <string>
+#include "LibreBridge.hpp"
+
 class Card
 {
 	private:

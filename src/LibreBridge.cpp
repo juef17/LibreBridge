@@ -1,14 +1,7 @@
 #include <cstdint>
 #include <cstring>
-#include <string>
 #include <vector>
 #include "LibreBridge.hpp"
-#include "Bid.hpp"
-#include "Card.hpp"
-#include "Contract.hpp"
-#include "Player.hpp"
-#include "HumanPlayer.hpp"
-#include "AIPlayer.hpp"
 #include "Misc.hpp"
 #include "Game.hpp"
 

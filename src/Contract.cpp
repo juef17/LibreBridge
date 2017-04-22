@@ -1,9 +1,7 @@
-#include <cstdint>
 #include <string>
 #include <iostream>
-#include "LibreBridge.hpp"
-#include "Misc.hpp"
 #include "Contract.hpp"
+#include "Misc.hpp"
 
 using namespace std;
 

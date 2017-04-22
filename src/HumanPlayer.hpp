@@ -1,6 +1,12 @@
 #ifndef HUMANPLAYER_HPP
 #define HUMANPLAYER_HPP
 
+#include <cstdint>
+#include "LibreBridge.hpp"
+#include "Bid.hpp"
+#include "Card.hpp"
+#include "Player.hpp"
+
 class HumanPlayer: public Player
 {
 	private:

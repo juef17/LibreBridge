@@ -1,20 +1,10 @@
-#include <cstdint>
-#include <cstring>
-#include <string>
 #include <iostream>
-#include <vector>
 #include <chrono>
 #include <algorithm>
-#include "LibreBridge.hpp"
-#include "Bid.hpp"
-#include "Card.hpp"
-#include "Contract.hpp"
-#include "Player.hpp"
-#include "HumanPlayer.hpp"
-#include "AIPlayer.hpp"
 #include "Game.hpp"
-#include "Misc.hpp"
+#include "HumanPlayer.hpp"
 #include "AIPlayers/AI_Random.hpp"
+#include "Misc.hpp"
 
 using namespace std;
 

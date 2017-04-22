@@ -1,6 +1,10 @@
 #ifndef BID_HPP
 #define BID_HPP
 
+#include <cstdint>
+#include <string>
+#include "LibreBridge.hpp"
+
 class Bid {
 	private:
 		Position player;

@@ -1,15 +1,9 @@
-#include <cstdint>
-#include <string>
 #include <iostream>
-#include <vector>
 #include <chrono>
 #include <algorithm>
 #include <iomanip>
-#include "LibreBridge.hpp"
-#include "Bid.hpp"
-#include "Card.hpp"
-#include "Misc.hpp"
 #include "Player.hpp"
+#include "Misc.hpp"
 
 using namespace std;
 

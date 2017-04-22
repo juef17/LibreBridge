@@ -1,6 +1,13 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include <cstdint>
+#include <string>
+#include <vector>
+#include "LibreBridge.hpp"
+#include "Bid.hpp"
+#include "Card.hpp"
+
 class Player
 {
 	private:

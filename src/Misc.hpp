@@ -1,6 +1,11 @@
 #ifndef MISC_HPP
 #define MISC_HPP
 
+#include <cstdint>
+#include <string>
+#include "LibreBridge.hpp"
+
+
 Position nextPosition(Position p);
 Position nextTeammate(Position p);
 Suit charToSuit(char stringSuit);

@@ -1,6 +1,13 @@
 #ifndef AIPLAYER_HPP
 #define AIPLAYER_HPP
 
+#include <cstdint>
+#include <vector>
+#include "LibreBridge.hpp"
+#include "Bid.hpp"
+#include "Card.hpp"
+#include "Player.hpp"
+
 class AIPlayer: public Player
 {
 	private:

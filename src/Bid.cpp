@@ -1,7 +1,3 @@
-#include <cstdint>
-#include <string>
-#include <iostream>
-#include "LibreBridge.hpp"
 #include "Bid.hpp"
 #include "Misc.hpp"
 

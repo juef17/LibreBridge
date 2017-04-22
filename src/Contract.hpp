@@ -1,6 +1,9 @@
 #ifndef CONTRACT_HPP
 #define CONTRACT_HPP
 
+#include <cstdint>
+#include "LibreBridge.hpp"
+
 class Contract
 {
 	private:

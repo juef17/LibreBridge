@@ -1,6 +1,13 @@
 #ifndef AI_RANDOM_HPP
 #define AI_RANDOM_HPP
 
+#include <vector>
+#include <cstdint>
+#include "../LibreBridge.hpp"
+#include "../Bid.hpp"
+#include "../Card.hpp"
+#include "../AIPlayer.hpp"
+
 class AI_Random: public AIPlayer
 {
 	private:

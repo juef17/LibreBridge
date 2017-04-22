@@ -1,17 +1,10 @@
-#include <cstdint>
-#include <string>
-#include <iostream>
-#include <vector>
-#include <chrono>
-#include <algorithm>
-#include <iomanip>
-#include "../LibreBridge.hpp"
-#include "../Bid.hpp"
-#include "../Card.hpp"
-#include "../Misc.hpp"
-#include "../Player.hpp"
-#include "../AIPlayer.hpp"
+//#include <string>
+//#include <iostream>
+//#include <chrono>
+//#include <algorithm>
+//#include <iomanip>
 #include "AI_Random.hpp"
+#include "../Misc.hpp"
 
 using namespace std;
 
