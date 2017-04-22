@@ -8,9 +8,9 @@ enum Position {North=0, East=1, South=2, West=3};
 enum BetType {Pass, Normal, Double, Redouble, Invalid};
 enum Vulnerability {None=0, NS=1, EW=2, Both=3};
 
-struct options
+struct Options
 {
 	int AI_playDelay;	// milliseconds
-};
+} extern options;
 
 #endif

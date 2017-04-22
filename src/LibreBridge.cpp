@@ -1,14 +1,17 @@
 #include <cstdint>
 #include <cstring>
-#include <vector>
 #include "LibreBridge.hpp"
 #include "Misc.hpp"
 #include "Game.hpp"
 
 using namespace std;
 
+Options options;
+
 int main(int argc, char *argv[])
 {
+	options.AI_playDelay = 0;
+	
 	if(argc == 1) Game game;
 	else if(argc > 1)
 	{

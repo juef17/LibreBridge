@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <thread>
 #include <algorithm>
 #include "Game.hpp"
 #include "HumanPlayer.hpp"
@@ -70,10 +71,14 @@ Contract Game::bid()
         Bid bid;
 		do
 		{
-			players[int(playerPos)]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, bidWar);
+			players[playerPos]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, bidWar);
 			if(bid.getBetType() == Invalid) cout << "Invalid bet!\n";
 		} while (bid.getBetType() == Invalid);
-		if(!players[int(playerPos)]->getIsHuman()) cout << positionToString(playerPos) << ": " << bid.toString() << "\n";
+		if(!players[playerPos]->getIsHuman())
+		{
+			if(options.AI_playDelay) this_thread::sleep_for(chrono::milliseconds(options.AI_playDelay));
+			cout << positionToString(playerPos) << ": " << bid.toString() << "\n";
+		}
 		bidWar.push_back(bid);
 		if(bid.getBetType() == Pass) numberOfPass++;
 		else numberOfPass = 0;
@@ -181,6 +186,7 @@ void Game::playCards()
 			Suit firstSuit = (j == 0 ? NoTrump : playedCards[0].getSuit());
 			isDummy = (player == dummyPosition);
 			Position actualPlayer = (isDummy ? contract.getDeclarer() : player);
+			if(options.AI_playDelay && !players[actualPlayer]->getIsHuman()) this_thread::sleep_for(chrono::milliseconds(options.AI_playDelay));
 			do
 			{
 				playedCards[j] = (isDummy ? players[actualPlayer]->playCard(firstSuit, players[dummyPosition]->getHand()) : players[actualPlayer]->playCard(firstSuit));
