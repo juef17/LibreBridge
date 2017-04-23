@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 	options.AI_playDelay = 0;
 	options.AI_letGamesRun = false;
 	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
+	options.seed = 0;
 
 	for(uint8_t i=1; i<argc; i++)
 	{
@@ -21,10 +22,11 @@ int main(int argc, char *argv[])
 			generateScoringChart();
 			return 0;
 		}
-		else if(!strcmp(argv[i], "-PN") && i+1<argc) options.playerTypes[North] = argv[i++];
-		else if(!strcmp(argv[i], "-PE") && i+1<argc) options.playerTypes[East] = argv[i++];
-		else if(!strcmp(argv[i], "-PS") && i+1<argc) options.playerTypes[South] = argv[i++];
-		else if(!strcmp(argv[i], "-PW") && i+1<argc) options.playerTypes[West] = argv[i++];
+		else if(!strcmp(argv[i], "-PN") && i+1<argc) options.playerTypes[North] = argv[++i];
+		else if(!strcmp(argv[i], "-PE") && i+1<argc) options.playerTypes[East] = argv[++i];
+		else if(!strcmp(argv[i], "-PS") && i+1<argc) options.playerTypes[South] = argv[++i];
+		else if(!strcmp(argv[i], "-PW") && i+1<argc) options.playerTypes[West] = argv[++i];
+		else if(!strcmp(argv[i], "-S") && i+1<argc) options.seed = atol(argv[++i]);
 	}
 	
 	Game game;

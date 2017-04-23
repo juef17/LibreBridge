@@ -1,4 +1,3 @@
-Seed chrono -> int de 1 à 52! -> prendre ce int comme seed pour le brassage de cartes, incrémenter un 1 sur une nouvelle brasse (et attacher ça à la sélection des positions?)
 vectors pour contenir les infos des parties précédentes: scores, qui avait le contrat, y'avait tu un meilleur contrat, etc
 faire un struct de contraintes, et deal(struct de contraintes)?
 	par joueur: nbPtsMin, nbPtsMax, nbAbsences min-max, nbSingletons min-max, nbDoubletons min-max, nbLonguesCinqPlus min-max, nbCartesLongue min-max, nbAs, nbRoi

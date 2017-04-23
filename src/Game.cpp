@@ -19,21 +19,20 @@ void Game::deal()
 {
 	vector<Card> deck;
 	
-	for(int i = 1; i<5; ++i) for(int j = 2; j<15; ++j)
+	for(uint8_t i = 1; i<5; ++i) for(uint8_t j = 2; j<15; ++j)
 	{
 		Card card(j, Suit(i));
 		deck.push_back(card);
 	}
 	
-	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-	auto engine = default_random_engine{seed};
+	auto engine = default_random_engine{getSeed()};
 	shuffle(begin(deck), end(deck), engine);
 	
-	for(int i=0; i<4; ++i) 
+	for(uint8_t i=0; i<4; ++i) 
 	{
 		players[i]->setPosition(Position(i));
 		players[i]->clearHand();
-		for(int j = 0; j<13; ++j)
+		for(uint8_t j = 0; j<13; ++j)
 		{
 			players[i]->addCardToHand(deck.back());
 			deck.pop_back();
@@ -108,6 +107,7 @@ Contract Game::bid()
 
 void Game::prepareForNextGame()
 {
+	incrementSeed();
 	dealer = nextPosition(dealer);
 	setVulnerability();
 	for(uint8_t i = 0; i<4; ++i) players[i]->clearHand();
@@ -150,8 +150,9 @@ bool Contract::isTeamVulnerable(Position p) const
 Game::Game()
 {
 	// Generate random vulnerability and dealer
-	vulnerability = Vulnerability(randomUint8(0, 3));
-	dealer = Position(randomUint8(0, 3));
+	setSeed(options.seed ? options.seed : chrono::system_clock::now().time_since_epoch().count());
+	vulnerability = Vulnerability(randomUint8(0, 3, getSeed()));
+	dealer = Position(randomUint8(0, 3, getSeed()));
 	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
 	do
 	{
@@ -225,4 +226,19 @@ bool Game::isAllAI() const
 {
 	for(uint8_t i=0; i<4; ++i) if(players[i]->getIsHuman()) return false;
 	return true;
+}
+
+void Game::setSeed(RANDOMNESS_SIZE s)
+{
+	seed = s;
+}
+
+void Game::incrementSeed()
+{
+	seed++;
+}
+
+RANDOMNESS_SIZE Game::getSeed() const
+{
+	return seed;
 }
