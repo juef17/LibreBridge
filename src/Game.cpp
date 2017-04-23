@@ -38,7 +38,6 @@ void Game::deal()
 			deck.pop_back();
         }
 		players[i]->sortHand();
-		players[i]->printHand(' ');
 	}
 }
 
@@ -107,6 +106,7 @@ Contract Game::bid()
 
 void Game::prepareForNextGame()
 {
+	bool wasBiddingDone = !bidWar.empty();
 	incrementSeed();
 	dealer = nextPosition(dealer);
 	setVulnerability();
@@ -115,8 +115,11 @@ void Game::prepareForNextGame()
 	playedCardsHistory.clear();
 	if(!options.AI_letGamesRun && isAllAI())
 	{
-		cout << "Press 'Enter' to continue: ";
-		cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+		if(wasBiddingDone)
+		{
+			cout << "Press 'Enter' to continue: ";
+			cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+		}
 	}
 }
 
@@ -153,15 +156,20 @@ Game::Game()
 	setSeed(options.seed ? options.seed : chrono::system_clock::now().time_since_epoch().count());
 	vulnerability = Vulnerability(randomUint8(0, 3, getSeed()));
 	dealer = Position(randomUint8(0, 3, getSeed()));
+	if(!areDealConstraintsValid()) options.useDealConstraints = false;
+	
 	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
 	do
 	{
 		deal();
-		contract = bid();
-		cout << "Contract is: ";
-		contract.print();
-		if(!contract.getLevel()) continue;
-		playCards();
+		if(areConstraintsRespected())
+		{
+			for(uint8_t i=0; i<4; i++) players[i]->printHand(' ');
+			contract = bid();
+			cout << "Contract is: ";
+			contract.print();
+			if(contract.getLevel()) playCards();
+		}
 		prepareForNextGame();
 	} while(true);
 	for(uint8_t i=0; i<4; i++) delete players[i];
@@ -241,4 +249,34 @@ void Game::incrementSeed()
 RANDOMNESS_SIZE Game::getSeed() const
 {
 	return seed;
+}
+
+bool Game::areConstraintsRespected() const
+{
+	if(!options.useDealConstraints) return true; // If we don't use them, no need to respect them
+	
+	uint8_t teamHP[2] = {0};
+	uint8_t teamV[2] = {0};
+	
+	for(uint8_t i=0; i<4; i++)
+	{
+		uint8_t hp = players[i]->countHonorPoints();
+		uint8_t v = players[i]->countVoids();
+		if(options.constraints.playerHonorPointsMin[i] > hp) return false;
+		if(options.constraints.playerHonorPointsMax[i] < hp) return false;
+		if(options.constraints.playerVoidsMin[i] > v) return false;
+		if(options.constraints.playerVoidsMax[i] < v) return false;
+		teamHP[i%2] += hp;
+		teamV[i%2] += v;
+	}
+	
+	for(uint8_t i=0; i<2; i++)
+	{
+		if(options.constraints.teamHonorPointsMin[i] > teamHP[i]) return false;
+		if(options.constraints.teamHonorPointsMax[i] < teamHP[i]) return false;
+		if(options.constraints.teamVoidsMin[i] > teamV[i]) return false;
+		if(options.constraints.teamVoidsMax[i] < teamV[i]) return false;
+	}
+	
+	return true;
 }

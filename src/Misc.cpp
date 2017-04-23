@@ -140,3 +140,58 @@ uint8_t randomUint8(uint8_t min, uint8_t max, RANDOMNESS_SIZE seed)
 	uniform_int_distribution<uint8_t> distribution(min,max);
 	return distribution(generator);
 }
+
+void initializeOptions()
+{
+	options.AI_playDelay = 0;
+	options.AI_letGamesRun = false;
+	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
+	
+	options.seed = 0;
+	
+	options.useDealConstraints = true;
+	for(uint8_t i=0; i<4; i++)
+	{
+		options.constraints.playerHonorPointsMin[i] = 0;
+		options.constraints.playerHonorPointsMax[i] = 40;
+		options.constraints.playerVoidsMin[i] = 0;
+		options.constraints.playerVoidsMax[i] = 3;
+	}
+	for(uint8_t i=0; i<2; i++)
+	{
+		options.constraints.teamHonorPointsMin[i] = 0;
+		options.constraints.teamHonorPointsMax[i] = 40;
+		options.constraints.teamVoidsMin[i] = 0;
+		options.constraints.teamVoidsMax[i] = 6;
+	}
+}
+
+
+bool areDealConstraintsValid()
+{
+	if(!options.useDealConstraints) return true; // If we don't use them, don't check them
+	
+	int sumPointsMin = 0;
+	int sumPointsMax = 0;
+	
+	for(uint8_t i=0; i<4; i++)
+	{
+		if(options.constraints.playerHonorPointsMax[i] > 40) return false;
+		if(options.constraints.playerVoidsMax[i] > 3) return false;
+		sumPointsMin += options.constraints.playerHonorPointsMin[i];
+		sumPointsMax += options.constraints.playerHonorPointsMax[i];
+	}
+	if(sumPointsMin > 40 || sumPointsMax < 40) return false;
+	
+	for(uint8_t i=0; i<2; i++)
+	{
+		if(options.constraints.teamHonorPointsMax[i] > 40) return false;
+		if(options.constraints.teamHonorPointsMax[i] < options.constraints.playerHonorPointsMin[i] + options.constraints.playerHonorPointsMin[i+2]) return false;
+		if(options.constraints.teamHonorPointsMin[i] > options.constraints.playerHonorPointsMax[i] + options.constraints.playerHonorPointsMax[i+2]) return false;
+		if(options.constraints.teamVoidsMax[i] > 6) return false;
+		if(options.constraints.teamVoidsMax[i] < options.constraints.playerVoidsMin[i] + options.constraints.playerVoidsMin[i+2]) return false;
+		if(options.constraints.teamVoidsMin[i] > options.constraints.playerVoidsMax[i] + options.constraints.playerVoidsMax[i+2]) return false;
+	}
+	
+	return true;
+}

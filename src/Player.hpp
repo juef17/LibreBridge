@@ -23,6 +23,7 @@ class Player
 		void sortHand(Suit suit);
 		uint8_t countHonorPoints();
 		uint8_t countHonorPoints(Suit suit);
+		uint8_t countVoids();
 		void setPosition(Position p);
 		Position getPosition();
 		void clearHand();

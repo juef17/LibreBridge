@@ -102,6 +102,13 @@ uint8_t Player::countHonorPoints(Suit suit)
 	return points;
 }
 
+uint8_t Player::countVoids()
+{
+	uint8_t suitCounts[5] = {0};
+	for (auto &card : hand) suitCounts[card.getSuit()]++;
+	return ((suitCounts[Clubs] == 0) + (suitCounts[Diamonds] == 0) + (suitCounts[Hearts] == 0) + (suitCounts[Spades] == 0));
+}
+
 void Player::setPosition(Position p)
 {
 	position = p;

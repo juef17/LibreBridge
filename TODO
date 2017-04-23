@@ -1,7 +1,4 @@
 vectors pour contenir les infos des parties précédentes: scores, qui avait le contrat, y'avait tu un meilleur contrat, etc
-faire un struct de contraintes, et deal(struct de contraintes)?
-	par joueur: nbPtsMin, nbPtsMax, nbAbsences min-max, nbSingletons min-max, nbDoubletons min-max, nbLonguesCinqPlus min-max, nbCartesLongue min-max, nbAs, nbRoi
-	par équipe: nbPtsMin, nbPtsMax, nbFits7+ min-max, nbFits 8+ min-max, nbAs, nbRoi
 
 Lua AI scripting? http://www.rasterbar.com/products/luabind/docs.html
 Qt interface

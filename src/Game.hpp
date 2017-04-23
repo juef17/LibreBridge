@@ -38,6 +38,7 @@ class Game
 		void setSeed(RANDOMNESS_SIZE s);
 		void incrementSeed();
 		RANDOMNESS_SIZE getSeed() const;
+		bool areConstraintsRespected() const;
 };
 
 class LocalGame: public Game

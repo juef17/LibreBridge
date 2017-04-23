@@ -10,11 +10,7 @@ Options options;
 
 int main(int argc, char *argv[])
 {
-	options.AI_playDelay = 0;
-	options.AI_letGamesRun = false;
-	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
-	options.seed = 0;
-
+	initializeOptions();
 	for(uint8_t i=1; i<argc; i++)
 	{
 		if(!strcmp(argv[i], "-C"))
