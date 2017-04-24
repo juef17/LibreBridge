@@ -1,2 +1,17 @@
 # LibreBridge
-An open source and cross-platform contract bridge game. The bidding, playing and scoring engines are complete, but this is very much a work in progress, and text-only for now. AI players, network play, and GUI are planned but nowhere near completion.
+LibreBridge an open source and cross-platform contract bridge game, with the goal of being a portable alternative to the excellent Bridge Baron.
+
+### Current features:
+* Bidding
+* Playing
+* Scoring
+* Randomly-playing AI
+
+### Planned features:
+* GUI (text-only for now, leaning towards Qt)
+* Cross-platform (tested on Linux only so far, but the code should compile for most systems)
+* Better AI
+* Peer-to-peer network play
+
+## To build:
+Just run 'make' in this very directory!
