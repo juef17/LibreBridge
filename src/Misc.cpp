@@ -195,3 +195,8 @@ bool areDealConstraintsValid()
 	
 	return true;
 }
+
+string intToTeamString(uint8_t i)
+{
+	return (i ? "EW" : "NS");
+}

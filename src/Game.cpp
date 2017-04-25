@@ -211,8 +211,13 @@ void Game::playCards()
 		cout << positionToString(player) << " won the trick!\n";
 		tricksMade[whoWonTheTrick%2]++;
 	}
-	cout << "NS has made " << to_string(tricksMade[0]) << " tricks and " << contract.calculateScore(North, tricksMade[0]) << " points (" << to_string(Contract::calculateIMP(contract.calculateScore(North, tricksMade[0]))) << " IMP)!\n";
-	cout << "EW has made " << to_string(tricksMade[1]) << " tricks and " << contract.calculateScore(East, tricksMade[1]) << " points (" << to_string(Contract::calculateIMP(contract.calculateScore(East, tricksMade[1]))) << " IMP)!\n";
+	for(uint8_t i=0; i<2; ++i)
+	{
+		int16_t pts = contract.calculateScore(Position(i), tricksMade[i]);
+		uint8_t imp = Contract::calculateIMP(pts);
+		totalIMP[i] += imp;
+		cout << intToTeamString(i) << " has made " << to_string(tricksMade[i]) << " tricks and " << to_string(pts) << " points (" << to_string(imp) << " IMP)!\n";
+	}
 	cout << "----------------- New game -----------------\n";
 }
 

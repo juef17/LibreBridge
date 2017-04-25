@@ -13,8 +13,7 @@ class Game
 {
 	private:
 		GameType gameType;
-		uint32_t totalIMP_NS;
-		uint32_t totalIMP_AI_NS;
+		uint32_t totalIMP[2];
 		Player* players[4];
 		Vulnerability vulnerability;
 		Contract contract;
@@ -51,8 +50,6 @@ class LocalGame: public Game
 class NetworkGame: public Game
 {
 	private:
-		uint32_t totalIMP_EW;
-		uint32_t totalIMP_AI_EW;
 	protected:
 	public:
 };
