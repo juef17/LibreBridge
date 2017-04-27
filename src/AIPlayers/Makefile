@@ -1,5 +1,0 @@
-AIPLAYERS_SOURCES := $(wildcard *.cpp)
-AIPLAYERS_OBJECTS := $(AIPLAYERS_SOURCES:.cpp=.o)
-
-all:
-	$(CC) $(CFLAGS) $(AIPLAYERS_SOURCES) -c

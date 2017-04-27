@@ -28,3 +28,7 @@
 *.out
 *.app
 /LibreBridge
+
+# qmake generated stuff
+.qmake.stash
+Makefile

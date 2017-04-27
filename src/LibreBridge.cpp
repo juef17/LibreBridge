@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <cstring>
+#include <QApplication>
 #include "LibreBridge.hpp"
 #include "Misc.hpp"
 #include "Game.hpp"

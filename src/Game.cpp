@@ -53,14 +53,14 @@ void Game::setVulnerability()
 
 Contract Game::bid()
 {
-	uint8_t firstBidsTable[2][5];	// 1st index is team %2, 2nd is suit
+	uint8_t firstBidsTable[2][6];	// 1st index is team %2, 2nd is suit
 	for(uint8_t i = 0; i<2; ++i) for(uint8_t j = 1; j<6; ++j) firstBidsTable[i][j] = 10; // Mark as unset (10)
 
 	bool atLeastOneBidMade = false;
 	uint8_t numberOfPass = 0;
-	uint8_t lastBidMade; // team % 2 who bet last
+	uint8_t lastBidMade = 0; // team % 2 who bet last
 	uint8_t lastLevel = 0;
-	Suit lastSuit;
+	Suit lastSuit = NoTrump;
 	Position playerPos = dealer;
 	bool lastDoubled = false, lastRedoubled = false;
 	Contract contract;
