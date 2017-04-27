@@ -5,11 +5,15 @@
 TEMPLATE = app
 TARGET = LibreBridge
 INCLUDEPATH += .
+
 QT += widgets
+
 CONFIG += release
 CONFIG += warn_on
 CONFIG += c++14
+
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -fPIC
+#QMAKE_CXX = g++
 
 # Input
 HEADERS += src/AIPlayer.hpp \
