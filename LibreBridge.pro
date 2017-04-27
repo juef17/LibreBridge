@@ -9,6 +9,7 @@ QT += widgets
 CONFIG += release
 CONFIG += warn_on
 CONFIG += c++14
+QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -fPIC
 
 # Input
 HEADERS += src/AIPlayer.hpp \
