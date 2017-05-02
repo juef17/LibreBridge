@@ -26,7 +26,8 @@ HEADERS += src/AIPlayer.hpp \
            src/LibreBridge.hpp \
            src/Misc.hpp \
            src/Player.hpp \
-           src/AIPlayers/AI_Random.hpp
+           src/AIPlayers/AI_Random.hpp \
+           src/gui/WelcomeWindow.hpp
 SOURCES += src/AIPlayer.cpp \
            src/Bid.cpp \
            src/Card.cpp \
@@ -36,4 +37,5 @@ SOURCES += src/AIPlayer.cpp \
            src/LibreBridge.cpp \
            src/Misc.cpp \
            src/Player.cpp \
-           src/AIPlayers/AI_Random.cpp
+           src/AIPlayers/AI_Random.cpp \
+           src/gui/WelcomeWindow.cpp
