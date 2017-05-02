@@ -32,6 +32,7 @@
 # Generated MOC, resource and UI files
 moc_*.cpp
 qrc_*.cpp
+moc_*.h
 ui_*.h
 ui_*.hpp
 
