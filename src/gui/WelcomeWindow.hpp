@@ -2,7 +2,9 @@
 #define WELCOMEWINDOW_HPP
 
 #include <QWidget>
-#include <QPushButton>
+class QPushButton;
+class QPixmap;
+class QResizeEvent;
 
 class WelcomeWindow : public QWidget
 {
@@ -13,6 +15,10 @@ class WelcomeWindow : public QWidget
 
 	signals:
 	public slots:
+	protected:
+		void resizeEvent(QResizeEvent *event) override;
+	private:
+		QPixmap background;
 };
 
 #endif
