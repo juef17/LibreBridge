@@ -29,6 +29,12 @@
 *.app
 /LibreBridge
 
+# Generated MOC, resource and UI files
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+ui_*.hpp
+
 # qmake generated stuff
 .qmake.stash
 Makefile
