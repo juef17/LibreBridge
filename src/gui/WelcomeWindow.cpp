@@ -1,10 +1,12 @@
 #include "WelcomeWindow.hpp"
+#include "PlayWindow.hpp"
 #include <QPushButton>
 #include <QApplication>
 #include <QResizeEvent>
 
 WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 {
+	// Background
 	setMinimumSize(480, 320);
 	QPixmap tmpBackground("./images/LibreBridge.png");
 	background = tmpBackground.scaled(500, 150, Qt::IgnoreAspectRatio);
@@ -12,17 +14,22 @@ WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 	palette.setBrush(QPalette::Background, background);
 	this->setPalette(palette);
 
-	m_button = new QPushButton("Hello World", this);
-	m_button->setGeometry(10, 10, 80, 30);
-	m_button->setFixedSize(150, 50);
-	m_button->setToolTip("Panus");
+	// quitButton
+	quitButton = new QPushButton("Quit", this);
+	quitButton->setGeometry(10, 10, 80, 30);
+	quitButton->setFixedSize(150, 50);
+	quitButton->setToolTip("Panus");
 	QFont font("Courier");
-	m_button->setFont(font);
+	quitButton->setFont(font);
 	QIcon icon("./images/LibreBridge.ico");
-	m_button->setIcon(icon);
-	connect(m_button, SIGNAL (clicked()), QApplication::instance(), SLOT (quit()));
+	quitButton->setIcon(icon);
+	connect(quitButton, SIGNAL (clicked()), QApplication::instance(), SLOT (quit()));
 
-	connect(this, SIGNAL (resizeEvent(QResizeEvent)), QApplication::instance(), SLOT (quit()));
+	// playButton
+	playButton = new QPushButton("Play", this);
+	playButton->setGeometry(170, 10, 80, 30);
+	playButton->setFixedSize(150, 50);
+	connect(playButton, SIGNAL (clicked()), this, SLOT (startLocalGame()));
 }
 
 void WelcomeWindow::resizeEvent(QResizeEvent* event)
@@ -36,6 +43,11 @@ void WelcomeWindow::resizeEvent(QResizeEvent* event)
 	QPalette palette;
 	palette.setBrush(QPalette::Background, background);
 	this->setPalette(palette);
-	
-	
+}
+
+void WelcomeWindow::startLocalGame()
+{
+	this->close();
+	playWindow = new PlayWindow();
+	playWindow->show();
 }

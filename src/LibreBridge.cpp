@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <cstring>
+#include <iostream>
 #include <QApplication>
 #include "LibreBridge.hpp"
 #include "Misc.hpp"
@@ -13,7 +14,7 @@ Options options;
 int main(int argc, char *argv[])
 {
 	initializeOptions();
-	
+	/*
 	if(argc <= 1)
 	{		
 		QApplication libreBridgeGUI(argc, argv);
@@ -22,7 +23,7 @@ int main(int argc, char *argv[])
 		welcomeWindow.show();
 		
 		return libreBridgeGUI.exec();
-	}
+	}*/
 	
 	for(uint8_t i=1; i<argc; i++)
 	{
@@ -39,6 +40,8 @@ int main(int argc, char *argv[])
 		else
 		{
 			//TODO display command line help
+			cout << "\nLibreBridge version " << to_string(VERSION_MAJOR) << "." << to_string(VERSION_MINOR) << "." << to_string(VERSION_BUILD) << "\n\n";
+			return 0;
 		}
 	}
 	

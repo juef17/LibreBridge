@@ -10,6 +10,35 @@
 
 using namespace std;
 
+Game::Game()
+{
+	// Generate random vulnerability and dealer
+	setSeed(options.seed ? options.seed : chrono::system_clock::now().time_since_epoch().count());
+	vulnerability = Vulnerability(randomUint8(0, 3, getSeed()));
+	dealer = Position(randomUint8(0, 3, getSeed()));
+	if(!areDealConstraintsValid()) options.useDealConstraints = false;
+	
+	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
+	do
+	{
+		deal();
+		if(areConstraintsRespected())
+		{
+			for(uint8_t i=0; i<4; i++)
+			{
+				bool isDummy = (players[i]->getPosition() == nextTeammate(contract.getDeclarer()));
+				if(players[i]->getIsHuman() || isDummy) players[i]->printHand(' ');
+			}
+			contract = bid();
+			cout << "Contract is: ";
+			contract.print();
+			if(contract.getLevel()) playCards();
+		}
+		prepareForNextGame();
+	} while(true);
+	for(uint8_t i=0; i<4; i++) delete players[i];
+}
+
 GameType Game::getGameType()
 {
 	return gameType;
@@ -150,31 +179,6 @@ bool Contract::isTeamVulnerable(Position p) const
 	}
 }
 
-Game::Game()
-{
-	// Generate random vulnerability and dealer
-	setSeed(options.seed ? options.seed : chrono::system_clock::now().time_since_epoch().count());
-	vulnerability = Vulnerability(randomUint8(0, 3, getSeed()));
-	dealer = Position(randomUint8(0, 3, getSeed()));
-	if(!areDealConstraintsValid()) options.useDealConstraints = false;
-	
-	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
-	do
-	{
-		deal();
-		if(areConstraintsRespected())
-		{
-			for(uint8_t i=0; i<4; i++) players[i]->printHand(' ');
-			contract = bid();
-			cout << "Contract is: ";
-			contract.print();
-			if(contract.getLevel()) playCards();
-		}
-		prepareForNextGame();
-	} while(true);
-	for(uint8_t i=0; i<4; i++) delete players[i];
-}
-
 void Game::playCards()
 {
 	Position player = nextPosition(contract.getDeclarer());
@@ -184,10 +188,10 @@ void Game::playCards()
 	uint8_t tricksMade[2] = {0}; // %2 for team
 	bool isDummy;
 
-	for(uint8_t k=0; k<4; ++k)
+	for(uint8_t i=0; i<4; ++i)
 	{
-		players[k]->sortHand(contract.getSuit());
-		players[k]->printHand(' ');
+		players[i]->sortHand(contract.getSuit());
+		if(players[i]->getIsHuman()) players[i]->printHand(' ');
 	}
 	for(uint8_t i=0; i<13; ++i)
 	{

@@ -5,20 +5,24 @@
 class QPushButton;
 class QPixmap;
 class QResizeEvent;
+class PlayWindow;
 
 class WelcomeWindow : public QWidget
 {
 	Q_OBJECT
 	public:
 		explicit WelcomeWindow(QWidget *parent = 0);
-		QPushButton *m_button;
+		QPushButton *quitButton;
+		QPushButton *playButton;
 
 	signals:
 	public slots:
+		void startLocalGame();
 	protected:
 		void resizeEvent(QResizeEvent *event) override;
 	private:
 		QPixmap background;
+		PlayWindow *playWindow;
 };
 
 #endif
