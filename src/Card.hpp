@@ -38,6 +38,7 @@ class Card
 		uint8_t getValue() const;
 		Suit getSuit() const;
 		static Card stringToCard(std::string s);
+		std::string getImagePath();
 };
 
 #endif

@@ -89,3 +89,8 @@ Card Card::stringToCard(string s)
 	Card goodCard(value, suit);
 	return goodCard;
 }
+
+string Card::getImagePath()
+{
+	return "../images/cards/" + options.theme_cards + "/" + suitToChar(suit) + valueToChar(value) + ".png";
+}

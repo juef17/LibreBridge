@@ -31,8 +31,6 @@ struct DealConstraints
 
 struct Options
 {
-	bool useGui;								// False if we're running in text-only
-	
 	int AI_playDelay;							// Milliseconds before each AI bid or play
 	bool AI_letGamesRun;						// If true, no user input between AI-only games. Overrides AI_playDelay
 	std::string playerTypes[4];					// Contains "Human" (or "HumanPlayer") or the name of the AI to use
@@ -42,6 +40,10 @@ struct Options
 	
 	bool useDealConstraints;	// Use DealConstraints to make deals not 100% random
 	DealConstraints constraints;// Constraints to use for deals
+	
+	bool useGui;								// False if we're running in text-only
+	
+	std::string theme_cards;
 } extern options;
 
 #endif

@@ -14,4 +14,4 @@ LibreBridge an open source and cross-platform contract bridge game, with the goa
 * Peer-to-peer network play
 
 ## To build:
-Just run 'qmake' then 'make' in this very directory!
+Be sure to install the latest Qt version. Then, just run 'qmake' then 'make' in this very directory!
