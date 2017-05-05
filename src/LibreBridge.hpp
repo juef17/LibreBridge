@@ -2,9 +2,10 @@
 #define LIBREBRIDGE_HPP
 
 #include <string>
+#include <vector>
 
 // Card values are 2-14, to be interpreted into T,J,Q,K,A with Card::valueToChar
-#define RANDOMNESS_SIZE unsigned long
+#define RANDOMNESS_SIZE unsigned long long
 enum Suit {Clubs=1, Diamonds=2, Hearts=3, Spades=4, NoTrump=5};
 enum GameType {Local, Network};
 enum Position {North=0, East=1, South=2, West=3};
@@ -30,11 +31,14 @@ struct DealConstraints
 
 struct Options
 {
-	int AI_playDelay;			// Milliseconds before each AI bid or play
-	bool AI_letGamesRun;		// If true, no user input between AI-only games
-	std::string playerTypes[4];	// Contains "Human" or the name of the AI to use
+	bool useGui;								// False if we're running in text-only
 	
-	RANDOMNESS_SIZE seed;		// Seed as passed by command line argument, to use in Game(). 0 = generate from time
+	int AI_playDelay;							// Milliseconds before each AI bid or play
+	bool AI_letGamesRun;						// If true, no user input between AI-only games. Overrides AI_playDelay
+	std::string playerTypes[4];					// Contains "Human" (or "HumanPlayer") or the name of the AI to use
+	std::vector<std::string> AI_availableTypes;	// Contains the names of the usable AI players
+	
+	RANDOMNESS_SIZE seed;		// Seed as passed by command line argument (or user input), to use in Game(). 0 = generate from time
 	
 	bool useDealConstraints;	// Use DealConstraints to make deals not 100% random
 	DealConstraints constraints;// Constraints to use for deals

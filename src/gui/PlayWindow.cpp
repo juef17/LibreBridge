@@ -1,3 +1,4 @@
+#include "Common.hpp"
 #include "PlayWindow.hpp"
 #include "../Game.hpp"
 #include <QPushButton>
@@ -7,19 +8,26 @@
 
 PlayWindow::PlayWindow(QWidget *parent): QWidget(parent)
 {
-	this->setObjectName("playWindow"); // Otherwise all its children inherit the background color
-	this->setStyleSheet("#playWindow {background-color: green;}");
+	Game game;
+	
+	// This window
+	setTitle(this);
+	setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
+	setObjectName("playWindow"); // Otherwise all its children inherit the background color
+	setStyleSheet("#playWindow {background-color: green;}");
+	
+	// Deal number
 	seedTextBox = new QLineEdit(this);
-    seedTextBox->setPlaceholderText("Placeholder Text");
-	seedTextBox->setFixedSize(300, 30);
+	seedTextBox->setFixedSize(getSeedTextMaxWidth(), 30);
 	seedTextBox->setGeometry(10, 10, 80, 30);
     seedTextBox->setFocus();
-	
-	//game = new Game();
+	seedTextBox->setReadOnly(true);
+	seedTextBox->setText(QString("%1").arg(game.getSeed()));
+	seedTextBox->setAlignment(Qt::AlignCenter);
 
 	// playButton
 	playButton = new QPushButton("Play this deal", this);
-	playButton->setGeometry(170, 10, 80, 30);
+	playButton->setGeometry(180, 10, 80, 30);
 	playButton->setFixedSize(150, 50);
 	connect(playButton, SIGNAL (clicked()), this, SLOT (playThisDeal()));
 	

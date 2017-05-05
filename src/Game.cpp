@@ -5,15 +5,14 @@
 #include <limits>
 #include "Game.hpp"
 #include "HumanPlayer.hpp"
-#include "AIPlayers/AI_Random.hpp"
 #include "Misc.hpp"
 
 using namespace std;
 
 Game::Game()
 {
+	bool keepPlaying = false;
 	// Generate random vulnerability and dealer
-	setSeed(options.seed ? options.seed : chrono::system_clock::now().time_since_epoch().count());
 	vulnerability = Vulnerability(randomUint8(0, 3, getSeed()));
 	dealer = Position(randomUint8(0, 3, getSeed()));
 	if(!areDealConstraintsValid()) options.useDealConstraints = false;
@@ -35,7 +34,7 @@ Game::Game()
 			if(contract.getLevel()) playCards();
 		}
 		prepareForNextGame();
-	} while(true);
+	} while(keepPlaying);
 	for(uint8_t i=0; i<4; i++) delete players[i];
 }
 
@@ -142,6 +141,7 @@ void Game::prepareForNextGame()
 	for(uint8_t i = 0; i<4; ++i) players[i]->clearHand();
 	bidWar.clear();
 	playedCardsHistory.clear();
+	if(options.useGui) return;
 	if(!options.AI_letGamesRun && isAllAI())
 	{
 		if(wasBiddingDone)

@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <cstring>
+#include <cmath>
 #include <iostream>
 #include <QApplication>
 #include "LibreBridge.hpp"
@@ -14,16 +15,18 @@ Options options;
 int main(int argc, char *argv[])
 {
 	initializeOptions();
-	/*
-	if(argc <= 1)
-	{		
+	options.useGui = (argc <= 1);
+	
+	if(options.useGui)
+	{
+		cout.setstate(ios_base::failbit); // ignore console output
 		QApplication libreBridgeGUI(argc, argv);
 		
 		WelcomeWindow welcomeWindow;
 		welcomeWindow.show();
 		
 		return libreBridgeGUI.exec();
-	}*/
+	}
 	
 	for(uint8_t i=1; i<argc; i++)
 	{

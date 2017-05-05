@@ -39,6 +39,7 @@ class Player
 		bool playingForDummy(std::vector<Card> dummyHand) const;
 		std::vector<Card> getHand();
 		static Player* getNewPlayer(std::string playerType);
+		static void listAvailableAIPlayers();
 };
 
 #endif

@@ -7,7 +7,6 @@
 
 #include "HumanPlayer.hpp"
 #include "AIPlayers/AI_Random.hpp"
-// Add others
 
 using namespace std;
 
@@ -148,6 +147,10 @@ Player* Player::getNewPlayer(string playerType)
 {
 	if(playerType == "Human" || playerType == "HumanPlayer") return new HumanPlayer;
 	if(playerType == "AI_Random") return new AI_Random;
-	// Add others
 	return new HumanPlayer;
+}
+
+void Player::listAvailableAIPlayers()
+{
+	options.AI_availableTypes.push_back("AI_Random");
 }

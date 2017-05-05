@@ -1,3 +1,4 @@
+#include "Common.hpp"
 #include "WelcomeWindow.hpp"
 #include "PlayWindow.hpp"
 #include <QPushButton>
@@ -6,8 +7,10 @@
 
 WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 {
+	setTitle(this);
+	
 	// Background
-	setMinimumSize(480, 320);
+	setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
 	QPixmap tmpBackground("./images/LibreBridge.png");
 	background = tmpBackground.scaled(500, 150, Qt::IgnoreAspectRatio);
 	QPalette palette;

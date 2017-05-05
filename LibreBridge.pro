@@ -1,10 +1,10 @@
 VERSION_MAJOR = 0
-VERSION_MINOR = 0
-VERSION_BUILD = 1
+VERSION_MINOR = 1
+VERSION_BUILD = 0
 
-DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
-       "VERSION_MINOR=$$VERSION_MINOR"\
-       "VERSION_BUILD=$$VERSION_BUILD"
+DEFINES +=	"VERSION_MAJOR=$$VERSION_MAJOR"\
+			"VERSION_MINOR=$$VERSION_MINOR"\
+			"VERSION_BUILD=$$VERSION_BUILD"
 
 TEMPLATE = app
 TARGET = LibreBridge
@@ -21,27 +21,30 @@ QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -fPIC
 #QMAKE_CXX = g++
 
 # Input
-HEADERS += src/AIPlayer.hpp \
-           src/Bid.hpp \
-           src/Card.hpp \
-           src/Contract.hpp \
-           src/Game.hpp \
-           src/HumanPlayer.hpp \
-           src/LibreBridge.hpp \
-           src/Misc.hpp \
-           src/Player.hpp \
-           src/AIPlayers/AI_Random.hpp \
-           src/gui/WelcomeWindow.hpp \
-           src/gui/PlayWindow.hpp
-SOURCES += src/AIPlayer.cpp \
-           src/Bid.cpp \
-           src/Card.cpp \
-           src/Contract.cpp \
-           src/Game.cpp \
-           src/HumanPlayer.cpp \
-           src/LibreBridge.cpp \
-           src/Misc.cpp \
-           src/Player.cpp \
-           src/AIPlayers/AI_Random.cpp \
-           src/gui/WelcomeWindow.cpp \
-           src/gui/PlayWindow.cpp
+HEADERS +=	src/AIPlayer.hpp \
+			src/Bid.hpp \
+			src/Card.hpp \
+			src/Contract.hpp \
+			src/Game.hpp \
+			src/HumanPlayer.hpp \
+			src/LibreBridge.hpp \
+			src/Misc.hpp \
+			src/Player.hpp \
+			src/AIPlayers/AI_Random.hpp \
+			src/gui/WelcomeWindow.hpp \
+			src/gui/PlayWindow.hpp \
+			src/gui/Common.hpp
+			
+SOURCES +=	src/AIPlayer.cpp \
+			src/Bid.cpp \
+			src/Card.cpp \
+			src/Contract.cpp \
+			src/Game.cpp \
+			src/HumanPlayer.cpp \
+			src/LibreBridge.cpp \
+			src/Misc.cpp \
+			src/Player.cpp \
+			src/AIPlayers/AI_Random.cpp \
+			src/gui/WelcomeWindow.cpp \
+			src/gui/PlayWindow.cpp \
+			src/gui/Common.cpp
