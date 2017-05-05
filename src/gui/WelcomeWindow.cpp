@@ -1,6 +1,6 @@
 #include "Common.hpp"
 #include "WelcomeWindow.hpp"
-#include "PlayWindow.hpp"
+#include "DealSelectionWindow.hpp"
 #include <QPushButton>
 #include <QApplication>
 #include <QResizeEvent>
@@ -51,6 +51,6 @@ void WelcomeWindow::resizeEvent(QResizeEvent* event)
 void WelcomeWindow::startLocalGame()
 {
 	this->close();
-	playWindow = new PlayWindow();
+	playWindow = new DealSelectionWindow();
 	playWindow->show();
 }

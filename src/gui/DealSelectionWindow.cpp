@@ -1,12 +1,12 @@
 #include "Common.hpp"
-#include "PlayWindow.hpp"
+#include "DealSelectionWindow.hpp"
 #include "../Game.hpp"
 #include <QPushButton>
 #include <QApplication>
 #include <QResizeEvent>
 #include <QLineEdit>
 
-PlayWindow::PlayWindow(QWidget *parent): QWidget(parent)
+DealSelectionWindow::DealSelectionWindow(QWidget *parent): QWidget(parent)
 {
 	Game game;
 	
@@ -34,12 +34,12 @@ PlayWindow::PlayWindow(QWidget *parent): QWidget(parent)
 	//this->setDisabled(true);
 }
 
-void PlayWindow::resizeEvent(QResizeEvent* event)
+void DealSelectionWindow::resizeEvent(QResizeEvent* event)
 {
 	QWidget::resizeEvent(event);
 
 }
 
-void PlayWindow::playThisDeal()
+void DealSelectionWindow::playThisDeal()
 {
 }

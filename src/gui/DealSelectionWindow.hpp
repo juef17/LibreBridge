@@ -7,11 +7,11 @@ class QResizeEvent;
 class QLineEdit;
 class Game;
 
-class PlayWindow : public QWidget
+class DealSelectionWindow : public QWidget
 {
 	Q_OBJECT
 	public:
-		explicit PlayWindow(QWidget *parent = 0);
+		explicit DealSelectionWindow(QWidget *parent = 0);
 		QLineEdit *seedTextBox;
 		QPushButton *playButton;
 	signals:

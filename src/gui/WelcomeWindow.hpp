@@ -5,7 +5,7 @@
 class QPushButton;
 class QPixmap;
 class QResizeEvent;
-class PlayWindow;
+class DealSelectionWindow;
 
 class WelcomeWindow : public QWidget
 {
@@ -22,7 +22,7 @@ class WelcomeWindow : public QWidget
 		void resizeEvent(QResizeEvent *event) override;
 	private:
 		QPixmap background;
-		PlayWindow *playWindow;
+		DealSelectionWindow *playWindow;
 };
 
 #endif
