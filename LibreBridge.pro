@@ -32,6 +32,7 @@ HEADERS +=	src/AIPlayer.hpp \
 			src/Player.hpp \
 			src/AIPlayers/AI_Random.hpp \
 			src/gui/WelcomeWindow.hpp \
+			src/gui/PlayWindow.hpp \
 			src/gui/DealSelectionWindow.hpp \
 			src/gui/Common.hpp
 			
@@ -46,5 +47,6 @@ SOURCES +=	src/AIPlayer.cpp \
 			src/Player.cpp \
 			src/AIPlayers/AI_Random.cpp \
 			src/gui/WelcomeWindow.cpp \
+			src/gui/PlayWindow.cpp \
 			src/gui/DealSelectionWindow.cpp \
 			src/gui/Common.cpp

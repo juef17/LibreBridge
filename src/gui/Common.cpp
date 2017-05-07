@@ -16,3 +16,8 @@ int getSeedTextMaxWidth()
 	QString s = QString("%1").arg(l);
 	return fontMetrics.width(s.append("9"));
 }
+
+void copyWindowGeometry(QWidget *w1, QWidget *w2)
+{
+	w2->restoreGeometry(w1->saveGeometry());
+}

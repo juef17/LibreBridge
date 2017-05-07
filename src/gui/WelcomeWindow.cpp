@@ -1,14 +1,12 @@
 #include "Common.hpp"
 #include "WelcomeWindow.hpp"
-#include "DealSelectionWindow.hpp"
+#include "PlayWindow.hpp"
 #include <QPushButton>
 #include <QApplication>
 #include <QResizeEvent>
 
 WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
-{
-	setTitle(this);
-	
+{	
 	// Background
 	setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
 	QPixmap tmpBackground("./images/LibreBridge.png");
@@ -32,7 +30,11 @@ WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 	playButton = new QPushButton("Play", this);
 	playButton->setGeometry(170, 10, 80, 30);
 	playButton->setFixedSize(150, 50);
+	playButton->setFocus();
 	connect(playButton, SIGNAL (clicked()), this, SLOT (startLocalGame()));
+	
+	setTitle(this);
+	show();
 }
 
 void WelcomeWindow::resizeEvent(QResizeEvent* event)
@@ -50,7 +52,7 @@ void WelcomeWindow::resizeEvent(QResizeEvent* event)
 
 void WelcomeWindow::startLocalGame()
 {
+	playWindow = new PlayWindow();
+	copyWindowGeometry(this, playWindow);
 	this->close();
-	playWindow = new DealSelectionWindow();
-	playWindow->show();
 }

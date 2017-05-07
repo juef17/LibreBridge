@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
 		QApplication libreBridgeGUI(argc, argv);
 		
 		WelcomeWindow welcomeWindow;
-		welcomeWindow.show();
 		
 		return libreBridgeGUI.exec();
 	}

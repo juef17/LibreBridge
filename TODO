@@ -1,7 +1,10 @@
 vectors pour contenir les infos des parties précédentes: scores, qui avait le contrat, y'avait tu un meilleur contrat, etc
+Application icon
+Menu
+Toolbar
+Status bar
 
 Lua AI scripting?
 	http://www.rasterbar.com/products/luabind/docs.html
 	https://github.com/ThePhD/sol2
-Qt interface
 Windows / Android ports
