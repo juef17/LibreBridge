@@ -23,7 +23,6 @@ class Game
 		Contract bid();
 		void playCards();
 		void deal();
-		RANDOMNESS_SIZE seed;
 		
 	protected:
 	public:
@@ -34,9 +33,6 @@ class Game
 		void prepareForNextGame();
 		Position whoWinsTheTrick(Card playedCards[], Position firstPlayer) const;
 		bool isAllAI() const;
-		void setSeed(RANDOMNESS_SIZE s);
-		void incrementSeed();
-		RANDOMNESS_SIZE getSeed() const;
 		bool areConstraintsRespected() const;
 };
 

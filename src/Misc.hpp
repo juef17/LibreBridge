@@ -16,5 +16,8 @@ uint8_t randomUint8(uint8_t min, uint8_t max, RANDOMNESS_SIZE seed = 0);
 void initializeOptions();
 bool areDealConstraintsValid();
 std::string intToTeamString(uint8_t i);
+void setSeed(RANDOMNESS_SIZE s);
+void incrementSeed();
+RANDOMNESS_SIZE getSeed();
 
 #endif

@@ -34,7 +34,7 @@ Game::Game()
 			if(contract.getLevel()) playCards();
 		}
 		prepareForNextGame();
-	} while(keepPlaying);
+	} while(keepPlaying || !options.useGui);
 	for(uint8_t i=0; i<4; i++) delete players[i];
 }
 
@@ -243,21 +243,6 @@ bool Game::isAllAI() const
 {
 	for(uint8_t i=0; i<4; ++i) if(players[i]->getIsHuman()) return false;
 	return true;
-}
-
-void Game::setSeed(RANDOMNESS_SIZE s)
-{
-	seed = s;
-}
-
-void Game::incrementSeed()
-{
-	seed++;
-}
-
-RANDOMNESS_SIZE Game::getSeed() const
-{
-	return seed;
 }
 
 bool Game::areConstraintsRespected() const

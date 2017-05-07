@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <algorithm>
+#include <cmath>
 #include "Misc.hpp"
 #include "Card.hpp"
 #include "Contract.hpp"
@@ -147,7 +148,11 @@ void initializeOptions()
 	options.AI_letGamesRun = false;
 	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
 	
-	options.seed = 0;
+	options.seed = chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator(options.seed);
+	RANDOMNESS_SIZE l = (RANDOMNESS_SIZE)(pow(2, 8*sizeof(RANDOMNESS_SIZE)));
+	uniform_int_distribution<RANDOMNESS_SIZE> distribution(0,l);
+	options.seed = distribution(generator);
 	
 	options.useDealConstraints = true;
 	for(uint8_t i=0; i<4; i++)
@@ -200,4 +205,19 @@ bool areDealConstraintsValid()
 string intToTeamString(uint8_t i)
 {
 	return (i ? "EW" : "NS");
+}
+
+void setSeed(RANDOMNESS_SIZE s)
+{
+	options.seed = s;
+}
+
+void incrementSeed()
+{
+	options.seed++;
+}
+
+RANDOMNESS_SIZE getSeed()
+{
+	return options.seed;
 }

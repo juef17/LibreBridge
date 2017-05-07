@@ -2,8 +2,9 @@
 #define PLAYWINDOW_HPP
 
 #include <QMainWindow>
-class DealSelectionWindow;
 class QMenuBar;
+class DealSelectionWindow;
+class Game;
 
 class PlayWindow : public QMainWindow
 {
@@ -20,6 +21,7 @@ class PlayWindow : public QMainWindow
 		QMenuBar *menuBar;
 		QMenu *fileMenu;
 		QWidget *centralWidget;
+		Game *game;
 };
 
 #endif

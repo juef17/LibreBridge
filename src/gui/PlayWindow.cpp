@@ -1,14 +1,17 @@
-#include "Common.hpp"
-#include "PlayWindow.hpp"
-#include "DealSelectionWindow.hpp"
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMenu>
 #include <QApplication>
 #include <QResizeEvent>
+#include "Common.hpp"
+#include "PlayWindow.hpp"
+#include "DealSelectionWindow.hpp"
+#include "../Game.hpp"
 
 PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 {
+	game = new Game();
+	
 	// This window
 	centralWidget = new QWidget(this);
 	setTitle(this);

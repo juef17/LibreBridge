@@ -6,7 +6,6 @@ class QPushButton;
 class QResizeEvent;
 class QCloseEvent;
 class QLineEdit;
-class Game;
 class PlayWindow;
 
 class DealSelectionWindow : public QDialog 
@@ -21,7 +20,6 @@ class DealSelectionWindow : public QDialog
 	public slots:
 		void playThisDeal();
 	protected:
-		Game *game;
 	private:
 		PlayWindow *parent;
 };

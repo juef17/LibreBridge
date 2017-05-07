@@ -36,7 +36,7 @@ struct Options
 	std::string playerTypes[4];					// Contains "Human" (or "HumanPlayer") or the name of the AI to use
 	std::vector<std::string> AI_availableTypes;	// Contains the names of the usable AI players
 	
-	RANDOMNESS_SIZE seed;		// Seed as passed by command line argument (or user input), to use in Game(). 0 = generate from time
+	RANDOMNESS_SIZE seed;		// Seed as passed by command line argument (or user input), to use in Game(). If not, generated from chrono
 	
 	bool useDealConstraints;	// Use DealConstraints to make deals not 100% random
 	DealConstraints constraints;// Constraints to use for deals

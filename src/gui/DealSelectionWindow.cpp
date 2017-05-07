@@ -3,6 +3,7 @@
 #include "PlayWindow.hpp"
 #include "WelcomeWindow.hpp"
 #include "../Game.hpp"
+#include "../Misc.hpp"
 #include <QPushButton>
 #include <QApplication>
 #include <QResizeEvent>
@@ -13,7 +14,6 @@
 
 DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 {
-	Game game;
 	int x, y;
 	this->parent = (PlayWindow*)parent;
 	
@@ -32,7 +32,7 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	seedTextBox->move(x, 10);
     seedTextBox->setFocus();
 	seedTextBox->setReadOnly(true);
-	seedTextBox->setText(QString("%1").arg(game.getSeed()));
+	seedTextBox->setText(QString("%1").arg(getSeed()));
 	seedTextBox->setAlignment(Qt::AlignCenter);
 
 	// playButton
