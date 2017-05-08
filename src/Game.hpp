@@ -34,6 +34,7 @@ class Game
 		Position whoWinsTheTrick(Card playedCards[], Position firstPlayer) const;
 		bool isAllAI() const;
 		bool areConstraintsRespected() const;
+		Player** getPlayers();
 };
 
 class LocalGame: public Game

@@ -90,7 +90,19 @@ Card Card::stringToCard(string s)
 	return goodCard;
 }
 
+int Card::getImageNumber()
+{
+	switch(suit)
+	{
+		case Diamonds:	return -2 + value;
+		case Hearts:	return 11 + value;
+		case Spades:	return 24 + value;
+		case Clubs:		return 37 + value;
+		default: return -1;
+	}
+}
+
 string Card::getImagePath()
 {
-	return "../images/cards/" + options.theme_cards + "/" + suitToChar(suit) + valueToChar(value) + ".png";
+	return "./images/cards/" + options.theme_cards + "/" + to_string(getImageNumber()) + ".png";
 }

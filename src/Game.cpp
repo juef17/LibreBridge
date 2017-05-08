@@ -18,7 +18,8 @@ Game::Game()
 	if(!areDealConstraintsValid()) options.useDealConstraints = false;
 	
 	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
-	do
+	deal();
+	/*do
 	{
 		deal();
 		if(areConstraintsRespected())
@@ -35,7 +36,7 @@ Game::Game()
 		}
 		prepareForNextGame();
 	} while(keepPlaying || !options.useGui);
-	for(uint8_t i=0; i<4; i++) delete players[i];
+	for(uint8_t i=0; i<4; i++) delete players[i];*/
 }
 
 GameType Game::getGameType()
@@ -273,4 +274,9 @@ bool Game::areConstraintsRespected() const
 	}
 	
 	return true;
+}
+
+Player** Game::getPlayers()
+{
+	return players;
 }
