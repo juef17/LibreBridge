@@ -1,8 +1,8 @@
-#include <iostream>
 #include "Common.hpp"
 #include "DealSelectionWindow.hpp"
 #include "PlayWindow.hpp"
 #include "WelcomeWindow.hpp"
+#include "SeedValidator.hpp"
 #include "../Game.hpp"
 #include "../Misc.hpp"
 #include <QPushButton>
@@ -31,9 +31,12 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	x = (width()-seedTextBox->width()) / 2;
 	seedTextBox->move(x, 10);
     seedTextBox->setFocus();
+	seedTextBox->setMaxLength(getSeedTextMaxLength());
 	//seedTextBox->setReadOnly(true);
 	seedTextBox->setText(QString("%1").arg(getSeed()));
 	seedTextBox->setAlignment(Qt::AlignCenter);
+	seedValidator = new SeedValidator;
+	seedTextBox->setValidator(seedValidator);
 	connect(seedTextBox, SIGNAL (textChanged(QString)), this, SLOT (updateOnSeedChange(QString)));
 
 	// Minus Button
@@ -76,26 +79,22 @@ void DealSelectionWindow::updateOnSeedChange(const QString &text)
 {
 	QLocale defaultLocale;
 	bool ok;
-	RANDOMNESS_SIZE tmp = (RANDOMNESS_SIZE)(defaultLocale.toULongLong(text, &ok));
-	// TODO:	http://doc.qt.io/qt-5/qlineedit.html#setValidator              http://doc.qt.io/qt-4.8/qintvalidator.html
-	//			faire un #define pour les choses du genre toULongLong
-	if(ok)
+	RANDOMNESS_SIZE tmp = (RANDOMNESS_SIZE)(defaultLocale.RANDOMNESS_QT_SIZE(text, &ok));
+	if(ok) // Should always be true, since the QLineEdit has a validator
 	{
 		options.seed = tmp;
-		
-		std::cout << std::endl << "yay" << std::endl;
 		parent->destroyAllHandWidgets();
 		parent->getGame()->findNextDeal();
 		seedTextBox->setText(QString("%1").arg(getSeed())); // If constraints weren't met, the deal number may have changed
 		parent->createAllHandWidgets();
-		//centralWidget->setLayout(gridLayout);
 	}
 }
 
 void DealSelectionWindow::closeEvent(QCloseEvent *)
 {
+	delete seedValidator;
 	WelcomeWindow *welcomeWindow = new WelcomeWindow;
 	copyWindowGeometry(parent, welcomeWindow);
-	welcomeWindow->show();
 	parent->close();
+	welcomeWindow->show();
 }

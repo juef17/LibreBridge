@@ -7,6 +7,7 @@ class QResizeEvent;
 class QCloseEvent;
 class QLineEdit;
 class PlayWindow;
+class SeedValidator;
 
 class DealSelectionWindow : public QDialog 
 {
@@ -27,6 +28,7 @@ class DealSelectionWindow : public QDialog
 	protected:
 	private:
 		PlayWindow *parent;
+		SeedValidator *seedValidator;
 };
 
 #endif

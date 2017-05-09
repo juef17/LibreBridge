@@ -6,6 +6,7 @@
 
 // Card values are 2-14, to be interpreted into T,J,Q,K,A with Card::valueToChar
 #define RANDOMNESS_SIZE unsigned long long
+#define RANDOMNESS_QT_SIZE toULongLong
 enum Suit {Clubs=1, Diamonds=2, Hearts=3, Spades=4, NoTrump=5};
 enum GameType {Local, Network};
 enum Position {North=0, East=1, South=2, West=3};

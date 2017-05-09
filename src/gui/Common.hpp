@@ -12,6 +12,7 @@
 
 void setTitle(QWidget *w, QString s = "");
 int getSeedTextMaxWidth();
+int getSeedTextMaxLength();
 void copyWindowGeometry(QWidget *w1, QWidget *w2);
 
 #endif

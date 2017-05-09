@@ -12,9 +12,14 @@ int getSeedTextMaxWidth()
 	QFont font;
 	font.setFamily(font.defaultFamily());
 	QFontMetrics fontMetrics(font);
-	RANDOMNESS_SIZE l = (RANDOMNESS_SIZE)(pow(2, 8*sizeof(RANDOMNESS_SIZE)));
+	RANDOMNESS_SIZE l = (RANDOMNESS_SIZE)(pow(2, 8*sizeof(RANDOMNESS_SIZE))-1);
 	QString s = QString("%1").arg(l);
 	return fontMetrics.width(s.append("9"));
+}
+
+int getSeedTextMaxLength()
+{
+	return (int)(ceil(8*sizeof(RANDOMNESS_SIZE)*log10(2)));
 }
 
 void copyWindowGeometry(QWidget *w1, QWidget *w2)

@@ -35,6 +35,7 @@ HEADERS +=	src/AIPlayer.hpp \
 			src/gui/WelcomeWindow.hpp \
 			src/gui/PlayWindow.hpp \
 			src/gui/DealSelectionWindow.hpp \
+			src/gui/SeedValidator.hpp \
 			src/gui/Common.hpp
 			
 SOURCES +=	src/AIPlayer.cpp \
@@ -51,4 +52,5 @@ SOURCES +=	src/AIPlayer.cpp \
 			src/gui/WelcomeWindow.cpp \
 			src/gui/PlayWindow.cpp \
 			src/gui/DealSelectionWindow.cpp \
+			src/gui/SeedValidator.cpp \
 			src/gui/Common.cpp
