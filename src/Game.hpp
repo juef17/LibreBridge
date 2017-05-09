@@ -35,6 +35,7 @@ class Game
 		bool isAllAI() const;
 		bool areConstraintsRespected() const;
 		Player** getPlayers();
+		void findNextDeal();
 };
 
 class LocalGame: public Game

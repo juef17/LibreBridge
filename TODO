@@ -1,3 +1,5 @@
+vérifier que le seed augmente juste de 1 en GUI et en text-only
+vérifier que le dealer est toujours lui prévu, même si on change le seed manuellement
 vectors pour contenir les infos des parties précédentes: scores, qui avait le contrat, y'avait tu un meilleur contrat, etc
 Application icon
 Menu

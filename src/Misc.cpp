@@ -146,8 +146,8 @@ void initializeOptions()
 {
 	options.AI_playDelay = 0;
 	options.AI_letGamesRun = false;
-	options.playerTypes[0] = "HumanPlayer";
-	for(uint8_t i=1; i<4; i++) options.playerTypes[i] = "AI_Random";
+	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
+	options.playerTypes[South] = "HumanPlayer";
 	
 	options.seed = chrono::system_clock::now().time_since_epoch().count();
 	default_random_engine generator(options.seed);

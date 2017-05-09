@@ -19,6 +19,8 @@ class PlayWindow : public QMainWindow
 		explicit PlayWindow(QWidget *parent = Q_NULLPTR);
 		void closeEvent(QCloseEvent *event);
 		void createAllHandWidgets();
+		void destroyAllHandWidgets();
+		Game* getGame() const;
 	signals:
 	public slots:
 	protected:
@@ -31,7 +33,6 @@ class PlayWindow : public QMainWindow
 		QWidget *centralWidget;
 		Game *game;
 		QGridLayout *gridLayout;
-		QHBoxLayout *layout;
 		std::vector<CardWidget*> handsWidgets[4];
 };
 

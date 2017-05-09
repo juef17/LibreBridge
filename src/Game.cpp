@@ -18,25 +18,23 @@ Game::Game()
 	if(!areDealConstraintsValid()) options.useDealConstraints = false;
 	
 	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
-	deal();
-	/*do
+	if(!options.useGui)
 	{
-		deal();
-		if(areConstraintsRespected())
+		do
 		{
+			findNextDeal();
 			for(uint8_t i=0; i<4; i++)
 			{
-				bool isDummy = (players[i]->getPosition() == nextTeammate(contract.getDeclarer()));
-				if(players[i]->getIsHuman() || isDummy) players[i]->printHand(' ');
+				if(players[i]->getIsHuman()) players[i]->printHand(' ');
 			}
 			contract = bid();
 			cout << "Contract is: ";
 			contract.print();
 			if(contract.getLevel()) playCards();
-		}
-		prepareForNextGame();
-	} while(keepPlaying || !options.useGui);
-	for(uint8_t i=0; i<4; i++) delete players[i];*/
+			prepareForNextGame();
+		} while(keepPlaying || !options.useGui);
+		for(uint8_t i=0; i<4; i++) delete players[i];
+	}
 }
 
 GameType Game::getGameType()
@@ -135,8 +133,8 @@ Contract Game::bid()
 
 void Game::prepareForNextGame()
 {
-	bool wasBiddingDone = !bidWar.empty();
 	incrementSeed();
+	bool wasBiddingDone = !bidWar.empty();
 	dealer = nextPosition(dealer);
 	setVulnerability();
 	for(uint8_t i = 0; i<4; ++i) players[i]->clearHand();
@@ -191,8 +189,9 @@ void Game::playCards()
 
 	for(uint8_t i=0; i<4; ++i)
 	{
+		isDummy = (players[i]->getPosition() == dummyPosition);
 		players[i]->sortHand(contract.getSuit());
-		if(players[i]->getIsHuman()) players[i]->printHand(' ');
+		if(players[i]->getIsHuman() || isDummy) players[i]->printHand(' ');
 	}
 	for(uint8_t i=0; i<13; ++i)
 	{
@@ -279,4 +278,15 @@ bool Game::areConstraintsRespected() const
 Player** Game::getPlayers()
 {
 	return players;
+}
+
+void Game::findNextDeal()
+{
+	bool constraintsOK;
+	do
+	{
+		deal();
+		constraintsOK = areConstraintsRespected();
+		if(!constraintsOK) incrementSeed();
+	} while(!constraintsOK);
 }

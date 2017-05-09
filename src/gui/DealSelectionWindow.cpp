@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Common.hpp"
 #include "DealSelectionWindow.hpp"
 #include "PlayWindow.hpp"
@@ -8,9 +9,8 @@
 #include <QApplication>
 #include <QResizeEvent>
 #include <QLineEdit>
-#include <QStyle>
-#include <QDesktopWidget>
 #include <QCloseEvent>
+#include <QDesktopWidget>
 
 DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 {
@@ -31,9 +31,22 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	x = (width()-seedTextBox->width()) / 2;
 	seedTextBox->move(x, 10);
     seedTextBox->setFocus();
-	seedTextBox->setReadOnly(true);
+	//seedTextBox->setReadOnly(true);
 	seedTextBox->setText(QString("%1").arg(getSeed()));
 	seedTextBox->setAlignment(Qt::AlignCenter);
+	connect(seedTextBox, SIGNAL (textChanged(QString)), this, SLOT (updateOnSeedChange(QString)));
+
+	// Minus Button
+	seedMinusButton = new QPushButton("-", this);
+	seedMinusButton->setFixedSize(15, 15);
+	seedMinusButton->move(seedTextBox->x() - 2*seedMinusButton->width(), seedTextBox->y() + (seedTextBox->height()-seedMinusButton->height())/2);
+	connect(seedMinusButton, SIGNAL (clicked()), this, SLOT (minusDeal()));
+
+	// Plus Button
+	seedPlusButton = new QPushButton("+", this);
+	seedPlusButton->setFixedSize(15, 15);
+	seedPlusButton->move(seedTextBox->x() + seedTextBox->width() + seedPlusButton->width(), seedTextBox->y() + (seedTextBox->height()-seedPlusButton->height())/2);
+	connect(seedPlusButton, SIGNAL (clicked()), this, SLOT (plusDeal()));
 
 	// playButton
 	playButton = new QPushButton("Play this deal", this);
@@ -47,6 +60,36 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 
 void DealSelectionWindow::playThisDeal()
 {
+}
+
+void DealSelectionWindow::minusDeal()
+{
+	seedTextBox->setText(QString("%1").arg(getSeed()-1)); // Should emit textChanged signal and run updateOnSeedChange()
+}
+
+void DealSelectionWindow::plusDeal()
+{
+	seedTextBox->setText(QString("%1").arg(getSeed()+1)); // Should emit textChanged signal and run updateOnSeedChange()
+}
+
+void DealSelectionWindow::updateOnSeedChange(const QString &text)
+{
+	QLocale defaultLocale;
+	bool ok;
+	RANDOMNESS_SIZE tmp = (RANDOMNESS_SIZE)(defaultLocale.toULongLong(text, &ok));
+	// TODO:	http://doc.qt.io/qt-5/qlineedit.html#setValidator              http://doc.qt.io/qt-4.8/qintvalidator.html
+	//			faire un #define pour les choses du genre toULongLong
+	if(ok)
+	{
+		options.seed = tmp;
+		
+		std::cout << std::endl << "yay" << std::endl;
+		parent->destroyAllHandWidgets();
+		parent->getGame()->findNextDeal();
+		seedTextBox->setText(QString("%1").arg(getSeed())); // If constraints weren't met, the deal number may have changed
+		parent->createAllHandWidgets();
+		//centralWidget->setLayout(gridLayout);
+	}
 }
 
 void DealSelectionWindow::closeEvent(QCloseEvent *)

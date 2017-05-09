@@ -14,11 +14,16 @@ class DealSelectionWindow : public QDialog
 	public:
 		explicit DealSelectionWindow(QWidget *parent = Q_NULLPTR);
 		QLineEdit *seedTextBox;
+		QPushButton *seedMinusButton;
+		QPushButton *seedPlusButton;
 		QPushButton *playButton;
 		void closeEvent(QCloseEvent *event);
 	signals:
 	public slots:
 		void playThisDeal();
+		void minusDeal();
+		void plusDeal();
+		void updateOnSeedChange(const QString &text);
 	protected:
 	private:
 		PlayWindow *parent;
