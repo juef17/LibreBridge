@@ -154,6 +154,7 @@ void initializeOptions()
 	RANDOMNESS_SIZE l = (RANDOMNESS_SIZE)(pow(2, 8*sizeof(RANDOMNESS_SIZE)));
 	uniform_int_distribution<RANDOMNESS_SIZE> distribution(0,l);
 	options.seed = distribution(generator);
+	options.seedIncrementStep = 1;
 	
 	options.useDealConstraints = true;
 	for(uint8_t i=0; i<4; i++)
@@ -215,7 +216,7 @@ void setSeed(RANDOMNESS_SIZE s)
 
 void incrementSeed()
 {
-	options.seed++;
+	options.seed += options.seedIncrementStep;
 }
 
 RANDOMNESS_SIZE getSeed()

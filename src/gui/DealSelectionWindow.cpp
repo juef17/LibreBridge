@@ -68,7 +68,10 @@ void DealSelectionWindow::playThisDeal()
 
 void DealSelectionWindow::minusDeal()
 {
-	seedTextBox->setText(QString("%1").arg(getSeed()-1)); // Should emit textChanged signal and run updateOnSeedChange()
+	options.seedIncrementStep = -1; // So that if there are constraints, we don't just add back 1 to the seed
+	incrementSeed();
+	seedTextBox->setText(QString("%1").arg(getSeed())); // Should emit textChanged signal and run updateOnSeedChange()
+	options.seedIncrementStep = 1;
 }
 
 void DealSelectionWindow::plusDeal()
