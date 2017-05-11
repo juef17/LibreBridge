@@ -30,7 +30,6 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	seedTextBox->setFixedSize(getSeedTextMaxWidth(), 30);
 	x = (width()-seedTextBox->width()) / 2;
 	seedTextBox->move(x, 10);
-    seedTextBox->setFocus();
 	seedTextBox->setMaxLength(getSeedTextMaxLength());
 	//seedTextBox->setReadOnly(true);
 	seedTextBox->setText(QString("%1").arg(getSeed()));
@@ -43,12 +42,14 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	seedMinusButton = new QPushButton("-", this);
 	seedMinusButton->setFixedSize(15, 15);
 	seedMinusButton->move(seedTextBox->x() - 2*seedMinusButton->width(), seedTextBox->y() + (seedTextBox->height()-seedMinusButton->height())/2);
+	seedMinusButton->setAutoDefault(false);
 	connect(seedMinusButton, SIGNAL (clicked()), this, SLOT (minusDeal()));
 
 	// Plus Button
 	seedPlusButton = new QPushButton("+", this);
 	seedPlusButton->setFixedSize(15, 15);
 	seedPlusButton->move(seedTextBox->x() + seedTextBox->width() + seedPlusButton->width(), seedTextBox->y() + (seedTextBox->height()-seedPlusButton->height())/2);
+	seedPlusButton->setAutoDefault(false);
 	connect(seedPlusButton, SIGNAL (clicked()), this, SLOT (plusDeal()));
 
 	// playButton
@@ -58,7 +59,7 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	y = (height()-playButton->height()) / 2;
 	playButton->move(x, seedTextBox->y() + seedTextBox->height() + 10);
 	connect(playButton, SIGNAL (clicked()), this, SLOT (playThisDeal()));
-	playButton->setFocus();
+	playButton->setDefault(true);
 }
 
 void DealSelectionWindow::playThisDeal()

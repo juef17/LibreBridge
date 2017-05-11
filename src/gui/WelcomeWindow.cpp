@@ -31,6 +31,7 @@ WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 	playButton->setGeometry(170, 10, 80, 30);
 	playButton->setFixedSize(150, 50);
 	playButton->setFocus();
+	playButton->setDefault(true);
 	connect(playButton, SIGNAL (clicked()), this, SLOT (startLocalGame()));
 	
 	setTitle(this);
