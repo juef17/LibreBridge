@@ -11,11 +11,13 @@
 #include "DealSelectionWindow.hpp"
 #include "../Card.hpp"
 #include "../Game.hpp"
+#include "../Misc.hpp"
 
 using namespace std;
 
 PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 {
+	randomizeSeed();
 	game = new Game();
 	game->findNextDeal();
 	
@@ -33,10 +35,8 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	fileMenu->addMenu(new QMenu("menu1_SubMenu"));
 	menuBar->addMenu(fileMenu);
 	
-	gridLayout = new QGridLayout;
-	
 	createAllHandWidgets();
-	centralWidget->setLayout(gridLayout);
+	centralWidget->setLayout(&gridLayout);
 	show();
 	
 	dealSelectionWindow = new DealSelectionWindow(this);
@@ -44,6 +44,15 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	
 	//this->setDisabled(true);
 	//dealSelectionWindow->setDisabled(false);
+}
+
+PlayWindow::~PlayWindow()
+{
+	destroyAllHandWidgets();
+	for(int i=0; i<4; i++) for(int j=0; j<4; j++)
+	{
+		delete playersHLayout[i][j];
+	}
 }
 
 void PlayWindow::resizeEvent(QResizeEvent* event)
@@ -61,13 +70,26 @@ void PlayWindow::createAllHandWidgets()
 	Player **players = game->getPlayers();
 	for(int i=0; i<4; i++)
 	{
-		int j=0;
+		for(int j=0; j<4; j++)
+		{
+			playersHLayout[i][j] = new QHBoxLayout;
+			if(i%2) EWVLayout[i/2].addLayout(playersHLayout[i][j]);
+			else NSHLayout[i/2].addLayout(playersHLayout[i][j]);
+		}
 		for (auto &card : players[i]->getHand())
 		{
 			CardWidget* cardWidget = new CardWidget(&card);
-			gridLayout->addWidget(cardWidget, i, j++);
+			Qt::Alignment align = (i == 1 ? Qt::AlignRight : Qt::AlignLeft);
+			playersHLayout[i][card.getSuit()-1]->addWidget(cardWidget, 0, align);
 			handsWidgets[i].push_back(cardWidget);
 		}
+	}
+	if(!gridLayout.itemAtPosition(1, 2)) // If the players layouts haven't been added to the gridLayout yet
+	{
+		gridLayout.addLayout(&(EWVLayout[0]), 1, 2);
+		gridLayout.addLayout(&(EWVLayout[1]), 1, 0);
+		gridLayout.addLayout(&(NSHLayout[0]), 0, 1);
+		gridLayout.addLayout(&(NSHLayout[1]), 2, 1);
 	}
 }
 

@@ -30,6 +30,7 @@ Game::Game()
 			contract = bid();
 			cout << "Contract is: ";
 			contract.print();
+			cout << "Deal #" << to_string(getSeed()) << endl;
 			if(contract.getLevel()) playCards();
 			prepareForNextGame();
 		} while(keepPlaying || !options.useGui);

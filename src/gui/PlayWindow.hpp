@@ -3,9 +3,10 @@
 
 #include <vector>
 #include <QMainWindow>
+#include <QGridLayout>
 class QMenuBar;
-class QGridLayout;
 class QHBoxLayout;
+class QVBoxLayout;
 class QPushButton;
 class CardWidget;
 class DealSelectionWindow;
@@ -17,6 +18,7 @@ class PlayWindow : public QMainWindow
 	Q_OBJECT
 	public:
 		explicit PlayWindow(QWidget *parent = Q_NULLPTR);
+		~PlayWindow();
 		void closeEvent(QCloseEvent *event);
 		void createAllHandWidgets();
 		void destroyAllHandWidgets();
@@ -29,10 +31,12 @@ class PlayWindow : public QMainWindow
 		DealSelectionWindow *dealSelectionWindow;
 		QMenuBar *menuBar;
 		QMenu *fileMenu;
-		QPushButton *testButton;
 		QWidget *centralWidget;
 		Game *game;
-		QGridLayout *gridLayout;
+		QGridLayout gridLayout;
+		QVBoxLayout EWVLayout[2];	// Not pointers so we don't have to deal with the memory (PlayWindow is open iif these are needed)
+		QHBoxLayout NSHLayout[2];
+		QHBoxLayout *playersHLayout[4][4];	// Players, suits-1 (since clubs start at 1)
 		std::vector<CardWidget*> handsWidgets[4];
 };
 

@@ -1,4 +1,6 @@
-vérifier que le seed augmente juste de 1 en GUI et en text-only
+Checker le beginner qt tutorial pour m'assurer que la mémoire est bien détruite (e.g. game = new Game;)
+Fenêtre pour attente si contraintes intenses
+vérifier que le seed augmente juste de 1 après une main en GUI
 vérifier que le dealer est toujours lui prévu, même si on change le seed manuellement
 vectors pour contenir les infos des parties précédentes: scores, qui avait le contrat, y'avait tu un meilleur contrat, etc
 Application icon

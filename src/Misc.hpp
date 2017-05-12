@@ -19,5 +19,6 @@ std::string intToTeamString(uint8_t i);
 void setSeed(RANDOMNESS_SIZE s);
 void incrementSeed();
 RANDOMNESS_SIZE getSeed();
+void randomizeSeed();
 
 #endif

@@ -149,11 +149,7 @@ void initializeOptions()
 	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
 	options.playerTypes[South] = "HumanPlayer";
 	
-	options.seed = chrono::system_clock::now().time_since_epoch().count();
-	default_random_engine generator(options.seed);
-	RANDOMNESS_SIZE l = (RANDOMNESS_SIZE)(pow(2, 8*sizeof(RANDOMNESS_SIZE)));
-	uniform_int_distribution<RANDOMNESS_SIZE> distribution(0,l);
-	options.seed = distribution(generator);
+	randomizeSeed();
 	options.seedIncrementStep = 1;
 	
 	options.useDealConstraints = true;
@@ -222,4 +218,13 @@ void incrementSeed()
 RANDOMNESS_SIZE getSeed()
 {
 	return options.seed;
+}
+
+void randomizeSeed()
+{
+	options.seed = chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator(options.seed);
+	RANDOMNESS_SIZE l = (RANDOMNESS_SIZE)(pow(2, 8*sizeof(RANDOMNESS_SIZE)));
+	uniform_int_distribution<RANDOMNESS_SIZE> distribution(0,l);
+	options.seed = distribution(generator);
 }
