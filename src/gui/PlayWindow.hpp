@@ -4,6 +4,7 @@
 #include <vector>
 #include <QMainWindow>
 #include <QGridLayout>
+class CardHLayout;
 class QMenuBar;
 class QHBoxLayout;
 class QVBoxLayout;
@@ -36,7 +37,7 @@ class PlayWindow : public QMainWindow
 		QGridLayout gridLayout;
 		QVBoxLayout EWVLayout[2];	// Not pointers so we don't have to deal with the memory (PlayWindow is open iif these are needed)
 		QHBoxLayout NSHLayout[2];
-		QHBoxLayout *playersHLayout[4][4];	// Players, suits-1 (since clubs start at 1)
+		CardHLayout *playersHLayout[4][4];	// Players, suits-1 (since clubs start at 1)
 		std::vector<CardWidget*> handsWidgets[4];
 };
 

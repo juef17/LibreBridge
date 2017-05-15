@@ -1,3 +1,4 @@
+Factor QSize CardHLayout::sizeHint() const et QSize CardHLayout::minimumSize() const
 Checker le beginner qt tutorial pour m'assurer que la mémoire est bien détruite (e.g. game = new Game;)
 Fenêtre pour attente si contraintes intenses
 vérifier que le seed augmente juste de 1 après une main en GUI

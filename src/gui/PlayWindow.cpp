@@ -9,6 +9,7 @@
 #include "Common.hpp"
 #include "PlayWindow.hpp"
 #include "DealSelectionWindow.hpp"
+#include "CardHLayout.hpp"
 #include "../Card.hpp"
 #include "../Game.hpp"
 #include "../Misc.hpp"
@@ -72,15 +73,15 @@ void PlayWindow::createAllHandWidgets()
 	{
 		for(int j=0; j<4; j++)
 		{
-			playersHLayout[i][j] = new QHBoxLayout;
+			Qt::Alignment align = (i == 1 ? Qt::AlignRight : Qt::AlignLeft);
+			playersHLayout[i][j] = new CardHLayout(Q_NULLPTR, align);
 			if(i%2) EWVLayout[i/2].addLayout(playersHLayout[i][j]);
 			else NSHLayout[i/2].addLayout(playersHLayout[i][j]);
 		}
 		for (auto &card : players[i]->getHand())
 		{
 			CardWidget* cardWidget = new CardWidget(&card);
-			Qt::Alignment align = (i == 1 ? Qt::AlignRight : Qt::AlignLeft);
-			playersHLayout[i][card.getSuit()-1]->addWidget(cardWidget, 0, align);
+			playersHLayout[i][card.getSuit()-1]->addWidget(cardWidget);
 			handsWidgets[i].push_back(cardWidget);
 		}
 	}
