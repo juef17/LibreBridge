@@ -4,6 +4,7 @@
 #include <vector>
 #include <QMainWindow>
 #include <QGridLayout>
+#include "../LibreBridge.hpp"
 class CardHLayout;
 class QMenuBar;
 class QHBoxLayout;
@@ -22,7 +23,9 @@ class PlayWindow : public QMainWindow
 		~PlayWindow();
 		void closeEvent(QCloseEvent *event);
 		void createAllHandWidgets();
+		void createHandWidgets(Position p);
 		void destroyAllHandWidgets();
+		void destroyHandWidgets(Position p);
 		Game* getGame() const;
 	signals:
 	public slots:
