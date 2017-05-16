@@ -25,16 +25,16 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	// This window
 	centralWidget = new QWidget(this);
 	setTitle(this);
-	setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
+	//setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
 	setObjectName("playWindow"); // Otherwise all its children inherit the background color
 	setStyleSheet("#playWindow {background-color: green;}");
 	setCentralWidget(centralWidget);
 	
 	// Menu
-	menuBar = new QMenuBar(centralWidget);
+	/*menuBar = new QMenuBar(centralWidget);
 	QMenu *fileMenu = new QMenu("File");
 	fileMenu->addMenu(new QMenu("menu1_SubMenu"));
-	menuBar->addMenu(fileMenu);
+	menuBar->addMenu(fileMenu);*/
 	
 	createAllHandWidgets();
 	centralWidget->setLayout(&gridLayout);
@@ -42,7 +42,6 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	
 	dealSelectionWindow = new DealSelectionWindow(this);
 	dealSelectionWindow->show();
-	
 	//this->setDisabled(true);
 	//dealSelectionWindow->setDisabled(false);
 }
@@ -87,6 +86,8 @@ void PlayWindow::createAllHandWidgets()
 	}
 	if(!gridLayout.itemAtPosition(1, 2)) // If the players layouts haven't been added to the gridLayout yet
 	{
+		gridLayout.setColumnStretch(1, 1);
+		gridLayout.setRowStretch(1, 1);
 		gridLayout.addLayout(&(EWVLayout[0]), 1, 2);
 		gridLayout.addLayout(&(EWVLayout[1]), 1, 0);
 		gridLayout.addLayout(&(NSHLayout[0]), 0, 1);
@@ -103,6 +104,10 @@ void PlayWindow::destroyAllHandWidgets()
 			delete cardWidget;
 		}
 		handsWidgets[i].clear();
+		for(int j=0; j<4; j++)
+		{
+			delete playersHLayout[i][j];
+		}
 	}
 }
 

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "CardHLayout.hpp"
 
 CardHLayout::CardHLayout(QWidget *parent, Qt::Alignment alignment): QLayout(parent)
@@ -34,16 +35,26 @@ CardHLayout::~CardHLayout()
 void CardHLayout::setGeometry(const QRect &r)
 {
 	QLayout::setGeometry(r);
-	if(!list.size()) return;
-
-	int w = r.width();
-	int i = 0;
+	
 	int listSize = list.size();
+	if(!listSize) return;
+
+	//int w = r.width();
+	int i = 0;
 	while(i < listSize)
 	{
 		QLayoutItem *o = list.at(i);
-		int x = (alignment == Qt::AlignRight ? -(listSize-i) : i) * spacing();
-		QRect geom(r.x() + x, r.y(), w, r.height());
+		QRect itemRect = o->geometry();
+		int x;
+		if(alignment == Qt::AlignRight)
+		{
+			x = r.x() + r.width() - (listSize-i-1) * spacing() - itemRect.width();
+		}
+		else
+		{
+			x = r.x() + i * spacing();
+		}
+		QRect geom(x, r.y(), itemRect.width(), itemRect.height());
 		o->setGeometry(geom);
 		++i;
 	}
@@ -53,7 +64,7 @@ QSize CardHLayout::sizeHint() const
 {
 	QSize s(0,0);
 	int n = list.count();
-	if (n > 0) s = QSize(10, 70);
+	//if (n > 0) s = QSize(300, 300); // TODO
 	int i = 0;
 	while(i < n)
 	{
@@ -61,7 +72,7 @@ QSize CardHLayout::sizeHint() const
 		s = s.expandedTo(o->sizeHint());
 		++i;
 	}
-	return s + n*QSize(spacing(), spacing());
+	return s + (n-1)*QSize(spacing(), 0);
 }
 
 QSize CardHLayout::minimumSize() const
@@ -75,7 +86,7 @@ QSize CardHLayout::minimumSize() const
 		s = s.expandedTo(o->minimumSize());
 		++i;
 	}
-	return s + n*QSize(spacing(), spacing());
+	return s + (n-1)*QSize(spacing(), 0);
 }
 
 int CardHLayout::spacing() const

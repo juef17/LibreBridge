@@ -12,6 +12,7 @@ CardWidget::CardWidget(Card *card, QWidget *parent) : QPushButton("", parent)
 	QSize size = pixmap.rect().size();
 	setIconSize(size);
 	resize(size);
+	setMinimumSize(size);
 	setFlat(true);
 	connect(this, SIGNAL (clicked()), this, SLOT (clickCardWidget()));
 }
