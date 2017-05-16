@@ -1,4 +1,3 @@
-#include <iostream>
 #include "CardHLayout.hpp"
 
 CardHLayout::CardHLayout(QWidget *parent, Qt::Alignment alignment): QLayout(parent)

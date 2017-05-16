@@ -30,11 +30,10 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	seedTextBox->setFixedSize(getSeedTextMaxWidth(), 30);
 	x = (width()-seedTextBox->width()) / 2;
 	seedTextBox->move(x, 10);
-	seedTextBox->setMaxLength(getSeedTextMaxLength());
-	//seedTextBox->setReadOnly(true);
+	seedTextBox->setMaxLength(getSeedTextMaxLength()+10);
 	seedTextBox->setText(QString("%1").arg(getSeed()));
 	seedTextBox->setAlignment(Qt::AlignCenter);
-	seedValidator = new SeedValidator;
+	seedValidator = new SeedValidator(this);
 	seedTextBox->setValidator(seedValidator);
 	connect(seedTextBox, SIGNAL (textChanged(QString)), this, SLOT (updateOnSeedChange(QString)));
 
