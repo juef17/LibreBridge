@@ -79,6 +79,7 @@ void PlayWindow::createHandWidgets(Position p)
 	{
 		CardWidget* cardWidget = new CardWidget(&card);
 		cardLayouts[p]->addWidget(cardWidget);
+		handsWidgets[p].push_back(cardWidget);
 	}
 	if(p == North)	gridLayout.addLayout(cardLayouts[p], 0, 1);
 	if(p == East)	gridLayout.addLayout(cardLayouts[p], 1, 2);
@@ -93,6 +94,11 @@ void PlayWindow::destroyAllHandWidgets()
 
 void PlayWindow::destroyHandWidgets(Position p)
 {
+	for (auto &cardWidget : handsWidgets[p])
+	{
+		delete cardWidget;
+	}
+	handsWidgets[p].clear();
 	delete cardLayouts[p];
 }
 

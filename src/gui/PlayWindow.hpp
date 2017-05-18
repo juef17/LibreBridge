@@ -36,6 +36,7 @@ class PlayWindow : public QMainWindow
 		Game *game;
 		QGridLayout gridLayout;
 		CardLayout *cardLayouts[4];
+		std::vector<CardWidget*> handsWidgets[4];
 };
 
 #endif
