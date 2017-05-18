@@ -5,15 +5,12 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include "../LibreBridge.hpp"
-class CardHLayout;
+class CardLayout;
 class QMenuBar;
-class QHBoxLayout;
-class QVBoxLayout;
 class QPushButton;
 class CardWidget;
 class DealSelectionWindow;
 class Game;
-class CardWidget;
 
 class PlayWindow : public QMainWindow
 {
@@ -38,10 +35,7 @@ class PlayWindow : public QMainWindow
 		QWidget *centralWidget;
 		Game *game;
 		QGridLayout gridLayout;
-		QVBoxLayout EWVLayout[2];	// Not pointers so we don't have to deal with the memory (PlayWindow is open iif these are needed)
-		QHBoxLayout NSHLayout[2];
-		CardHLayout *playersHLayout[4][4];	// Players, suits-1 (since clubs start at 1)
-		std::vector<CardWidget*> handsWidgets[4];
+		CardLayout *cardLayouts[4];
 };
 
 #endif

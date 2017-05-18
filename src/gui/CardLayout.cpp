@@ -1,55 +1,54 @@
-#include "CardHLayout.hpp"
+#include "CardLayout.hpp"
 
-CardHLayout::CardHLayout(QWidget *parent, Qt::Alignment alignment): QLayout(parent)
+CardLayout::CardLayout(Player *p, QWidget *parent): QLayout(parent)
 {
-	this->alignment = alignment;
+	player = p;
 }
 
-int CardHLayout::count() const
+int CardLayout::count() const
 {
 	return list.size();
 }
 
-QLayoutItem *CardHLayout::itemAt(int idx) const
+QLayoutItem *CardLayout::itemAt(int idx) const
 {
 	return list.value(idx);
 }
 
-QLayoutItem *CardHLayout::takeAt(int idx)
+QLayoutItem *CardLayout::takeAt(int idx)
 {
 	return idx >= 0 && idx < list.size() ? list.takeAt(idx) : 0;
 }
 
-void CardHLayout::addItem(QLayoutItem *item)
+void CardLayout::addItem(QLayoutItem *item)
 {
 	list.append(item);
 }
 
-CardHLayout::~CardHLayout()
+CardLayout::~CardLayout()
 {
 	QLayoutItem *item;
 	while((item = takeAt(0))) delete item;
 }
 
-void CardHLayout::setGeometry(const QRect &r)
+void CardLayout::setGeometry(const QRect &r)
 {
 	QLayout::setGeometry(r);
 	
 	int listSize = list.size();
 	if(!listSize) return;
 
-	//int w = r.width();
 	int i = 0;
 	while(i < listSize)
 	{
 		QLayoutItem *o = list.at(i);
 		QRect itemRect = o->geometry();
 		int x;
-		if(alignment == Qt::AlignRight)
+		//if(alignment == Qt::AlignRight)
 		{
 			x = r.x() + r.width() - (listSize-i-1) * spacing() - itemRect.width();
 		}
-		else
+		//else
 		{
 			x = r.x() + i * spacing();
 		}
@@ -59,11 +58,10 @@ void CardHLayout::setGeometry(const QRect &r)
 	}
 }
 
-QSize CardHLayout::sizeHint() const
+QSize CardLayout::sizeHint() const
 {
-	QSize s(0,0);
+	QSize s(0, 0);
 	int n = list.count();
-	//if (n > 0) s = QSize(300, 300); // TODO
 	int i = 0;
 	while(i < n)
 	{
@@ -74,9 +72,9 @@ QSize CardHLayout::sizeHint() const
 	return s + (n-1)*QSize(spacing(), 0);
 }
 
-QSize CardHLayout::minimumSize() const
+QSize CardLayout::minimumSize() const
 {
-	QSize s(0,0);
+	QSize s(0, 0);
 	int n = list.count();
 	int i = 0;
 	while(i < n)
@@ -88,7 +86,7 @@ QSize CardHLayout::minimumSize() const
 	return s + (n-1)*QSize(spacing(), 0);
 }
 
-int CardHLayout::spacing() const
+int CardLayout::spacing() const
 {
 	return 16;
 }

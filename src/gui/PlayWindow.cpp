@@ -9,7 +9,7 @@
 #include "Common.hpp"
 #include "PlayWindow.hpp"
 #include "DealSelectionWindow.hpp"
-#include "CardHLayout.hpp"
+#include "CardLayout.hpp"
 #include "../Card.hpp"
 #include "../Game.hpp"
 #include "../Misc.hpp"
@@ -37,17 +37,13 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	
 	createAllHandWidgets();
 	
-	/*QPushButton* test = new QPushButton("test");
+	QPushButton* test = new QPushButton("test");
 	test->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	gridLayout.addWidget(test, 1, 1);*/
+	gridLayout.addWidget(test, 1, 1);
 	// test hand 7924083785712169274
 		
 	gridLayout.setColumnStretch(1, 1);
 	gridLayout.setRowStretch(1, 1);
-	gridLayout.addLayout(&(EWVLayout[0]), 1, 2);
-	gridLayout.addLayout(&(EWVLayout[1]), 1, 0);
-	gridLayout.addLayout(&(NSHLayout[0]), 0, 1);
-	gridLayout.addLayout(&(NSHLayout[1]), 2, 1);
 	centralWidget->setLayout(&gridLayout);
 	show();
 	
@@ -58,10 +54,6 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 PlayWindow::~PlayWindow()
 {
 	destroyAllHandWidgets();
-	for(int i=0; i<4; i++) for(int j=0; j<4; j++)
-	{
-		delete playersHLayout[i][j];
-	}
 }
 
 void PlayWindow::resizeEvent(QResizeEvent* event)
@@ -81,21 +73,17 @@ void PlayWindow::createAllHandWidgets()
 
 void PlayWindow::createHandWidgets(Position p)
 {
-	Player **players = game->getPlayers();
-	for(int i=0; i<4; i++)
-	{
-		Qt::Alignment align = (p == 1 ? Qt::AlignRight : Qt::AlignLeft);
-		playersHLayout[p][i] = new CardHLayout(Q_NULLPTR, align);
-		if(p%2) EWVLayout[p/2].addLayout(playersHLayout[p][i]);
-		else NSHLayout[p/2].addLayout(playersHLayout[p][i]);
-	}
-	for (auto &card : players[p]->getHand())
+	Player *player = game->getPlayers()[p];
+	cardLayouts[p] = new CardLayout(player);
+	for (auto &card : player->getHand())
 	{
 		CardWidget* cardWidget = new CardWidget(&card);
-		playersHLayout[p][card.getSuit()-1]->addWidget(cardWidget);
-		handsWidgets[p].push_back(cardWidget);
+		cardLayouts[p]->addWidget(cardWidget);
 	}
-	for(int i=0; i<4; i++) if(!playersHLayout[p][i]->count()) delete playersHLayout[p][i];
+	if(p == North)	gridLayout.addLayout(cardLayouts[p], 0, 1);
+	if(p == East)	gridLayout.addLayout(cardLayouts[p], 1, 2);
+	if(p == South)	gridLayout.addLayout(cardLayouts[p], 2, 1);
+	if(p == West)	gridLayout.addLayout(cardLayouts[p], 1, 0);
 }
 
 void PlayWindow::destroyAllHandWidgets()
@@ -105,16 +93,7 @@ void PlayWindow::destroyAllHandWidgets()
 
 void PlayWindow::destroyHandWidgets(Position p)
 {
-	for (auto &cardWidget : handsWidgets[p])
-	{
-		delete cardWidget;
-	}
-	handsWidgets[p].clear();
-	QLayout *playerLayout;
-	if(p%2) playerLayout = &(EWVLayout[p/2]);
-	else playerLayout = &(NSHLayout[p/2]);
-	QLayoutItem *item;
-	while((item = playerLayout->takeAt(0))) delete item;
+	delete cardLayouts[p];
 }
 
 Game* PlayWindow::getGame() const

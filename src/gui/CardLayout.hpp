@@ -1,14 +1,15 @@
-#ifndef CARDHLAYOUT_HPP
-#define CARDHLAYOUT_HPP
+#ifndef CARDLAYOUT_HPP
+#define CARDLAYOUT_HPP
 
 #include <QtWidgets>
 #include <QList>
+class Player;
 
-class CardHLayout : public QLayout
+class CardLayout : public QLayout
 {
 	public:
-		CardHLayout(QWidget *parent = Q_NULLPTR, Qt::Alignment alignment = Qt::Alignment());
-		~CardHLayout();
+		CardLayout(Player *p, QWidget *parent = Q_NULLPTR);
+		~CardLayout();
 
 		void addItem(QLayoutItem *item);
 		int count() const;
@@ -21,7 +22,7 @@ class CardHLayout : public QLayout
 
 	private:
 		QList<QLayoutItem*> list;
-		Qt::Alignment alignment;
+		Player *player;
 };
 
 #endif
