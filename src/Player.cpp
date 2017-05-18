@@ -2,6 +2,7 @@
 #include <chrono>
 #include <algorithm>
 #include <iomanip>
+#include <random>
 #include "Player.hpp"
 #include "Misc.hpp"
 

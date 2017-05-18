@@ -2,6 +2,7 @@
 #include <chrono>
 #include <algorithm>
 #include <cmath>
+#include <random>
 #include "Misc.hpp"
 #include "Card.hpp"
 #include "Contract.hpp"

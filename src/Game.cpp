@@ -3,6 +3,7 @@
 #include <thread>
 #include <algorithm>
 #include <limits>
+#include <random>
 #include "Game.hpp"
 #include "HumanPlayer.hpp"
 #include "Misc.hpp"
