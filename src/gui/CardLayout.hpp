@@ -3,12 +3,13 @@
 
 #include <QtWidgets>
 #include <QList>
+#include "CardWidget.hpp"
 class Player;
 
 class CardLayout : public QLayout
 {
 	public:
-		CardLayout(Player *p, QWidget *parent = Q_NULLPTR);
+		CardLayout(Player *p, std::vector<CardWidget*> *h, QWidget *parent = Q_NULLPTR);
 		~CardLayout();
 
 		void addItem(QLayoutItem *item);
@@ -23,6 +24,7 @@ class CardLayout : public QLayout
 	private:
 		QList<QLayoutItem*> list;
 		Player *player;
+		std::vector<CardWidget*> *handWidgets;
 };
 
 #endif

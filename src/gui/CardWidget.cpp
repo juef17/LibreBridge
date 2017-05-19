@@ -2,12 +2,13 @@
 #include <QIcon>
 #include <QSize>
 #include <QString>
+#include <iostream>
 #include "CardWidget.hpp"
-#include "../Card.hpp"
 
-CardWidget::CardWidget(Card *card, QWidget *parent) : QPushButton("", parent)
+CardWidget::CardWidget(Card c, QWidget *parent) : QPushButton("", parent)
 {
-	QPixmap pixmap(QString::fromStdString(card->getImagePath()));
+	card = c;
+	QPixmap pixmap(QString::fromStdString(card.getImagePath()));
 	setIcon(QIcon(pixmap));
 	QSize size = pixmap.rect().size();
 	setIconSize(size);
@@ -17,7 +18,17 @@ CardWidget::CardWidget(Card *card, QWidget *parent) : QPushButton("", parent)
 	connect(this, SIGNAL (clicked()), this, SLOT (clickCardWidget()));
 }
 
+Card CardWidget::getCard()
+{
+	return card;
+}
+
+CardWidget::~CardWidget()
+{
+}
+
 void CardWidget::clickCardWidget()
 {
-	//TODO
+	std::cout << std::flush;
+	card.printCard();
 }

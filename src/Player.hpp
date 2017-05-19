@@ -21,9 +21,12 @@ class Player
 		void printHand(char c);
 		void sortHand();
 		void sortHand(Suit suit);
-		uint8_t countHonorPoints();
-		uint8_t countHonorPoints(Suit suit);
-		uint8_t countVoids();
+		uint8_t countHonorPoints() const;
+		uint8_t countHonorPoints(Suit suit) const;
+		uint8_t countVoids() const;
+		uint8_t countCards(Suit suit) const;
+		uint8_t countSuits() const;
+		uint8_t countLongestSuit() const;
 		void setPosition(Position p);
 		Position getPosition();
 		void clearHand();

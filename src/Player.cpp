@@ -79,7 +79,7 @@ void Player::sortHand(Suit suit)
 	);
 }
 
-uint8_t Player::countHonorPoints()
+uint8_t Player::countHonorPoints() const
 {
 	uint8_t points = 0;
 	for (auto &card : hand)
@@ -90,7 +90,7 @@ uint8_t Player::countHonorPoints()
 	return points;
 }
 
-uint8_t Player::countHonorPoints(Suit suit)
+uint8_t Player::countHonorPoints(Suit suit) const
 {
 	uint8_t points = 0;
 	for (auto &card : hand)
@@ -102,11 +102,30 @@ uint8_t Player::countHonorPoints(Suit suit)
 	return points;
 }
 
-uint8_t Player::countVoids()
+uint8_t Player::countVoids() const
 {
 	uint8_t suitCounts[5] = {0};
 	for (auto &card : hand) suitCounts[card.getSuit()]++;
 	return ((suitCounts[Clubs] == 0) + (suitCounts[Diamonds] == 0) + (suitCounts[Hearts] == 0) + (suitCounts[Spades] == 0));
+}
+
+uint8_t Player::countCards(Suit suit) const
+{
+	uint8_t suitCount = 0;
+	for (auto &card : hand) if(card.getSuit() == suit) suitCount++;
+	return suitCount;
+}
+
+uint8_t Player::countSuits() const
+{
+	return 4 - countVoids();
+}
+
+uint8_t Player::countLongestSuit() const
+{
+	uint8_t suitCounts[5] = {0};
+	for (auto &card : hand) suitCounts[card.getSuit()]++;
+	return std::max({suitCounts[1], suitCounts[2], suitCounts[3], suitCounts[4]});
 }
 
 void Player::setPosition(Position p)

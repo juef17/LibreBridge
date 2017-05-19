@@ -1,7 +1,10 @@
 #include "CardLayout.hpp"
+#include "../Player.hpp"
+#include <iostream>
 
-CardLayout::CardLayout(Player *p, QWidget *parent): QLayout(parent)
+CardLayout::CardLayout(Player *p, std::vector<CardWidget*> *h, QWidget *parent): QLayout(parent)
 {
+	handWidgets = h;
 	player = p;
 }
 
@@ -38,23 +41,73 @@ void CardLayout::setGeometry(const QRect &r)
 	int listSize = list.size();
 	if(!listSize) return;
 
+	int xStart = r.x();
+	int yStart = r.y();
+	QLayoutItem *item = list.at(0);
+	QRect itemRect = (item ? item->geometry() : QRect(0, 0, 0, 0));
+	Position playerPosition = player->getPosition();
 	int i = 0;
-	while(i < listSize)
+	int suitOrder[4] = {-1, -1, -1, -1}; // Suit-1 for index, gives order for that suit, -1 = none added yet
+	int cardCountX[4] = {-1, -1, -1, -1}; // which "level" of card are we at horizontally, -1 = none added yet
+	int currentOrder = 0; // which "level" of suit are we at vertically or horizontally
+	
+	switch(playerPosition)
 	{
-		QLayoutItem *o = list.at(i);
-		QRect itemRect = o->geometry();
-		int x;
-		//if(alignment == Qt::AlignRight)
+		case North:
+		case South:
+			xStart += (r.width() - listSize * spacing() - (player->countSuits()) * itemRect.width()) / 2;
+			break;
+		case East:
+			xStart += r.width() - itemRect.width();
+		case West:
+			yStart += (r.height() - itemRect.height() - (player->countSuits() - 1) * 2 * spacing()) / 2;
+			break;
+		default: break;
+	}
+	
+	for (auto &o : *handWidgets)
+	{
+		Card card = o->getCard();
+		Suit suit = card.getSuit();
+		int suitMinus1 = suit - 1;
+		if(suitOrder[suitMinus1] == -1)
 		{
-			x = r.x() + r.width() - (listSize-i-1) * spacing() - itemRect.width();
+			suitOrder[suitMinus1] = currentOrder;
+			currentOrder++;
 		}
-		//else
+		cardCountX[suitMinus1]++;
+		int x = 0;
+		int y = 0;
+
+		// For x
+		switch(playerPosition)
 		{
-			x = r.x() + i * spacing();
+			case North:
+			case South:
+				x = i * spacing() + std::max(0, currentOrder-1) * itemRect.width();
+				break;
+			case East:
+				x = -(player->countCards(suit) - cardCountX[suitMinus1] - 1) * spacing();
+				break;
+			case West:
+				x = cardCountX[suitMinus1] * spacing();
+				break;
+			default: break;
 		}
-		QRect geom(x, r.y(), itemRect.width(), itemRect.height());
+
+		// For y
+		switch(playerPosition)
+		{
+			case East:
+			case West:
+				y = suitOrder[suitMinus1] * 2 * spacing();
+				break;
+			default: break;
+		}
+		
+		QRect geom(xStart + x, yStart + y, itemRect.width(), itemRect.height());
 		o->setGeometry(geom);
-		++i;
+		i++;
 	}
 }
 

@@ -5,6 +5,7 @@
 #include <QResizeEvent>
 #include <QGridLayout>
 #include <vector>
+#include <iostream>
 #include "CardWidget.hpp"
 #include "Common.hpp"
 #include "PlayWindow.hpp"
@@ -74,10 +75,10 @@ void PlayWindow::createAllHandWidgets()
 void PlayWindow::createHandWidgets(Position p)
 {
 	Player *player = game->getPlayers()[p];
-	cardLayouts[p] = new CardLayout(player);
+	cardLayouts[p] = new CardLayout(player, &handsWidgets[p]);
 	for (auto &card : player->getHand())
 	{
-		CardWidget* cardWidget = new CardWidget(&card);
+		CardWidget* cardWidget = new CardWidget(card);
 		cardLayouts[p]->addWidget(cardWidget);
 		handsWidgets[p].push_back(cardWidget);
 	}

@@ -2,18 +2,22 @@
 #define CARDWIDGET_HPP
 
 #include <QPushButton>
-class Card;
+#include <QSize>
+#include "../Card.hpp"
 
 class CardWidget : public QPushButton
 {
 	Q_OBJECT
 	public:
-		explicit CardWidget(Card *card, QWidget *parent = Q_NULLPTR);
+		explicit CardWidget(Card card, QWidget *parent = Q_NULLPTR);
+		Card getCard();
+		~CardWidget();
 	signals:
 	public slots:
 		void clickCardWidget();
 	protected:
 	private:
+		Card card;
 };
 
 #endif
