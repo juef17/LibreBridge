@@ -38,10 +38,9 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	
 	createAllHandWidgets();
 	
-	QPushButton* test = new QPushButton("test");
+	/*QPushButton* test = new QPushButton("test");
 	test->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	gridLayout.addWidget(test, 1, 1);
-	// test hand 7924083785712169274
+	gridLayout.addWidget(test, 1, 1);*/
 		
 	gridLayout.setColumnStretch(1, 1);
 	gridLayout.setRowStretch(1, 1);

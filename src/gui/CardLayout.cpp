@@ -55,7 +55,7 @@ void CardLayout::setGeometry(const QRect &r)
 	{
 		case North:
 		case South:
-			xStart += (r.width() - listSize * spacing() - (player->countSuits()) * itemRect.width()) / 2;
+			xStart += (r.width() - (listSize - 1) * spacing() - (player->countSuits()) * itemRect.width()) / 2;
 			break;
 		case East:
 			xStart += r.width() - itemRect.width();
@@ -113,7 +113,8 @@ void CardLayout::setGeometry(const QRect &r)
 
 QSize CardLayout::sizeHint() const
 {
-	QSize s(0, 0);
+	return minimumSize();
+	/*QSize s(0, 0);
 	int n = list.count();
 	int i = 0;
 	while(i < n)
@@ -122,7 +123,7 @@ QSize CardLayout::sizeHint() const
 		s = s.expandedTo(o->sizeHint());
 		++i;
 	}
-	return s + (n-1)*QSize(spacing(), 0);
+	return s + (n-1)*QSize(spacing(), 0);*/
 }
 
 QSize CardLayout::minimumSize() const
@@ -130,13 +131,32 @@ QSize CardLayout::minimumSize() const
 	QSize s(0, 0);
 	int n = list.count();
 	int i = 0;
+	QRect itemRect;
 	while(i < n)
 	{
 		QLayoutItem *o = list.at(i);
-		s = s.expandedTo(o->minimumSize());
+		if(!i) itemRect = (o ? o->geometry() : QRect(0, 0, 0, 0));
+		//s = s.expandedTo(o->minimumSize());
 		++i;
 	}
-	return s + (n-1)*QSize(spacing(), 0);
+	int w=0, h=0;
+	Position playerPosition = player->getPosition();
+	if(n) switch(playerPosition)
+	{
+		case North:
+		case South:
+			w = 12 * spacing() + player->countSuits() * itemRect.width();
+			h = itemRect.height();
+			break;
+		case East:
+		case West:
+			w = (player->countLongestSuit() - 1) * spacing() + itemRect.width();
+			h = itemRect.height() + (player->countSuits() - 1) * 2 * spacing();
+			h = std::max(h, 2 * itemRect.height() + 2 * spacing());
+			break;
+		default: break;
+	}
+	return s + QSize(std::max(w, s.width()), std::max(h, s.height()));
 }
 
 int CardLayout::spacing() const

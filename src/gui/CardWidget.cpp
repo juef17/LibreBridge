@@ -31,4 +31,5 @@ void CardWidget::clickCardWidget()
 {
 	std::cout << std::flush;
 	card.printCard();
+	std::cout << std::flush;
 }
