@@ -25,6 +25,9 @@ struct DealConstraints
 	uint8_t teamVoidsMin[2];
 	uint8_t teamVoidsMax[2];
 	
+	uint8_t playerLongestSuitCountMin[4];	// Number of cards for the longest suit in this player's hand
+	uint8_t playerLongestSuitCountMax[4];
+	
 	// TODO add:
 	// players: nbSingletons, nbDoubletons, nbAces, nbKings, nb5+Suit, nbCardsLongestSuit, atLeast1PlayerWithXpts
 	// teams: 	nbSingletons, nbDoubletons, nbAces, nbKings, nb7+Fits, nb8+Fits, atLeast1TeamWithXpts

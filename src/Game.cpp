@@ -258,10 +258,12 @@ bool Game::areConstraintsRespected() const
 	{
 		uint8_t hp = players[i]->countHonorPoints();
 		uint8_t v = players[i]->countVoids();
+		uint8_t longestSuitCount = players[i]->countLongestSuit();
 		if(options.constraints.playerHonorPointsMin[i] > hp) return false;
 		if(options.constraints.playerHonorPointsMax[i] < hp) return false;
 		if(options.constraints.playerVoidsMin[i] > v) return false;
 		if(options.constraints.playerVoidsMax[i] < v) return false;
+		if(options.constraints.playerLongestSuitCountMin[i] > longestSuitCount || options.constraints.playerLongestSuitCountMax[i] < longestSuitCount) return false;
 		teamHP[i%2] += hp;
 		teamV[i%2] += v;
 	}
