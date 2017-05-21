@@ -10,6 +10,7 @@
 #include "Common.hpp"
 #include "PlayWindow.hpp"
 #include "DealSelectionWindow.hpp"
+#include "BidWindow.hpp"
 #include "CardLayout.hpp"
 #include "../Card.hpp"
 #include "../Game.hpp"
@@ -29,6 +30,7 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	setObjectName("playWindow"); // Otherwise all its children inherit the background color
 	setStyleSheet("#playWindow {background-color: green;}");
 	setCentralWidget(centralWidget);
+	cardsAreClickable = false;
 	
 	// Menu
 	/*menuBar = new QMenuBar(centralWidget);
@@ -77,7 +79,7 @@ void PlayWindow::createHandWidgets(Position p)
 	cardLayouts[p] = new CardLayout(player, &handsWidgets[p]);
 	for (auto &card : player->getHand())
 	{
-		CardWidget* cardWidget = new CardWidget(card);
+		CardWidget* cardWidget = new CardWidget(card, this);
 		cardLayouts[p]->addWidget(cardWidget);
 		handsWidgets[p].push_back(cardWidget);
 	}
@@ -102,7 +104,19 @@ void PlayWindow::destroyHandWidgets(Position p)
 	delete cardLayouts[p];
 }
 
+void PlayWindow::startBidding()
+{
+	bidWindow = new BidWindow(this);
+	bidWindow->show();
+	//delete dealSelectionWindow;
+}
+
 Game* PlayWindow::getGame() const
 {
 	return game;
+}
+
+bool PlayWindow::getCardsAreClickable() const
+{
+	return cardsAreClickable;
 }

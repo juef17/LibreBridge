@@ -59,6 +59,7 @@ bool Card::operator == (const Card& card)
 void Card::printCard()
 {
 	cout << valueToChar(value) << suitToChar(suit);
+	//  << "♥" << "♥"+1
 }
 
 bool Card::operator < (const Card& card)

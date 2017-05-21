@@ -31,6 +31,7 @@ HEADERS +=	src/AIPlayer.hpp \
 			src/Misc.hpp \
 			src/Player.hpp \
 			src/AIPlayers/AI_Random.hpp \
+			src/gui/BidWindow.hpp \
 			src/gui/CardLayout.hpp \
 			src/gui/CardWidget.hpp \
 			src/gui/WelcomeWindow.hpp \
@@ -49,6 +50,7 @@ SOURCES +=	src/AIPlayer.cpp \
 			src/Misc.cpp \
 			src/Player.cpp \
 			src/AIPlayers/AI_Random.cpp \
+			src/gui/BidWindow.cpp \
 			src/gui/CardLayout.cpp \
 			src/gui/CardWidget.cpp \
 			src/gui/WelcomeWindow.cpp \

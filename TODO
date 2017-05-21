@@ -9,6 +9,8 @@ Menu
 Toolbar
 Status bar
 card decks xml, preview
+unicode cards in text mode:	https://en.wikipedia.org/wiki/Playing_cards_in_Unicode
+							http://stackoverflow.com/questions/20419605/how-to-convert-unicode-code-points-to-utf-8-in-c
 
 Lua AI scripting?
 	http://www.rasterbar.com/products/luabind/docs.html

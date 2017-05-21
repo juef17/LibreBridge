@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QSize>
 #include "../Card.hpp"
+class PlayWindow;
 
 class CardWidget : public QPushButton
 {
@@ -18,6 +19,7 @@ class CardWidget : public QPushButton
 	protected:
 	private:
 		Card card;
+		PlayWindow *parent;
 };
 
 #endif

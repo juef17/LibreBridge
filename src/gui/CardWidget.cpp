@@ -4,9 +4,11 @@
 #include <QString>
 #include <iostream>
 #include "CardWidget.hpp"
+#include "PlayWindow.hpp"
 
 CardWidget::CardWidget(Card c, QWidget *parent) : QPushButton("", parent)
 {
+	this->parent = (PlayWindow*)parent;
 	card = c;
 	QPixmap pixmap(QString::fromStdString(card.getImagePath()));
 	setIcon(QIcon(pixmap));
@@ -29,6 +31,7 @@ CardWidget::~CardWidget()
 
 void CardWidget::clickCardWidget()
 {
+	if(!parent->getCardsAreClickable()) return;
 	std::cout << std::flush;
 	card.printCard();
 	std::cout << std::flush;

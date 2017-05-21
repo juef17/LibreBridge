@@ -17,18 +17,19 @@ class DealSelectionWindow : public QDialog
 		QLineEdit *seedTextBox;
 		QPushButton *seedMinusButton;
 		QPushButton *seedPlusButton;
-		QPushButton *playButton;
 		void closeEvent(QCloseEvent *event);
 	signals:
 	public slots:
-		void playThisDeal();
 		void minusDeal();
 		void plusDeal();
 		void updateOnSeedChange(const QString &text);
+		void startBidding();
 	protected:
 	private:
 		PlayWindow *parent;
 		SeedValidator *seedValidator;
+		QPushButton *playButton;
+		bool showWelcomeWindowWhenDone;
 };
 
 #endif

@@ -16,6 +16,7 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 {
 	int x, y;
 	this->parent = (PlayWindow*)parent;
+	showWelcomeWindowWhenDone = true;
 	
 	// This window
 	setFixedSize(300, 100);
@@ -57,12 +58,8 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	x = (width()-playButton->width()) / 2;
 	y = (height()-playButton->height()) / 2;
 	playButton->move(x, seedTextBox->y() + seedTextBox->height() + 10);
-	connect(playButton, SIGNAL (clicked()), this, SLOT (playThisDeal()));
+	connect(playButton, SIGNAL (clicked()), this, SLOT (startBidding()));
 	playButton->setDefault(true);
-}
-
-void DealSelectionWindow::playThisDeal()
-{
 }
 
 void DealSelectionWindow::minusDeal()
@@ -96,8 +93,18 @@ void DealSelectionWindow::updateOnSeedChange(const QString &text)
 void DealSelectionWindow::closeEvent(QCloseEvent *)
 {
 	delete seedValidator;
-	WelcomeWindow *welcomeWindow = new WelcomeWindow;
-	copyWindowGeometry(parent, welcomeWindow);
-	parent->close();
-	welcomeWindow->show();
+	if(showWelcomeWindowWhenDone)
+	{
+		WelcomeWindow *welcomeWindow = new WelcomeWindow;
+		copyWindowGeometry(parent, welcomeWindow);
+		parent->close();
+		welcomeWindow->show();
+	}
+}
+
+void DealSelectionWindow::startBidding()
+{
+	showWelcomeWindowWhenDone = false;
+	this->close();
+	parent->startBidding();
 }
