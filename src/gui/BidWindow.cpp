@@ -51,6 +51,10 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	doubleButton->setAutoDefault(false);
 	doubleButton->setEnabled(false);
 	
+	bidHistoryWidget = new QLabel("test", this);
+	bidHistoryWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+	bidHistoryWidget->setLineWidth(2);
+	
 	// QString("♥")
 	// http://stackoverflow.com/questions/30973781/qt-add-custom-font-from-resource
 }

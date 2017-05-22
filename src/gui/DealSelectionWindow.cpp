@@ -56,7 +56,6 @@ DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 	playButton = new QPushButton("Play this deal", this);
 	playButton->setFixedSize(150, 30);
 	x = (width()-playButton->width()) / 2;
-	y = (height()-playButton->height()) / 2;
 	playButton->move(x, seedTextBox->y() + seedTextBox->height() + 10);
 	connect(playButton, SIGNAL (clicked()), this, SLOT (startBidding()));
 	playButton->setDefault(true);

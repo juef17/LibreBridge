@@ -1,3 +1,4 @@
+Ajouter undo button pour les enchères
 Faire alterner les couleurs de cartes
 Checker le beginner qt tutorial pour m'assurer que la mémoire est bien détruite (e.g. game = new Game;)
 Fenêtre pour attente si contraintes intenses

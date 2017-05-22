@@ -101,7 +101,11 @@ void PlayWindow::destroyHandWidgets(Position p)
 		delete cardWidget;
 	}
 	handsWidgets[p].clear();
-	delete cardLayouts[p];
+	if(cardLayouts[p])
+	{
+		delete cardLayouts[p];
+		cardLayouts[p] = NULL;
+	}
 }
 
 void PlayWindow::startBidding()
