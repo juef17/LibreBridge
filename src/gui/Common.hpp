@@ -1,10 +1,12 @@
 #ifndef COMMON_HPP
 #define COMMON_HPP
 
-#include <QWidget>
 #include <QString>
 #include <string>
 #include "../LibreBridge.hpp"
+#include "../Bid.hpp"
+class QWidget;
+class QLabel;
 
 #define MIN_WIDTH 480
 #define MIN_HEIGHT 320
@@ -14,5 +16,6 @@ void setTitle(QWidget *w, QString s = "");
 int getSeedTextMaxWidth();
 int getSeedTextMaxLength();
 void copyWindowGeometry(QWidget *w1, QWidget *w2);
+void setBidHistoryText(QLabel *l, Bid bid);
 
 #endif

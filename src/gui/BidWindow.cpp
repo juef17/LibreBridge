@@ -3,6 +3,7 @@
 #include "PlayWindow.hpp"
 #include "WelcomeWindow.hpp"
 #include "../Misc.hpp"
+#include "../Bid.hpp"
 #include <QPushButton>
 #include <QApplication>
 #include <QCloseEvent>
@@ -15,7 +16,7 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	
 	// This window
 	int x, y;
-	setFixedSize(370, 200);
+	setFixedSize(370, 240);
 	setTitle(this, "Bidding");
 	QRect screenGeometry = QApplication::desktop()->screenGeometry();
 	x = (screenGeometry.width()-width()) / 2;
@@ -24,39 +25,60 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 
 	// evalButton
 	evalButton = new QPushButton("Evaluate", this);
-	evalButton->move(10, 135);
+	evalButton->move(10, 175);
 	evalButton->setAutoDefault(false);
 	evalButton->setEnabled(false);
 
 	// interpretButton
 	interpretButton = new QPushButton("Interpret", this);
-	interpretButton->move(96, 135);
+	interpretButton->move(96, 175);
 	interpretButton->setAutoDefault(false);
 	interpretButton->setEnabled(false);
 
 	// hintButton
 	hintButton = new QPushButton("Hint", this);
-	hintButton->move(53, 165);
+	hintButton->move(53, 205);
 	hintButton->setAutoDefault(false);
 	hintButton->setEnabled(false);
 
 	// passButton
 	passButton = new QPushButton("Pass", this);
-	passButton->move(185, 165);
+	passButton->move(185, 205);
 	passButton->setAutoDefault(false);
 
 	// doubleButton
 	doubleButton = new QPushButton("Double", this);
-	doubleButton->move(275, 165);
+	doubleButton->move(275, 205);
 	doubleButton->setAutoDefault(false);
 	doubleButton->setEnabled(false);
 	
-	bidHistoryWidget = new QLabel("test", this);
-	bidHistoryWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	bidHistoryWidget->setLineWidth(2);
-	
-	// QString("♥")
-	// http://stackoverflow.com/questions/30973781/qt-add-custom-font-from-resource
+	// Bid History
+	bidHistoryWidget = new QLabel("", this);
+	bidHistoryWidget->setFrameStyle(QFrame::Box | QFrame::Sunken);
+	bidHistoryWidget->setGeometry(10, 20, 160, 150);
+	bidHistoryPositionLabelsBox = new QHBoxLayout;
+	bidHistoryPositionLabelsBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	bidHistoryPositionLabelsWidget = new QWidget(this);
+	bidHistoryPositionLabelsWidget->setLayout(bidHistoryPositionLabelsBox);
+	bidHistoryPositionLabelsWidget->move(10, -5);
+	for(int i=0; i<4; i++)
+	{
+		bidHistoryPositionLabels[i] = new QLabel(QString::fromStdString(positionToString(Position(i))));
+		bidHistoryPositionLabelsBox->addWidget(bidHistoryPositionLabels[i]);
+	}
+	bidHistoryDisplayGrid = new QGridLayout();
+	bidHistoryDisplayGrid->setAlignment(Qt::AlignCenter);
+	bidHistoryWidget->setLayout(bidHistoryDisplayGrid);
+	for(int i=0; i<28; i++)
+	{
+		bidHistoryLabels[i] = new QLabel("");
+		bidHistoryLabels[i]->setAlignment(Qt::AlignCenter);
+		//setBidHistoryText(bidHistoryLabels[i], b);
+		//bidHistoryLabels[i]->setStyleSheet("QLabel { background-color : red; color : blue; }");
+		bidHistoryLabels[i]->setFixedWidth((bidHistoryWidget->width()-20) / 4);
+		//bidHistoryLabels[i]->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+		bidHistoryDisplayGrid->addWidget(bidHistoryLabels[i], i/4, i%4);
+	}
 }
 
 void BidWindow::closeEvent(QCloseEvent *)

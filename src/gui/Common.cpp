@@ -1,5 +1,8 @@
 #include <cmath>
+#include <QWidget>
+#include <QLabel>
 #include "Common.hpp"
+#include "../Bid.hpp"
 
 void setTitle(QWidget *w, QString s)
 {
@@ -25,4 +28,12 @@ int getSeedTextMaxLength()
 void copyWindowGeometry(QWidget *w1, QWidget *w2)
 {
 	w2->restoreGeometry(w1->saveGeometry());
+}
+
+void setBidHistoryText(QLabel *l, Bid bid)
+{
+	l->setText("RAMOUTZ");
+	
+	// QString("♥")
+	// http://stackoverflow.com/questions/30973781/qt-add-custom-font-from-resource
 }

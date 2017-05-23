@@ -28,6 +28,8 @@ class BidWindow : public QDialog
 		QGridLayout *bidHistoryDisplayGrid;
 		QHBoxLayout *bidHistoryPositionLabelsBox;
 		QLabel *bidHistoryPositionLabels[4];
+		QLabel *bidHistoryLabels[28];
+		QWidget *bidHistoryPositionLabelsWidget;
 		QLabel *bidHistoryWidget;
 };
 
