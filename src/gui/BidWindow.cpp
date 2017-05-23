@@ -5,6 +5,8 @@
 #include "../Misc.hpp"
 #include "../Bid.hpp"
 #include <QPushButton>
+#include <QLabel>
+#include <QGridLayout>
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -78,6 +80,28 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 		bidHistoryLabels[i]->setFixedWidth((bidHistoryWidget->width()-20) / 4);
 		//bidHistoryLabels[i]->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 		bidHistoryDisplayGrid->addWidget(bidHistoryLabels[i], i/4, i%4);
+	}
+	
+	// Bid buttons
+	bidButtonsWidget = new QWidget(this);
+	bidButtonsWidget->setGeometry(185, 10, 160, 180);
+	bidButtonsLayout = new QGridLayout;
+	bidButtonsLayout->setAlignment(Qt::AlignCenter);
+	bidButtonsWidget->setLayout(bidButtonsLayout);
+	for(int i = 0; i<7; i++)
+	{
+		bidLevels[i] = new QLabel(QString::number(i) + QString("."));
+		bidLevels[i]->setAlignment(Qt::AlignBottom);
+		bidButtonsLayout->addWidget(bidLevels[i], i, 0);
+		for(int j = 0; j<5; j++)
+		{
+			int index = i*5 + j;
+			bidButtons[index] = new QPushButton;
+			bidButtons[index]->setAutoDefault(false);
+			bidButtons[index]->setFixedSize(24, 24);
+			setBiddingButtonGraphics(bidButtons[index], Suit(j+1));
+			bidButtonsLayout->addWidget(bidButtons[index], i, j+1);
+		}
 	}
 }
 

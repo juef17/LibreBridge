@@ -2,11 +2,12 @@
 #define BIDWINDOW_HPP
 
 #include <QDialog>
-#include <QLabel>
-#include <QFrame>
-#include <QGridLayout>
-class PlayWindow;
+class QLabel;
+class QPushButton;
+class QGridLayout;
+class QHBoxLayout;
 class WelcomeWindow;
+class PlayWindow;
 
 class BidWindow : public QDialog 
 {
@@ -31,6 +32,10 @@ class BidWindow : public QDialog
 		QLabel *bidHistoryLabels[28];
 		QWidget *bidHistoryPositionLabelsWidget;
 		QLabel *bidHistoryWidget;
+		QWidget *bidButtonsWidget;
+		QGridLayout *bidButtonsLayout;
+		QPushButton *bidButtons[35];
+		QLabel *bidLevels[7];
 };
 
 #endif
