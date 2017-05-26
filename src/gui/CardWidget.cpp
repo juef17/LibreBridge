@@ -25,10 +25,6 @@ Card CardWidget::getCard()
 	return card;
 }
 
-CardWidget::~CardWidget()
-{
-}
-
 void CardWidget::clickCardWidget()
 {
 	if(!parent->getCardsAreClickable()) return;

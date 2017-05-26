@@ -1,4 +1,5 @@
 #include "BidWindow.hpp"
+#include "BidButton.hpp"
 #include "Common.hpp"
 #include "PlayWindow.hpp"
 #include "WelcomeWindow.hpp"
@@ -90,16 +91,13 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	bidButtonsWidget->setLayout(bidButtonsLayout);
 	for(int i = 0; i<7; i++)
 	{
-		bidLevels[i] = new QLabel(QString::number(i) + QString("."));
+		bidLevels[i] = new QLabel(QString::number(i+1) + QString("."));
 		bidLevels[i]->setAlignment(Qt::AlignBottom);
 		bidButtonsLayout->addWidget(bidLevels[i], i, 0);
 		for(int j = 0; j<5; j++)
 		{
 			int index = i*5 + j;
-			bidButtons[index] = new QPushButton;
-			bidButtons[index]->setAutoDefault(false);
-			bidButtons[index]->setFixedSize(24, 24);
-			setBiddingButtonGraphics(bidButtons[index], Suit(j+1));
+			bidButtons[index] = new BidButton(Suit(j+1), i+1);
 			bidButtonsLayout->addWidget(bidButtons[index], i, j+1);
 		}
 	}

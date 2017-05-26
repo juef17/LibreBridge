@@ -8,6 +8,7 @@ class QGridLayout;
 class QHBoxLayout;
 class WelcomeWindow;
 class PlayWindow;
+class BidButton;
 
 class BidWindow : public QDialog 
 {
@@ -34,7 +35,7 @@ class BidWindow : public QDialog
 		QLabel *bidHistoryWidget;
 		QWidget *bidButtonsWidget;
 		QGridLayout *bidButtonsLayout;
-		QPushButton *bidButtons[35];
+		BidButton *bidButtons[35];
 		QLabel *bidLevels[7];
 };
 
