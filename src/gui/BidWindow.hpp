@@ -16,6 +16,9 @@ class BidWindow : public QDialog
 	public:
 		explicit BidWindow(QWidget *parent = Q_NULLPTR);
 		void closeEvent(QCloseEvent *event);
+		void biddingProcess();
+		void disableAllButtons();
+		void enableButtons();
 	signals:
 	public slots:
 	protected:
@@ -37,6 +40,8 @@ class BidWindow : public QDialog
 		QGridLayout *bidButtonsLayout;
 		BidButton *bidButtons[35];
 		QLabel *bidLevels[7];
+		bool isDoubleLegal;
+		bool isRedoubleLegal;
 };
 
 #endif

@@ -24,10 +24,10 @@ Card HumanPlayer::playCard(Suit firstSuit, vector<Card> dummyHand)
 	return card;
 }
 
-void HumanPlayer::bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, vector<Bid>)
+void HumanPlayer::bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, Position playerWhoBetNormallyLast, vector<Bid>)
 {
 	string playerInput;
 	cout << positionToString(position) << ", please enter your bid: ";
 	getline (cin, playerInput);
-	bid.setBid(playerInput, position, lastLevel, lastSuit, lastDoubled, lastRedoubled);
+	bid.setBid(playerInput, position, lastLevel, lastSuit, lastDoubled, lastRedoubled, playerWhoBetNormallyLast);
 }

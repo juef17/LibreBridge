@@ -14,7 +14,7 @@ class HumanPlayer: public Player
 	public:
 		HumanPlayer();
 		Card playCard(Suit firstSuit, std::vector<Card> dummyHand = std::vector<Card>());
-		void bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, std::vector<Bid>);
+		void bid(Bid& bid, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, Position playerWhoBetNormallyLast, std::vector<Bid>);
 		~HumanPlayer(){}
 };
 

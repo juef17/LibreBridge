@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled)
+void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, Position playerWhoBetNormallyLast)
 {
 	betType = Invalid;
 	player = pla;
@@ -11,12 +11,12 @@ void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSui
 	level = 0;
 	if(stringBid == "X")
 	{
-		if(!lastLevel || lastDoubled || lastRedoubled) return;
+		if(!lastLevel || lastDoubled || lastRedoubled || (pla % 2 == playerWhoBetNormallyLast % 2)) return;
 		betType = Double;
 	}
 	else if(stringBid == "XX")
 	{
-		if(!lastLevel || !lastDoubled || lastRedoubled) return;
+		if(!lastLevel || !lastDoubled || lastRedoubled || (pla % 2 != playerWhoBetNormallyLast % 2)) return;
 		betType = Redouble;
 	}
 	else if(stringBid == "Pass" || stringBid == "") betType = Pass;
@@ -42,17 +42,17 @@ void Bid::setBid(string stringBid, Position pla, uint8_t lastLevel, Suit lastSui
 	}
 }
 
-void Bid::setBid(BetType& b, Suit& s, uint8_t& l, Position position, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled)
+void Bid::setBid(BetType& b, Suit& s, uint8_t& l, Position pla, uint8_t lastLevel, Suit lastSuit, bool lastDoubled, bool lastRedoubled, Position playerWhoBetNormallyLast)
 {
-	player = position;
+	player = pla;
 	if(b == Double)
 	{
-		if(!lastLevel || lastDoubled || lastRedoubled) return;
+		if(!lastLevel || lastDoubled || lastRedoubled || (pla % 2 == playerWhoBetNormallyLast % 2)) return;
 		betType = Double;
 	}
 	else if(b == Redouble)
 	{
-		if(!lastLevel || !lastDoubled || lastRedoubled) return;
+		if(!lastLevel || !lastDoubled || lastRedoubled || (pla % 2 != playerWhoBetNormallyLast % 2)) return;
 		betType = Redouble;
 	}
 	else if(b == Pass) betType = Pass;

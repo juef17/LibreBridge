@@ -65,7 +65,7 @@ void Game::deal()
 		{
 			players[i]->addCardToHand(deck.back());
 			deck.pop_back();
-        }
+		}
 		players[i]->sortHand();
 	}
 }
@@ -91,15 +91,16 @@ Contract Game::bid()
 	uint8_t lastLevel = 0;
 	Suit lastSuit = NoTrump;
 	Position playerPos = dealer;
+	Position playerWhoBetNormallyLast = dealer;
 	bool lastDoubled = false, lastRedoubled = false;
 	Contract contract;
 	
 	while(numberOfPass < 3 || (!atLeastOneBidMade && numberOfPass < 4))
     {
-        Bid bid;
+		Bid bid;
 		do
 		{
-			players[playerPos]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, bidWar);
+			players[playerPos]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, playerWhoBetNormallyLast, bidWar);
 			if(bid.getBetType() == Invalid) cout << "Invalid bet!\n";
 		} while (bid.getBetType() == Invalid);
 		if(!players[playerPos]->getIsHuman())
@@ -112,6 +113,7 @@ Contract Game::bid()
 		else numberOfPass = 0;
 		if(bid.getBetType() == Normal)
 		{
+			playerWhoBetNormallyLast = playerPos;
 			lastBidMade = playerPos%2;
 			lastSuit = bid.getSuit();
 			lastLevel = bid.getLevel();
@@ -129,7 +131,7 @@ Contract Game::bid()
 		contract.setContract(0, NoTrump, North, false, false, vulnerability);
 		return contract;
 	}
-    contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, vulnerability);
+	contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, vulnerability);
 	return contract;
 }
 
@@ -293,4 +295,14 @@ void Game::findNextDeal()
 		constraintsOK = areConstraintsRespected();
 		if(!constraintsOK) incrementSeed();
 	} while(!constraintsOK);
+}
+
+vector<Bid> Game::getBidWar() const
+{
+	return bidWar;
+}
+
+Position Game::getDealer() const
+{
+	return dealer;
 }

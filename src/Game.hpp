@@ -36,6 +36,8 @@ class Game
 		bool areConstraintsRespected() const;
 		Player** getPlayers();
 		void findNextDeal();
+		std::vector<Bid> getBidWar() const;
+		Position getDealer() const;
 };
 
 class LocalGame: public Game
