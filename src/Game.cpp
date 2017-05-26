@@ -306,3 +306,8 @@ Position Game::getDealer() const
 {
 	return dealer;
 }
+
+void Game::addBid(Bid bid)
+{
+	bidWar.push_back(bid);
+}

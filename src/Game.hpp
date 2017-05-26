@@ -38,6 +38,7 @@ class Game
 		void findNextDeal();
 		std::vector<Bid> getBidWar() const;
 		Position getDealer() const;
+		void addBid(Bid bid);
 };
 
 class LocalGame: public Game

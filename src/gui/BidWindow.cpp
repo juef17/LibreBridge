@@ -1,3 +1,12 @@
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <QPushButton>
+#include <QLabel>
+#include <QGridLayout>
+#include <QApplication>
+#include <QCloseEvent>
+#include <QDesktopWidget>
 #include "BidWindow.hpp"
 #include "BidButton.hpp"
 #include "Common.hpp"
@@ -7,12 +16,6 @@
 #include "../Bid.hpp"
 #include "../Contract.hpp"
 #include "../Game.hpp"
-#include <QPushButton>
-#include <QLabel>
-#include <QGridLayout>
-#include <QApplication>
-#include <QCloseEvent>
-#include <QDesktopWidget>
 
 BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 {
@@ -20,6 +23,8 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	showWelcomeWindowWhenDone = true;
 	isDoubleLegal = false;
 	isRedoubleLegal = false;
+	Game* game = this->parent->getGame();
+	currentBidHistoryLabel = game->getDealer();
 	
 	// This window
 	int x, y;
@@ -130,10 +135,12 @@ void BidWindow::biddingProcess()
 	bool atLeastOneBidMade = false;
 	uint8_t numberOfPass = 0;
 	uint8_t lastBidMade = 0; // team % 2 who bet last
-	uint8_t lastLevel = 0;
-	Suit lastSuit = NoTrump;
+	lastLevel = 0;
+	lastSuit = NoTrump;
 	Position playerPos = game->getDealer();
+	Position playerWhoBetNormallyLast = playerPos;
 	bool lastDoubled = false, lastRedoubled = false;
+	isDoubleLegal = false; isRedoubleLegal = false;
 	Contract contract;
 	
 	for (auto &bid : bidWar)
@@ -142,6 +149,7 @@ void BidWindow::biddingProcess()
 		else numberOfPass = 0;
 		if(bid.getBetType() == Normal)
 		{
+			playerWhoBetNormallyLast = playerPos;
 			lastBidMade = playerPos%2;
 			lastSuit = bid.getSuit();
 			lastLevel = bid.getLevel();
@@ -152,39 +160,45 @@ void BidWindow::biddingProcess()
 		}
 		if(bid.getBetType() == Double) lastDoubled = true;
 		if(bid.getBetType() == Redouble) lastRedoubled = true;
+		isDoubleLegal = atLeastOneBidMade && !lastDoubled && !lastRedoubled && (playerPos % 2 != playerWhoBetNormallyLast % 2);
+		isRedoubleLegal = atLeastOneBidMade && lastDoubled && !lastRedoubled && (playerPos % 2 == playerWhoBetNormallyLast % 2);
+		if(!isRedoubleLegal) doubleButton->setText("Double");
+			
 		playerPos = nextPosition(playerPos);
 	}
 	
-	if(numberOfPass == 4)
+	if(numberOfPass == 4) // Don't play that deal
 	{
-		// don't play
 		/*if(numberOfPass == 4)
 		{
 			contract.setContract(0, NoTrump, North, false, false, vulnerability);
 			return contract;
 		}*/
 	}
-	else if(atLeastOneBidMade && numberOfPass == 3)
+	else if(atLeastOneBidMade && numberOfPass == 3) // Set the contract
 	{
-		// setter le contrat
 		//contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, vulnerability);
 		//return contract;
 	}
-	else
+	else // Continue playing
 	{
-		// on continue à jouer
-		/*Bid bid;
-		do
+		Player **players = game->getPlayers();
+		if(players[playerPos]->getIsHuman()) enableButtons();
+		else 
 		{
-			players[playerPos]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, bidWar);
-			if(bid.getBetType() == Invalid) cout << "Invalid bet!\n";
-		} while (bid.getBetType() == Invalid);
-		if(!players[playerPos]->getIsHuman())
-		{
+			std::cout << std::flush;
+			std::cout << "AI" << std::endl;
+			std::cout << std::flush;
+			Bid bid;
+			do
+			{
+				players[playerPos]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, playerWhoBetNormallyLast, bidWar);
+			} while (bid.getBetType() == Invalid);
 			if(options.AI_playDelay) this_thread::sleep_for(chrono::milliseconds(options.AI_playDelay));
-			cout << positionToString(playerPos) << ": " << bid.toString() << "\n";
+			game->addBid(bid);
+			setBidHistoryText(bidHistoryLabels[currentBidHistoryLabel++], bid);
+			biddingProcess();
 		}
-		bidWar.push_back(bid);*/
 	}
 }
 
@@ -204,15 +218,19 @@ void BidWindow::disableAllButtons()
 
 void BidWindow::enableButtons()
 {
-	
+	evalButton->setEnabled(true);
+	hintButton->setEnabled(true);
+	interpretButton->setEnabled(true);
+	passButton->setEnabled(true);
+	doubleButton->setEnabled(isDoubleLegal || isRedoubleLegal);
+	for(int i = std::min(0, lastLevel-1); i<7; i++)
+	{
+		for(int j = 0; j<5; j++)
+		{
+			if(i == lastLevel-1 && j+1 <= lastSuit) continue;
+			int index = i*5 + j;
+			bidButtons[index]->setEnabled(true);
+			bidButtons[index]->setImage();
+		}
+	}
 }
-
-
-
-
-
-
-
-
-
-

@@ -2,6 +2,7 @@
 #define BIDWINDOW_HPP
 
 #include <QDialog>
+#include "../LibreBridge.hpp"
 class QLabel;
 class QPushButton;
 class QGridLayout;
@@ -34,6 +35,7 @@ class BidWindow : public QDialog
 		QHBoxLayout *bidHistoryPositionLabelsBox;
 		QLabel *bidHistoryPositionLabels[4];
 		QLabel *bidHistoryLabels[28];
+		int currentBidHistoryLabel;
 		QWidget *bidHistoryPositionLabelsWidget;
 		QLabel *bidHistoryWidget;
 		QWidget *bidButtonsWidget;
@@ -42,6 +44,8 @@ class BidWindow : public QDialog
 		QLabel *bidLevels[7];
 		bool isDoubleLegal;
 		bool isRedoubleLegal;
+		uint8_t lastLevel;
+		Suit lastSuit;
 };
 
 #endif

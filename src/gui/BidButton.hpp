@@ -10,6 +10,7 @@ class BidButton : public QPushButton
 	Q_OBJECT
 	public:
 		explicit BidButton(Suit suit, int level, QWidget *parent = Q_NULLPTR);
+		void setImage();
 	signals:
 	public slots:
 		void clickBidButton();

@@ -8,7 +8,21 @@ BidButton::BidButton(Suit suit, int level, QWidget *parent): QPushButton (parent
 	this->parent = (BidWindow*)parent;
 	this->suit = suit;
 	this->level = level;
+	
+	setImage();
+	
+	connect(this, SIGNAL (clicked()), this, SLOT (clickBidButton()));
+}
 
+void BidButton::clickBidButton()
+{
+	std::cout << std::flush;
+	std::cout << std::to_string(suit) << " " << std::to_string(level) << std::endl;
+	std::cout << std::flush;
+}
+
+void BidButton::setImage()
+{
 	switch(suit)
 	{
 		case Clubs:
@@ -34,13 +48,4 @@ BidButton::BidButton(Suit suit, int level, QWidget *parent): QPushButton (parent
 	
 	setAutoDefault(false);
 	setFixedSize(24, 24);
-	
-	connect(this, SIGNAL (clicked()), this, SLOT (clickBidButton()));
-}
-
-void BidButton::clickBidButton()
-{
-	std::cout << std::flush;
-	std::cout << std::to_string(suit) << " " << std::to_string(level) << std::endl;
-	std::cout << std::flush;
 }
