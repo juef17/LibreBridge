@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Card AI_Random::playCard(Suit firstSuit, vector<Card> dummyHand)
+Card AI_Random::chooseCardToPlay(Suit firstSuit, vector<Card> dummyHand)
 {
 	return playRandomCard(firstSuit, dummyHand);
 }
