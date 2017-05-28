@@ -34,6 +34,7 @@ void copyWindowGeometry(QWidget *w1, QWidget *w2)
 void setBidHistoryText(QLabel *l, Bid bid)
 {
 	l->setText("RAMOUTZ");
+	//ql->setText("<font color=\"blue\">Hello</font> <font color=\"red\">World</font><font color=\"green">!</font>");
 	
 	// QString("♥")
 	// http://stackoverflow.com/questions/30973781/qt-add-custom-font-from-resource

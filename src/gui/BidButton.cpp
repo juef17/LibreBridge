@@ -16,9 +16,12 @@ BidButton::BidButton(Suit suit, int level, QWidget *parent): QPushButton (parent
 
 void BidButton::clickBidButton()
 {
-	std::cout << std::flush;
-	std::cout << std::to_string(suit) << " " << std::to_string(level) << std::endl;
-	std::cout << std::flush;
+	if(DEBUG_COUT)
+	{
+		std::cout << std::flush;
+		std::cout << std::to_string(suit) << " " << std::to_string(level) << std::endl;
+		std::cout << std::flush;
+	}
 }
 
 void BidButton::setImage()

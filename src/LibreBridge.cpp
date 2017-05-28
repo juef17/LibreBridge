@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	
 	if(options.useGui)
 	{
-		//cout.setstate(ios_base::failbit); // ignore console output
+		if(!DEBUG_COUT) cout.setstate(ios_base::failbit); // ignore console output
 		QApplication libreBridgeGUI(argc, argv);
 		
 		WelcomeWindow welcomeWindow;

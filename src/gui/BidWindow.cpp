@@ -186,9 +186,12 @@ void BidWindow::biddingProcess()
 		if(players[playerPos]->getIsHuman()) enableButtons();
 		else 
 		{
-			std::cout << std::flush;
-			std::cout << "AI" << std::endl;
-			std::cout << std::flush;
+			if(DEBUG_COUT)
+			{
+				std::cout << std::flush;
+				std::cout << "AI" << std::endl;
+				std::cout << std::flush;
+			}
 			Bid bid;
 			do
 			{

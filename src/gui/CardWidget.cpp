@@ -28,7 +28,10 @@ Card CardWidget::getCard()
 void CardWidget::clickCardWidget()
 {
 	if(!parent->getCardsAreClickable()) return;
-	std::cout << std::flush;
-	card.printCard();
-	std::cout << std::flush;
+	if(DEBUG_COUT)
+	{
+		std::cout << std::flush;
+		card.printCard();
+		std::cout << std::flush;
+	}
 }
