@@ -10,6 +10,7 @@ class QHBoxLayout;
 class WelcomeWindow;
 class PlayWindow;
 class BidButton;
+class Game;
 
 class BidWindow : public QDialog 
 {
@@ -20,8 +21,11 @@ class BidWindow : public QDialog
 		void biddingProcess();
 		void disableAllButtons();
 		void enableButtons();
+		void bidClick(BetType betType, uint8_t level, Suit suit);
 	signals:
 	public slots:
+		void bidPass();
+		void bidDouble();
 	protected:
 	private:
 		PlayWindow *parent;
@@ -46,6 +50,11 @@ class BidWindow : public QDialog
 		bool isRedoubleLegal;
 		uint8_t lastLevel;
 		Suit lastSuit;
+		Position playerWhoBetNormallyLast;
+		Position playerPos;
+		bool lastDoubled;
+		bool lastRedoubled;
+		Game* game;
 };
 
 #endif

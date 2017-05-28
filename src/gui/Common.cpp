@@ -1,9 +1,12 @@
 #include <cmath>
+#include <iostream>
 #include <QWidget>
 #include <QLabel>
 #include <QFont>
+#include <QFontDatabase>
 #include "Common.hpp"
 #include "../Bid.hpp"
+#include "../Misc.hpp"
 
 void setTitle(QWidget *w, QString s)
 {
@@ -33,9 +36,40 @@ void copyWindowGeometry(QWidget *w1, QWidget *w2)
 
 void setBidHistoryText(QLabel *l, Bid bid)
 {
-	l->setText("RAMOUTZ");
-	//ql->setText("<font color=\"blue\">Hello</font> <font color=\"red\">World</font><font color=\"green">!</font>");
-	
-	// QString("♥")
-	// http://stackoverflow.com/questions/30973781/qt-add-custom-font-from-resource
+	QString level, suit, labelText;
+	int id = QFontDatabase::addApplicationFont("./fonts/SourceCodePro-Regular.ttf");
+	if(id >= 0)
+	{
+		QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+		QFont fontForBidding(family);
+		l->setFont(fontForBidding);
+	}
+	else
+	{
+		if(DEBUG_COUT) std::cout << std::flush << "CAN'T LOAD FONT" << std::endl << std::flush;
+	}
+	switch(bid.getBetType())
+	{
+		case Pass:
+			l->setText("Pass");
+			break;
+		case Normal:
+			level = QString::number(bid.getLevel());
+			suit = QString::fromStdString(suitToUnicodeString(bid.getSuit()));
+			labelText = level;
+			if(bid.getSuit() == Diamonds || bid.getSuit() == Hearts) labelText += QString("<font color=\"red\">") + suit + QString("</font>");
+			else labelText += suit;
+			l->setText(labelText);
+			break;
+		case Double:
+			l->setText("X");
+			break;
+		case Redouble:
+			l->setText("XX");
+			break;
+		case Invalid:
+		default:
+			l->setText("");
+			if(DEBUG_COUT) std::cout << std::flush << "INVALID BET WHILE SETTING BID HISTORY TEXT, SHOULDN'T HAPPEN" << std::endl << std::flush;
+	}
 }

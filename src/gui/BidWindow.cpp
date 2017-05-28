@@ -23,8 +23,14 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	showWelcomeWindowWhenDone = true;
 	isDoubleLegal = false;
 	isRedoubleLegal = false;
-	Game* game = this->parent->getGame();
+	game = this->parent->getGame();
 	currentBidHistoryLabel = game->getDealer();
+	playerWhoBetNormallyLast = game->getDealer();
+	playerPos = game->getDealer();
+	lastDoubled = false;
+	lastRedoubled = false;
+	lastLevel = 0;
+	lastSuit = NoTrump;
 	
 	// This window
 	int x, y;
@@ -54,11 +60,13 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	passButton = new QPushButton("Pass", this);
 	passButton->move(185, 205);
 	passButton->setAutoDefault(false);
+	connect(passButton, SIGNAL (clicked()), this, SLOT (bidPass()));
 
 	// doubleButton
 	doubleButton = new QPushButton("Double", this);
 	doubleButton->move(275, 205);
 	doubleButton->setAutoDefault(false);
+	connect(doubleButton, SIGNAL (clicked()), this, SLOT (bidDouble()));
 	
 	// Bid History
 	bidHistoryWidget = new QLabel("", this);
@@ -102,7 +110,7 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 		for(int j = 0; j<5; j++)
 		{
 			int index = i*5 + j;
-			bidButtons[index] = new BidButton(Suit(j+1), i+1);
+			bidButtons[index] = new BidButton(Suit(j+1), i+1, this);
 			bidButtonsLayout->addWidget(bidButtons[index], i, j+1);
 		}
 	}
@@ -124,7 +132,6 @@ void BidWindow::closeEvent(QCloseEvent *)
 void BidWindow::biddingProcess()
 {
 	using namespace std;
-	Game* game = parent->getGame();
 	vector<Bid> bidWar = game->getBidWar();
 	
 	disableAllButtons();
@@ -137,11 +144,9 @@ void BidWindow::biddingProcess()
 	uint8_t lastBidMade = 0; // team % 2 who bet last
 	lastLevel = 0;
 	lastSuit = NoTrump;
-	Position playerPos = game->getDealer();
-	Position playerWhoBetNormallyLast = playerPos;
-	bool lastDoubled = false, lastRedoubled = false;
 	isDoubleLegal = false; isRedoubleLegal = false;
 	Contract contract;
+	playerPos = game->getDealer();
 	
 	for (auto &bid : bidWar)
     {
@@ -160,20 +165,18 @@ void BidWindow::biddingProcess()
 		}
 		if(bid.getBetType() == Double) lastDoubled = true;
 		if(bid.getBetType() == Redouble) lastRedoubled = true;
-		isDoubleLegal = atLeastOneBidMade && !lastDoubled && !lastRedoubled && (playerPos % 2 != playerWhoBetNormallyLast % 2);
-		isRedoubleLegal = atLeastOneBidMade && lastDoubled && !lastRedoubled && (playerPos % 2 == playerWhoBetNormallyLast % 2);
-		if(!isRedoubleLegal) doubleButton->setText("Double");
+		isDoubleLegal = atLeastOneBidMade && !lastDoubled && !lastRedoubled && (nextPosition(playerPos) % 2 != playerWhoBetNormallyLast % 2);
+		isRedoubleLegal = atLeastOneBidMade && lastDoubled && !lastRedoubled && (nextPosition(playerPos) % 2 == playerWhoBetNormallyLast % 2);
+		if(isRedoubleLegal) doubleButton->setText("Redouble");
+		else doubleButton->setText("Double");
 			
 		playerPos = nextPosition(playerPos);
 	}
 	
 	if(numberOfPass == 4) // Don't play that deal
 	{
-		/*if(numberOfPass == 4)
-		{
-			contract.setContract(0, NoTrump, North, false, false, vulnerability);
-			return contract;
-		}*/
+		//contract.setContract(0, NoTrump, North, false, false, vulnerability);
+		//return contract;
 	}
 	else if(atLeastOneBidMade && numberOfPass == 3) // Set the contract
 	{
@@ -183,15 +186,12 @@ void BidWindow::biddingProcess()
 	else // Continue playing
 	{
 		Player **players = game->getPlayers();
-		if(players[playerPos]->getIsHuman()) enableButtons();
+		if(players[playerPos]->getIsHuman())
+		{
+			enableButtons();
+		}
 		else 
 		{
-			if(DEBUG_COUT)
-			{
-				std::cout << std::flush;
-				std::cout << "AI" << std::endl;
-				std::cout << std::flush;
-			}
 			Bid bid;
 			do
 			{
@@ -230,10 +230,34 @@ void BidWindow::enableButtons()
 	{
 		for(int j = 0; j<5; j++)
 		{
-			if(i == lastLevel-1 && j+1 <= lastSuit) continue;
+			if(i < lastLevel-1 || (i == lastLevel-1 && j+1 <= lastSuit)) continue;
 			int index = i*5 + j;
 			bidButtons[index]->setEnabled(true);
 			bidButtons[index]->setImage();
 		}
 	}
+}
+
+void BidWindow::bidClick(BetType betType, uint8_t level, Suit suit)
+{
+	Bid bid;
+	bid.setBid(betType, suit, level, playerPos, lastLevel, lastSuit, lastDoubled, lastRedoubled, playerWhoBetNormallyLast);
+	if(betType != Invalid)
+	{
+		game->addBid(bid);
+		setBidHistoryText(bidHistoryLabels[currentBidHistoryLabel], bid);
+		currentBidHistoryLabel = (currentBidHistoryLabel + 1) % 28;
+		biddingProcess();
+	}
+}
+
+void BidWindow::bidPass()
+{
+	bidClick(Pass, 0, NoTrump);
+}
+
+void BidWindow::bidDouble()
+{
+	if(isDoubleLegal) bidClick(Double, 0, NoTrump);
+	else if(isRedoubleLegal) bidClick(Redouble, 0, NoTrump);
 }

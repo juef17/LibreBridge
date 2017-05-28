@@ -20,5 +20,6 @@ void setSeed(RANDOMNESS_SIZE s);
 void incrementSeed();
 RANDOMNESS_SIZE getSeed();
 void randomizeSeed();
+std::string suitToUnicodeString(Suit suit);
 
 #endif

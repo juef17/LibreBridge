@@ -232,3 +232,16 @@ void randomizeSeed()
 	uniform_int_distribution<RANDOMNESS_SIZE> distribution(0,l);
 	options.seed = distribution(generator);
 }
+
+string suitToUnicodeString(Suit suit)
+{
+	switch(suit)
+	{
+		case Clubs: return "♣";
+		case Diamonds: return "♦";
+		case Hearts: return "♥";
+		case Spades: return "♠";
+		case NoTrump:
+		default: return "NT";
+	}
+}
