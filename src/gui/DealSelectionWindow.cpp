@@ -86,6 +86,7 @@ void DealSelectionWindow::updateOnSeedChange(const QString &text)
 		parent->getGame()->findNextDeal();
 		seedTextBox->setText(QString("%1").arg(getSeed())); // If constraints weren't met, the deal number may have changed
 		parent->createAllHandWidgets();
+		parent->updateDealInfoLabel();
 	}
 }
 

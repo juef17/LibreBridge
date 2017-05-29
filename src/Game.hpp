@@ -27,7 +27,6 @@ class Game
 	protected:
 	public:
 		GameType getGameType();
-		uint8_t getVulnerability();
 		void setVulnerability();
 		Game();
 		void prepareForNextGame();

@@ -21,5 +21,6 @@ void incrementSeed();
 RANDOMNESS_SIZE getSeed();
 void randomizeSeed();
 std::string suitToUnicodeString(Suit suit);
+std::string vulnerabilityToString(Vulnerability v);
 
 #endif

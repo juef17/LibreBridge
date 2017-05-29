@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QResizeEvent>
 #include <QGridLayout>
+#include <QLabel>
 #include <vector>
 #include <iostream>
 #include "CardWidget.hpp"
@@ -39,6 +40,11 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	menuBar->addMenu(fileMenu);*/
 	
 	createAllHandWidgets();
+	
+	dealInfoLabel = new QLabel("test", this);
+	gridLayout.addWidget(dealInfoLabel, 0, 2);
+	gridLayout.setAlignment(dealInfoLabel, Qt::AlignRight);
+	updateDealInfoLabel();
 	
 	/*QPushButton* test = new QPushButton("test");
 	test->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -123,4 +129,12 @@ Game* PlayWindow::getGame() const
 bool PlayWindow::getCardsAreClickable() const
 {
 	return cardsAreClickable;
+}
+
+void PlayWindow::updateDealInfoLabel()
+{
+	QString dealNumber = QString("Deal: ") + QString::number(getSeed());
+	QString dealer = QString("Dealer: ") + QString::fromStdString(positionToString(game->getDealer()));
+	QString vulnerability = QString("Vulnerable: ") + QString::fromStdString(vulnerabilityToString(game->getVulnerability()));
+	dealInfoLabel->setText(dealNumber + "\n" + dealer + "\n" + vulnerability);
 }

@@ -70,11 +70,6 @@ void Game::deal()
 	}
 }
 
-uint8_t Game::getVulnerability()
-{
-	return vulnerability;
-}
-
 void Game::setVulnerability()
 {
 	vulnerability = Vulnerability((vulnerability + 1) % 4);

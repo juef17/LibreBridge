@@ -245,3 +245,17 @@ string suitToUnicodeString(Suit suit)
 		default: return "NT";
 	}
 }
+
+string vulnerabilityToString(Vulnerability v)
+{
+	switch(v)
+	{
+		case None: return "None";
+		case NS: return "N/S";
+		case EW: return "E/W";
+		case Both: return "Both";
+		default:
+			if(DEBUG_COUT) cout << flush << "vulnerabilityToString ERROR\n" << endl << flush;
+			return "ERROR";
+	}
+}

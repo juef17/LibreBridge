@@ -181,13 +181,13 @@ void BidWindow::biddingProcess()
 	
 	if(numberOfPass == 4) // Don't play that deal TODO
 	{
-		contract.setContract(0, NoTrump, North, false, false, Vulnerability(game->getVulnerability()));
+		contract.setContract(0, NoTrump, North, false, false, game->getVulnerability());
 		contractWindow = new ContractWindow(contract, this);
 		contractWindow->show();
 	}
 	else if(atLeastOneBidMade && numberOfPass == 3) // Set the contract
 	{
-		contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, Vulnerability(game->getVulnerability()));
+		contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, game->getVulnerability());
 		contractWindow = new ContractWindow(contract, this);
 		contractWindow->show();
 	}

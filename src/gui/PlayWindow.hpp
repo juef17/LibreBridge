@@ -8,6 +8,7 @@
 class CardLayout;
 class QMenuBar;
 class QPushButton;
+class QLabel;
 class CardWidget;
 class DealSelectionWindow;
 class BidWindow;
@@ -27,6 +28,7 @@ class PlayWindow : public QMainWindow
 		Game* getGame() const;
 		void startBidding();
 		bool getCardsAreClickable() const;
+		void updateDealInfoLabel();
 	signals:
 	public slots:
 	protected:
@@ -42,6 +44,7 @@ class PlayWindow : public QMainWindow
 		CardLayout *cardLayouts[4];
 		std::vector<CardWidget*> handsWidgets[4];
 		bool cardsAreClickable;
+		QLabel *dealInfoLabel;
 };
 
 #endif
