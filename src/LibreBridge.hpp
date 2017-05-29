@@ -35,8 +35,9 @@ struct DealConstraints
 
 struct Options
 {
-	int AI_playDelay;							// Milliseconds before each AI bid or play
-	bool AI_letGamesRun;						// If true, no user input between AI-only games. Overrides AI_playDelay
+	int AI_playDelay;							// Milliseconds before each AI play
+	int AI_bidDelay;							// Milliseconds before each AI bid
+	bool AI_letGamesRun;						// If true, no user input between AI-only games. Overrides AI_playDelay and AI_bidDelay
 	std::string playerTypes[4];					// Contains "Human" (or "HumanPlayer") or the name of the AI to use
 	std::vector<std::string> AI_availableTypes;	// Contains the names of the usable AI players
 	

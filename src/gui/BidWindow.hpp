@@ -19,7 +19,6 @@ class BidWindow : public QDialog
 	public:
 		explicit BidWindow(QWidget *parent = Q_NULLPTR);
 		void closeEvent(QCloseEvent *event);
-		void biddingProcess();
 		void disableAllButtons();
 		void enableButtons();
 		void bidClick(BetType betType, uint8_t level, Suit suit);
@@ -27,6 +26,7 @@ class BidWindow : public QDialog
 	public slots:
 		void bidPass();
 		void bidDouble();
+		void biddingProcess();
 	protected:
 	private:
 		PlayWindow *parent;
@@ -57,6 +57,7 @@ class BidWindow : public QDialog
 		bool lastRedoubled;
 		Game* game;
 		ContractWindow *contractWindow;
+		bool waitForAI;
 };
 
 #endif

@@ -7,7 +7,7 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
-#include <QMessageBox>
+#include <QTimer>
 #include "BidWindow.hpp"
 #include "BidButton.hpp"
 #include "Common.hpp"
@@ -33,6 +33,7 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	lastRedoubled = false;
 	lastLevel = 0;
 	lastSuit = NoTrump;
+	waitForAI = true;
 	
 	// This window
 	int x, y;
@@ -200,12 +201,18 @@ void BidWindow::biddingProcess()
 		}
 		else 
 		{
+			if(options.AI_bidDelay && waitForAI && atLeastOneBidMade)
+			{
+				waitForAI = false;
+				QTimer::singleShot(options.AI_bidDelay, this, SLOT(biddingProcess()));
+				return;
+			}
+			waitForAI = true;
 			Bid bid;
 			do
 			{
 				players[playerPos]->bid(bid, lastLevel, lastSuit, lastDoubled, lastRedoubled, playerWhoBetNormallyLast, bidWar);
 			} while (bid.getBetType() == Invalid);
-			if(options.AI_playDelay) this_thread::sleep_for(chrono::milliseconds(options.AI_playDelay));
 			game->addBid(bid);
 			setBidHistoryText(bidHistoryLabels[currentBidHistoryLabel++], bid);
 			biddingProcess();

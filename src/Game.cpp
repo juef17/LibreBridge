@@ -95,7 +95,7 @@ Contract Game::bid()
 		} while (bid.getBetType() == Invalid);
 		if(!players[playerPos]->getIsHuman())
 		{
-			if(options.AI_playDelay) this_thread::sleep_for(chrono::milliseconds(options.AI_playDelay));
+			if(options.AI_bidDelay) this_thread::sleep_for(chrono::milliseconds(options.AI_bidDelay));
 			cout << positionToString(playerPos) << ": " << bid.toString() << "\n";
 		}
 		bidWar.push_back(bid);
