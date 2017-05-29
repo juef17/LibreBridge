@@ -27,7 +27,6 @@ class Game
 	protected:
 	public:
 		GameType getGameType();
-		void setVulnerability();
 		Game();
 		void prepareForNextGame();
 		Position whoWinsTheTrick(Card playedCards[], Position firstPlayer) const;
@@ -39,6 +38,7 @@ class Game
 		Position getDealer() const;
 		void addBid(Bid bid);
 		Vulnerability getVulnerability() const;
+		void updateVulnerabilityAndDealer();
 };
 
 class LocalGame: public Game

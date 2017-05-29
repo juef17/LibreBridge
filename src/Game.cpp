@@ -13,9 +13,7 @@ using namespace std;
 Game::Game()
 {
 	bool keepPlaying = false;
-	// Generate random vulnerability and dealer
-	vulnerability = Vulnerability(randomUint8(0, 3, getSeed()));
-	dealer = Position(randomUint8(0, 3, getSeed()));
+	updateVulnerabilityAndDealer();
 	if(!areDealConstraintsValid()) options.useDealConstraints = false;
 	
 	for(uint8_t i=0; i<4; i++) players[i] = Player::getNewPlayer(options.playerTypes[i]);
@@ -56,6 +54,8 @@ void Game::deal()
 	
 	auto engine = default_random_engine{getSeed()};
 	shuffle(begin(deck), end(deck), engine);
+	vulnerability = Vulnerability(randomUint8(0, 3, getSeed()));
+	dealer = Position(randomUint8(0, 3, getSeed()));
 	
 	for(uint8_t i=0; i<4; ++i) 
 	{
@@ -68,11 +68,6 @@ void Game::deal()
 		}
 		players[i]->sortHand();
 	}
-}
-
-void Game::setVulnerability()
-{
-	vulnerability = Vulnerability((vulnerability + 1) % 4);
 }
 
 Contract Game::bid()
@@ -134,8 +129,6 @@ void Game::prepareForNextGame()
 {
 	incrementSeed();
 	bool wasBiddingDone = !bidWar.empty();
-	dealer = nextPosition(dealer);
-	setVulnerability();
 	for(uint8_t i = 0; i<4; ++i) players[i]->clearHand();
 	bidWar.clear();
 	playedCardsHistory.clear();
@@ -290,6 +283,7 @@ void Game::findNextDeal()
 		constraintsOK = areConstraintsRespected();
 		if(!constraintsOK) incrementSeed();
 	} while(!constraintsOK);
+	updateVulnerabilityAndDealer();
 }
 
 vector<Bid> Game::getBidWar() const
@@ -307,8 +301,13 @@ void Game::addBid(Bid bid)
 	bidWar.push_back(bid);
 }
 
-
 Vulnerability Game::getVulnerability() const
 {
 	return vulnerability;
+}
+
+void Game::updateVulnerabilityAndDealer()
+{
+	dealer = Position(getSeed() % 4);
+	vulnerability = Vulnerability((getSeed() % 4 + (getSeed() % 16) / 4) % 4);
 }
