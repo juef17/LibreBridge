@@ -131,6 +131,11 @@ bool PlayWindow::getCardsAreClickable() const
 	return cardsAreClickable;
 }
 
+void PlayWindow::setCardsAreClickable(bool c)
+{
+	cardsAreClickable = c;
+}
+
 void PlayWindow::updateDealInfoLabel()
 {
 	QString dealNumber = QString("Deal: ") + QString::number(getSeed());

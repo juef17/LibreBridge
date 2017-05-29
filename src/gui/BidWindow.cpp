@@ -127,7 +127,7 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 
 void BidWindow::closeEvent(QCloseEvent *)
 {
-	if(showWelcomeWindowWhenDone)
+	if(showWelcomeWindowWhenDone && !parent->getCardsAreClickable()) // If they're clickable, a game was just started
 	{
 		WelcomeWindow *welcomeWindow = new WelcomeWindow;
 		copyWindowGeometry(parent, welcomeWindow);
@@ -275,4 +275,9 @@ void BidWindow::bidDouble()
 {
 	if(isDoubleLegal) bidClick(Double, 0, NoTrump);
 	else if(isRedoubleLegal) bidClick(Redouble, 0, NoTrump);
+}
+
+PlayWindow* BidWindow::getPlayWindow() const
+{
+	return parent;
 }

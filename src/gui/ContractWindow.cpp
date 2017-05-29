@@ -1,6 +1,8 @@
 #include "Common.hpp"
+#include "BidWindow.hpp"
 #include "ContractWindow.hpp"
 #include "PlayWindow.hpp"
+#include "../Game.hpp"
 #include <QPushButton>
 #include <QLabel>
 #include <QCloseEvent>
@@ -10,6 +12,7 @@
 ContractWindow::ContractWindow(Contract c, QWidget *parent): QDialog (parent)
 {
 	contract = c;
+	this->parent = (BidWindow*)parent;
 	
 	// This window
 	int x, y;
@@ -78,9 +81,10 @@ void ContractWindow::restartBidding()
 
 void ContractWindow::OK()
 {
-	/*showWelcomeWindowWhenDone = false;
+	parent->getPlayWindow()->setCardsAreClickable(true);
+	parent->getPlayWindow()->getGame()->setContract(contract);
+	parent->close();
 	this->close();
-	parent->startBidding();*/
 }
 
 void ContractWindow::closeEvent(QCloseEvent *)

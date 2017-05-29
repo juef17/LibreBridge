@@ -39,6 +39,7 @@ class Game
 		void addBid(Bid bid);
 		Vulnerability getVulnerability() const;
 		void updateVulnerabilityAndDealer();
+		void setContract(Contract c);
 };
 
 class LocalGame: public Game

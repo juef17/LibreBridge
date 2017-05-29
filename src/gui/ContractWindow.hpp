@@ -6,7 +6,7 @@
 class QPushButton;
 class QCloseEvent;
 class QLabel;
-class BiddingWindow;
+class BidWindow;
 
 class ContractWindow : public QDialog 
 {
@@ -22,7 +22,7 @@ class ContractWindow : public QDialog
 		void OK();
 	protected:
 	private:
-		BiddingWindow *parent;
+		BidWindow *parent;
 		QPushButton *playAsDeclarerButton;
 		QPushButton *restartBiddingButton;
 		QPushButton *changeBidButton;

@@ -28,6 +28,7 @@ class PlayWindow : public QMainWindow
 		Game* getGame() const;
 		void startBidding();
 		bool getCardsAreClickable() const;
+		void setCardsAreClickable(bool c);
 		void updateDealInfoLabel();
 	signals:
 	public slots:

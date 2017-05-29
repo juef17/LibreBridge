@@ -311,3 +311,8 @@ void Game::updateVulnerabilityAndDealer()
 	dealer = Position(getSeed() % 4);
 	vulnerability = Vulnerability((getSeed() % 4 + (getSeed() % 16) / 4) % 4);
 }
+
+void Game::setContract(Contract c)
+{
+	contract = c;
+}
