@@ -198,3 +198,10 @@ void Contract::print()
 	}
 	cout << "\n";
 }
+
+string Contract::toString() const
+{
+	if(!level) return "All passed.";
+	return	"Contract is: " + to_string(level) + " " + suitToString(suit) + (redoubled ? " redoubled" : (doubled ? " doubled" : "")) + "\n\n"
+			+ " by " + positionToString(declarer) + " (" + (isTeamVulnerable(declarer) ? "" : "not ") + "vulnerable)";
+}

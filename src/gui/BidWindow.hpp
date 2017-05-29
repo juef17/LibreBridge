@@ -11,6 +11,7 @@ class WelcomeWindow;
 class PlayWindow;
 class BidButton;
 class Game;
+class ContractWindow;
 
 class BidWindow : public QDialog 
 {
@@ -55,6 +56,7 @@ class BidWindow : public QDialog
 		bool lastDoubled;
 		bool lastRedoubled;
 		Game* game;
+		ContractWindow *contractWindow;
 };
 
 #endif

@@ -311,3 +311,9 @@ void Game::addBid(Bid bid)
 {
 	bidWar.push_back(bid);
 }
+
+
+Vulnerability Game::getVulnerability() const
+{
+	return vulnerability;
+}

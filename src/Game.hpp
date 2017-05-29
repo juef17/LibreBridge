@@ -39,6 +39,7 @@ class Game
 		std::vector<Bid> getBidWar() const;
 		Position getDealer() const;
 		void addBid(Bid bid);
+		Vulnerability getVulnerability() const;
 };
 
 class LocalGame: public Game

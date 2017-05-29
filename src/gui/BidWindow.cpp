@@ -7,11 +7,13 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
+#include <QMessageBox>
 #include "BidWindow.hpp"
 #include "BidButton.hpp"
 #include "Common.hpp"
 #include "PlayWindow.hpp"
 #include "WelcomeWindow.hpp"
+#include "ContractWindow.hpp"
 #include "../Misc.hpp"
 #include "../Bid.hpp"
 #include "../Contract.hpp"
@@ -115,6 +117,10 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 		}
 	}
 	
+	evalButton->setEnabled(false);
+	hintButton->setEnabled(false);
+	interpretButton->setEnabled(false);
+	
 	biddingProcess();
 }
 
@@ -173,15 +179,17 @@ void BidWindow::biddingProcess()
 		playerPos = nextPosition(playerPos);
 	}
 	
-	if(numberOfPass == 4) // Don't play that deal
+	if(numberOfPass == 4) // Don't play that deal TODO
 	{
-		//contract.setContract(0, NoTrump, North, false, false, vulnerability);
-		//return contract;
+		contract.setContract(0, NoTrump, North, false, false, Vulnerability(game->getVulnerability()));
+		contractWindow = new ContractWindow(contract, this);
+		contractWindow->show();
 	}
 	else if(atLeastOneBidMade && numberOfPass == 3) // Set the contract
 	{
-		//contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, vulnerability);
-		//return contract;
+		contract.setContract(lastLevel, lastSuit, Position(firstBidsTable[lastBidMade][lastSuit]), lastDoubled, lastRedoubled, Vulnerability(game->getVulnerability()));
+		contractWindow = new ContractWindow(contract, this);
+		contractWindow->show();
 	}
 	else // Continue playing
 	{
@@ -221,9 +229,9 @@ void BidWindow::disableAllButtons()
 
 void BidWindow::enableButtons()
 {
-	evalButton->setEnabled(true);
-	hintButton->setEnabled(true);
-	interpretButton->setEnabled(true);
+	//evalButton->setEnabled(true);
+	//hintButton->setEnabled(true);
+	//interpretButton->setEnabled(true);
 	passButton->setEnabled(true);
 	doubleButton->setEnabled(isDoubleLegal || isRedoubleLegal);
 	for(int i = std::min(0, lastLevel-1); i<7; i++)

@@ -23,6 +23,7 @@ class Contract
 		Suit getSuit() const;
 		uint8_t getLevel() const;
 		bool isTeamVulnerable(Position p) const;
+		std::string toString() const;
 };
 
 #endif
