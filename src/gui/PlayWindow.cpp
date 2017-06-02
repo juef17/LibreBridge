@@ -55,6 +55,36 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	playedCardsLayout = new PlayedCardsLayout(&playedCardsWidgets, game, Q_NULLPTR);
 	gridLayout.addLayout(playedCardsLayout, 1, 1);
 	
+	QPixmap arrowImage("./images/arrow.png");
+	for(int i=0; i<4; i++)
+	{
+		QTransform transformArrow;
+		transformArrow.scale(0.5, 0.5);
+		arrows[i] = new QLabel;
+		QFlags<Qt::AlignmentFlag> flag;
+		switch(Position(i))
+		{
+			case North:
+				flag = Qt::AlignHCenter | Qt::AlignTop;
+				break;
+			case South:
+				transformArrow.rotate(180);
+				flag = Qt::AlignHCenter | Qt::AlignBottom;
+				break;
+			case East:
+				transformArrow.rotate(90);
+				flag = Qt::AlignVCenter | Qt::AlignRight;
+				break;
+			case West:
+				transformArrow.rotate(270);
+				flag = Qt::AlignVCenter | Qt::AlignLeft;
+				break;
+		}
+		gridLayout.addWidget(arrows[i], 1, 1, flag);
+		arrows[i]->setPixmap(arrowImage.transformed(transformArrow));
+		arrows[i]->setVisible(false);
+	}
+	
 	/*QPushButton* test = new QPushButton("test");
 	test->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	test->setFlat(true);
@@ -174,4 +204,11 @@ void PlayWindow::playCard(CardWidget *c)
 	playedCardsLayout->addWidget(c);
 	player->clearCard(card);
 	game->addCardToPlayHistory(card);
+	updateCurrentPlayerArrow();
+}
+
+void PlayWindow::updateCurrentPlayerArrow()
+{
+	Position p = game->whoseTurnIsItToPlay();
+	for(int i=0; i<4; i++) arrows[i]->setVisible(Position(i) == p);
 }

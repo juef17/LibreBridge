@@ -84,6 +84,7 @@ void ContractWindow::OK()
 	parent->getPlayWindow()->setCardsAreClickable(true);
 	parent->getPlayWindow()->getGame()->setContract(contract);
 	parent->getPlayWindow()->updateContractInfoLabel();
+	parent->getPlayWindow()->updateCurrentPlayerArrow();
 	parent->close();
 	this->close();
 }

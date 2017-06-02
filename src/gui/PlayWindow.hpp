@@ -33,6 +33,7 @@ class PlayWindow : public QMainWindow
 		void updateDealInfoLabel();
 		void updateContractInfoLabel();
 		void playCard(CardWidget* c);
+		void updateCurrentPlayerArrow();
 	signals:
 	public slots:
 	protected:
@@ -53,6 +54,7 @@ class PlayWindow : public QMainWindow
 		PlayedCardsLayout *playedCardsLayout;
 		std::vector<CardWidget*> playedCardsWidgets;
 		Suit firstSuit;
+		QLabel *arrows[4];
 };
 
 #endif
