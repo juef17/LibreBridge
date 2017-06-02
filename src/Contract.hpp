@@ -19,7 +19,7 @@ class Contract
 		static uint8_t calculateIMP(int16_t score);
 		void setContract(uint8_t lev, Suit sui, Position pos, bool doubl, bool redoubl, Vulnerability vuln);
 		void print();
-		Position getDeclarer();
+		Position getDeclarer() const;
 		Suit getSuit() const;
 		uint8_t getLevel() const;
 		bool isTeamVulnerable(Position p) const;

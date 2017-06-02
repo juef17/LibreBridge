@@ -143,33 +143,6 @@ void Game::prepareForNextGame()
 	}
 }
 
-Position Contract::getDeclarer()
-{
-	return declarer;
-}
-
-Suit Contract::getSuit() const
-{
-	return suit;
-}
-
-uint8_t Contract::getLevel() const
-{
-	return level;
-}
-
-bool Contract::isTeamVulnerable(Position p) const
-{
-	switch(vulnerability)
-	{
-		case None: return false;
-		case Both: return true;
-		case NS: return (p == North || p == South);
-		case EW: return (p == East || p == West);
-		default: return false;
-	}
-}
-
 void Game::playCards()
 {
 	Position player = nextPosition(contract.getDeclarer());
@@ -199,7 +172,7 @@ void Game::playCards()
 				playedCards[j] = (isDummy ? players[actualPlayer]->playCard(firstSuit, players[dummyPosition]->getHand()) : players[actualPlayer]->playCard(firstSuit));
 			} while(!players[player]->hasCard(playedCards[j]) || !players[player]->isValidPlay(playedCards[j], firstSuit));
 			player = nextPosition(player);
-			playedCardsHistory.push_back(playedCards[j]);
+			addCardToPlayHistory(playedCards[j]);
 			players[(j+firstPlayer)%4]->clearCard(playedCards[j]);
 		}
 		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer);
@@ -315,4 +288,71 @@ void Game::updateVulnerabilityAndDealer()
 void Game::setContract(Contract c)
 {
 	contract = c;
+}
+
+Position Game::getPositionFromCard(Card c, bool mayHaveBeenPlayed) const
+{
+	// 1. Look through unplayed cards
+	for(int i=0; i<4; i++) for(auto &card : players[i]->getHand())
+	{
+		if(card == c) return players[i]->getPosition();
+	}
+	
+	// 2. Look through played cards
+	if(mayHaveBeenPlayed)
+	{
+		for(int i=0; i<4; i++) for(auto &card : recreateHand(Position(i)))
+		{
+			if(card == c) return Position(i);
+		}
+	}
+	
+	return Position(10); // Error
+}
+
+vector<Card> Game::recreateHand(Position p) const
+{
+	vector<Card> previouslyHeldCards[4];
+	int i = 0;
+	Position firstPlayer = nextPosition(contract.getDeclarer());
+	Position player = firstPlayer;
+	Card playedCards[4];
+	for(auto &card : playedCardsHistory)
+	{
+		previouslyHeldCards[player].push_back(card);
+		playedCards[i%4] = card;
+		if(i%4 == 3)
+		{
+			firstPlayer = whoWinsTheTrick(playedCards, firstPlayer);
+			player = firstPlayer;
+		}
+		else player = nextPosition(player);
+		i++;
+	}
+	return previouslyHeldCards[p];
+}
+
+void Game::addCardToPlayHistory(Card c)
+{
+	playedCardsHistory.push_back(c);
+}
+
+Position Game::whoseTurnIsItToPlay() const
+{
+	int i = 0;
+	Position firstPlayer = nextPosition(contract.getDeclarer());
+	Position player = firstPlayer;
+	Card playedCards[4];
+	for(auto &card : playedCardsHistory)
+	{
+		playedCards[i%4] = card;
+		if(i%4 == 3)
+		{
+			firstPlayer = whoWinsTheTrick(playedCards, firstPlayer);
+			player = firstPlayer;
+		}
+		else player = nextPosition(player);
+		i++;
+	}
+	return player;
 }

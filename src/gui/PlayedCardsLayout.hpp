@@ -1,16 +1,17 @@
-#ifndef CARDLAYOUT_HPP
-#define CARDLAYOUT_HPP
+#ifndef PLAYEDCARDSLAYOUT_HPP
+#define PLAYEDCARDSLAYOUT_HPP
 
 #include <QtWidgets>
 #include <QList>
 #include "CardWidget.hpp"
 class Player;
+class Game;
 
-class CardLayout : public QLayout
+class PlayedCardsLayout : public QLayout
 {
 	public:
-		CardLayout(Player *p, std::vector<CardWidget*> *h, QWidget *parent = Q_NULLPTR);
-		~CardLayout();
+		PlayedCardsLayout(std::vector<CardWidget*> *pcw, Game *g, QWidget *parent = Q_NULLPTR);
+		~PlayedCardsLayout();
 
 		void addItem(QLayoutItem *item);
 		int count() const;
@@ -20,12 +21,11 @@ class CardLayout : public QLayout
 		QLayoutItem *takeAt(int);
 		void setGeometry(const QRect &rect);
 		int spacing() const;
-		void removeCardWidget(CardWidget *c);
 
 	private:
 		QList<QLayoutItem*> list;
-		Player *player;
-		std::vector<CardWidget*> *handWidgets;
+		std::vector<CardWidget*> *cardWidgets;
+		Game *game;
 };
 
 #endif

@@ -13,6 +13,7 @@
 #include "DealSelectionWindow.hpp"
 #include "BidWindow.hpp"
 #include "CardLayout.hpp"
+#include "PlayedCardsLayout.hpp"
 #include "../Card.hpp"
 #include "../Game.hpp"
 #include "../Misc.hpp"
@@ -32,6 +33,7 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	setStyleSheet("#playWindow {background-color: green;}");
 	setCentralWidget(centralWidget);
 	cardsAreClickable = false;
+	firstSuit = NoTrump;
 	
 	// Menu
 	/*menuBar = new QMenuBar(centralWidget);
@@ -46,8 +48,12 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	gridLayout.setAlignment(dealInfoLabel, Qt::AlignRight);
 	updateDealInfoLabel();
 	
+	playedCardsLayout = new PlayedCardsLayout(&playedCardsWidgets, game, Q_NULLPTR);
+	gridLayout.addLayout(playedCardsLayout, 1, 1);
+	
 	/*QPushButton* test = new QPushButton("test");
 	test->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	test->setFlat(true);
 	gridLayout.addWidget(test, 1, 1);*/
 		
 	gridLayout.setColumnStretch(1, 1);
@@ -86,8 +92,8 @@ void PlayWindow::createHandWidgets(Position p)
 	for (auto &card : player->getHand())
 	{
 		CardWidget* cardWidget = new CardWidget(card, this);
-		cardLayouts[p]->addWidget(cardWidget);
 		handsWidgets[p].push_back(cardWidget);
+		cardLayouts[p]->addWidget(cardWidget);
 	}
 	if(p == North)	gridLayout.addLayout(cardLayouts[p], 0, 1);
 	if(p == East)	gridLayout.addLayout(cardLayouts[p], 1, 2);
@@ -142,4 +148,21 @@ void PlayWindow::updateDealInfoLabel()
 	QString dealer = QString("Dealer: ") + QString::fromStdString(positionToString(game->getDealer()));
 	QString vulnerability = QString("Vulnerable: ") + QString::fromStdString(vulnerabilityToString(game->getVulnerability()));
 	dealInfoLabel->setText(dealNumber + "\n" + dealer + "\n" + vulnerability);
+}
+
+void PlayWindow::playCard(CardWidget *c)
+{
+	Card card = c->getCard();
+	Position p = game->getPositionFromCard(card);
+	Player *player = game->getPlayers()[p];
+	if(game->whoseTurnIsItToPlay() != p) return;
+	if(!player->hasCard(card)) return;
+	if(!player->isValidPlay(card, firstSuit)) return;
+	
+	firstSuit = card.getSuit();
+	cardLayouts[p]->removeCardWidget(c);
+	playedCardsWidgets.push_back(c);
+	playedCardsLayout->addWidget(c);
+	player->clearCard(card);
+	game->addCardToPlayHistory(card);
 }

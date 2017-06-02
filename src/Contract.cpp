@@ -205,3 +205,30 @@ string Contract::toString() const
 	return	"Contract is: " + to_string(level) + " " + suitToString(suit) + (redoubled ? " redoubled" : (doubled ? " doubled" : "")) + "\n\n"
 			+ " by " + positionToString(declarer) + " (" + (isTeamVulnerable(declarer) ? "" : "not ") + "vulnerable)";
 }
+
+Position Contract::getDeclarer() const
+{
+	return declarer;
+}
+
+Suit Contract::getSuit() const
+{
+	return suit;
+}
+
+uint8_t Contract::getLevel() const
+{
+	return level;
+}
+
+bool Contract::isTeamVulnerable(Position p) const
+{
+	switch(vulnerability)
+	{
+		case None: return false;
+		case Both: return true;
+		case NS: return (p == North || p == South);
+		case EW: return (p == East || p == West);
+		default: return false;
+	}
+}

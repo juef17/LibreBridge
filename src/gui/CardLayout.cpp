@@ -152,7 +152,7 @@ QSize CardLayout::minimumSize() const
 		case West:
 			w = (player->countLongestSuit() - 1) * spacing() + itemRect.width();
 			h = itemRect.height() + (player->countSuits() - 1) * 2 * spacing();
-			h = std::max(h, 2 * itemRect.height() + 2 * spacing());
+			h = std::max(h, itemRect.height() + 2 * spacing());
 			break;
 		default: break;
 	}
@@ -162,4 +162,13 @@ QSize CardLayout::minimumSize() const
 int CardLayout::spacing() const
 {
 	return 16;
+}
+
+void CardLayout::removeCardWidget(CardWidget *c)
+{
+	//int index = list.indexOf((QLayoutItem*)c);
+	//if(index >= 0) list.takeAt(index);
+	removeWidget(c);
+	
+	handWidgets->erase(std::remove(handWidgets->begin(), handWidgets->end(), c), handWidgets->end());
 }

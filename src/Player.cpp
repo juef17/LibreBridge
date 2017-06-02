@@ -116,6 +116,11 @@ uint8_t Player::countCards(Suit suit) const
 	return suitCount;
 }
 
+uint8_t Player::countCards() const
+{
+	return hand.size();
+}
+
 uint8_t Player::countSuits() const
 {
 	return 4 - countVoids();

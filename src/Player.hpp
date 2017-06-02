@@ -25,6 +25,7 @@ class Player
 		uint8_t countHonorPoints(Suit suit) const;
 		uint8_t countVoids() const;
 		uint8_t countCards(Suit suit) const;
+		uint8_t countCards() const;
 		uint8_t countSuits() const;
 		uint8_t countLongestSuit() const;
 		void setPosition(Position p);
