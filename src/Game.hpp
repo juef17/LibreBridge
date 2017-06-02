@@ -40,6 +40,7 @@ class Game
 		Vulnerability getVulnerability() const;
 		void updateVulnerabilityAndDealer();
 		void setContract(Contract c);
+		Contract getContract() const;
 		Position getPositionFromCard(Card c, bool mayHaveBeenPlayed = false) const;
 		std::vector<Card> recreateHand(Position p) const;
 		void addCardToPlayHistory(Card c);

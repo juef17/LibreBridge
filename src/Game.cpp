@@ -356,3 +356,8 @@ Position Game::whoseTurnIsItToPlay() const
 	}
 	return player;
 }
+
+Contract Game::getContract() const
+{
+	return contract;
+}

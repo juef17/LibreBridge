@@ -31,6 +31,7 @@ class PlayWindow : public QMainWindow
 		bool getCardsAreClickable() const;
 		void setCardsAreClickable(bool c);
 		void updateDealInfoLabel();
+		void updateContractInfoLabel();
 		void playCard(CardWidget* c);
 	signals:
 	public slots:
@@ -48,6 +49,7 @@ class PlayWindow : public QMainWindow
 		std::vector<CardWidget*> handsWidgets[4];
 		bool cardsAreClickable;
 		QLabel *dealInfoLabel;
+		QLabel *contractInfoLabel;
 		PlayedCardsLayout *playedCardsLayout;
 		std::vector<CardWidget*> playedCardsWidgets;
 		Suit firstSuit;

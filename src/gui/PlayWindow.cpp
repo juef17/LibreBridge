@@ -43,10 +43,14 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	
 	createAllHandWidgets();
 	
-	dealInfoLabel = new QLabel("test", this);
+	dealInfoLabel = new QLabel("", this);
 	gridLayout.addWidget(dealInfoLabel, 0, 2);
 	gridLayout.setAlignment(dealInfoLabel, Qt::AlignRight);
 	updateDealInfoLabel();
+	
+	contractInfoLabel = new QLabel("", this);
+	gridLayout.addWidget(contractInfoLabel, 2, 2);
+	gridLayout.setAlignment(dealInfoLabel, Qt::AlignRight);
 	
 	playedCardsLayout = new PlayedCardsLayout(&playedCardsWidgets, game, Q_NULLPTR);
 	gridLayout.addLayout(playedCardsLayout, 1, 1);
@@ -148,6 +152,11 @@ void PlayWindow::updateDealInfoLabel()
 	QString dealer = QString("Dealer: ") + QString::fromStdString(positionToString(game->getDealer()));
 	QString vulnerability = QString("Vulnerable: ") + QString::fromStdString(vulnerabilityToString(game->getVulnerability()));
 	dealInfoLabel->setText(dealNumber + "\n" + dealer + "\n" + vulnerability);
+}
+
+void PlayWindow::updateContractInfoLabel()
+{
+	contractInfoLabel->setText(QString::fromStdString(game->getContract().toString()));
 }
 
 void PlayWindow::playCard(CardWidget *c)
