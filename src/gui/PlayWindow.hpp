@@ -34,6 +34,7 @@ class PlayWindow : public QMainWindow
 		void updateContractInfoLabel();
 		void playCard(CardWidget* c);
 		void updateCurrentPlayerArrow();
+		void playingProcess();
 	signals:
 	public slots:
 	protected:

@@ -212,3 +212,37 @@ void PlayWindow::updateCurrentPlayerArrow()
 	Position p = game->whoseTurnIsItToPlay();
 	for(int i=0; i<4; i++) arrows[i]->setVisible(Position(i) == p);
 }
+
+void PlayWindow::playingProcess()
+{
+	Position player = game->whoseTurnIsItToPlay();
+	Position dummyPosition = nextTeammate(game->getContract().getDeclarer());/*
+	Card playedCards[4];
+	Position whoWonTheTrick;
+	uint8_t tricksMade[2] = {0}; // %2 for team
+	bool isDummy;
+
+	for(uint8_t i=0; i<13; ++i)
+	{
+		Position firstPlayer = player;
+		for(uint8_t j = 0; j<4; ++j)
+		{
+			Suit firstSuit = (j == 0 ? NoTrump : playedCards[0].getSuit());
+			isDummy = (player == dummyPosition);
+			Position actualPlayer = (isDummy ? contract.getDeclarer() : player);
+			if(options.AI_playDelay && !players[actualPlayer]->getIsHuman()) this_thread::sleep_for(chrono::milliseconds(options.AI_playDelay));
+			do
+			{
+				playedCards[j] = (isDummy ? players[actualPlayer]->playCard(firstSuit, players[dummyPosition]->getHand()) : players[actualPlayer]->playCard(firstSuit));
+			} while(!players[player]->hasCard(playedCards[j]) || !players[player]->isValidPlay(playedCards[j], firstSuit));
+			player = nextPosition(player);
+			addCardToPlayHistory(playedCards[j]);
+			players[(j+firstPlayer)%4]->clearCard(playedCards[j]);
+		}
+		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer);
+		player = whoWonTheTrick;
+		cout << positionToString(player) << " won the trick!\n";
+		tricksMade[whoWonTheTrick%2]++;
+	}
+	cout << "----------------- New game -----------------\n";*/
+}

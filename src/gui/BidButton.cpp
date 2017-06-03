@@ -25,7 +25,7 @@ void BidButton::setImage()
 	setText(QString::fromStdString(suitToUnicodeString(suit)));
 	if(suit == Diamonds || suit == Hearts) setStyleSheet("BidButton {color: red;}");
 	QFont font = this->font();
-	font.setPointSize(12);
+	font.setPointSize(suit == NoTrump ? 10 : 14);
 	setFont(font);
 	
 	setAutoDefault(false);
