@@ -10,7 +10,7 @@ class Game;
 class PlayedCardsLayout : public QLayout
 {
 	public:
-		PlayedCardsLayout(std::vector<CardWidget*> *pcw, Game *g, QWidget *parent = Q_NULLPTR);
+		PlayedCardsLayout(std::vector<CardWidget*> *playedCardsWidgets, Game *g, QWidget *parent = Q_NULLPTR);
 		~PlayedCardsLayout();
 
 		void addItem(QLayoutItem *item);

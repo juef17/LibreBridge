@@ -3,9 +3,9 @@
 #include "../Game.hpp"
 #include <iostream>
 
-PlayedCardsLayout::PlayedCardsLayout(std::vector<CardWidget*> *pcw, Game *g, QWidget *parent): QLayout(parent)
+PlayedCardsLayout::PlayedCardsLayout(std::vector<CardWidget*> *playedCardsWidgets, Game *g, QWidget *parent): QLayout(parent)
 {
-	cardWidgets = pcw;
+	cardWidgets = playedCardsWidgets;
 	game = g;
 }
 
@@ -80,16 +80,6 @@ void PlayedCardsLayout::setGeometry(const QRect &r)
 QSize PlayedCardsLayout::sizeHint() const
 {
 	return minimumSize();
-	/*QSize s(0, 0);
-	int n = list.count();
-	int i = 0;
-	while(i < n)
-	{
-		QLayoutItem *o = list.at(i);
-		s = s.expandedTo(o->sizeHint());
-		++i;
-	}
-	return s + (n-1)*QSize(spacing(), 0);*/
 }
 
 QSize PlayedCardsLayout::minimumSize() const
@@ -105,23 +95,6 @@ QSize PlayedCardsLayout::minimumSize() const
 		s = s.expandedTo(o->minimumSize());
 		++i;
 	}
-	int w=0, h=0;
-	/*Position playerPosition = player->getPosition();
-	if(n) switch(playerPosition)
-	{
-		case North:
-		case South:
-			w = 12 * spacing() + player->countSuits() * itemRect.width();
-			h = itemRect.height();
-			break;
-		case East:
-		case West:
-			w = (player->countLongestSuit() - 1) * spacing() + itemRect.width();
-			h = itemRect.height() + (player->countSuits() - 1) * 2 * spacing();
-			h = std::max(h, 2 * itemRect.height() + 2 * spacing());
-			break;
-		default: break;
-	}*/
 	return s + QSize(0, 0);
 }
 
