@@ -73,6 +73,7 @@ void PlayedCardsLayout::setGeometry(const QRect &r)
 		
 		QRect geom(xCenter + x, yCenter + y, itemRect.width(), itemRect.height());
 		o->setGeometry(geom);
+		o->raise();
 	}
 }
 
