@@ -361,3 +361,8 @@ Contract Game::getContract() const
 {
 	return contract;
 }
+
+vector<Card> Game::getPlayedCardsHistory() const
+{
+	return playedCardsHistory;
+}

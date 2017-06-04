@@ -87,6 +87,7 @@ void ContractWindow::OK()
 	parent->getPlayWindow()->updateCurrentPlayerArrow();
 	parent->close();
 	this->close();
+	parent->getPlayWindow()->playingProcess();
 }
 
 void ContractWindow::closeEvent(QCloseEvent *)

@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include "../LibreBridge.hpp"
+#include "../Card.hpp"
 class CardLayout;
 class QMenuBar;
 class QPushButton;
@@ -34,9 +35,9 @@ class PlayWindow : public QMainWindow
 		void updateContractInfoLabel();
 		void playCard(CardWidget* c);
 		void updateCurrentPlayerArrow();
-		void playingProcess();
 	signals:
 	public slots:
+		void playingProcess();
 	protected:
 		void resizeEvent(QResizeEvent *event) override;
 	private:
@@ -56,6 +57,9 @@ class PlayWindow : public QMainWindow
 		std::vector<CardWidget*> playedCardsWidgets;
 		Suit firstSuit;
 		QLabel *arrows[4];
+		int tricksMade[2]; // %2 for team
+		bool waitForAI;
+		CardWidget* getCardWidgetFromCard(Card c) const;
 };
 
 #endif

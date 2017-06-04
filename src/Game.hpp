@@ -45,6 +45,7 @@ class Game
 		std::vector<Card> recreateHand(Position p) const;
 		void addCardToPlayHistory(Card c);
 		Position whoseTurnIsItToPlay() const;
+		std::vector<Card> getPlayedCardsHistory() const;
 };
 
 class LocalGame: public Game

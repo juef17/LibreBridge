@@ -34,6 +34,9 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	setCentralWidget(centralWidget);
 	cardsAreClickable = false;
 	firstSuit = NoTrump;
+	tricksMade[0] = 0;
+	tricksMade[1] = 0;
+	waitForAI = true;
 	
 	// Menu
 	/*menuBar = new QMenuBar(centralWidget);
@@ -194,17 +197,19 @@ void PlayWindow::playCard(CardWidget *c)
 	Card card = c->getCard();
 	Position p = game->getPositionFromCard(card);
 	Player *player = game->getPlayers()[p];
+	if(game->getPlayedCardsHistory().size() % 4 == 0) firstSuit = NoTrump;
 	if(game->whoseTurnIsItToPlay() != p) return;
 	if(!player->hasCard(card)) return;
 	if(!player->isValidPlay(card, firstSuit)) return;
 	
-	firstSuit = card.getSuit();
+	if(game->getPlayedCardsHistory().size() % 4 == 0) firstSuit = card.getSuit();
 	cardLayouts[p]->removeCardWidget(c);
 	playedCardsWidgets.push_back(c);
 	playedCardsLayout->addWidget(c);
 	player->clearCard(card);
 	game->addCardToPlayHistory(card);
 	updateCurrentPlayerArrow();
+	playingProcess();
 }
 
 void PlayWindow::updateCurrentPlayerArrow()
@@ -215,34 +220,50 @@ void PlayWindow::updateCurrentPlayerArrow()
 
 void PlayWindow::playingProcess()
 {
+	int numberOfPlayedCards = game->getPlayedCardsHistory().size();
 	Position player = game->whoseTurnIsItToPlay();
-	Position dummyPosition = nextTeammate(game->getContract().getDeclarer());/*
-	Card playedCards[4];
-	Position whoWonTheTrick;
-	uint8_t tricksMade[2] = {0}; // %2 for team
-	bool isDummy;
-
-	for(uint8_t i=0; i<13; ++i)
+	Position dummyPosition = nextTeammate(game->getContract().getDeclarer());
+	bool isDummy = (player == dummyPosition);
+	Suit firstSuit = (numberOfPlayedCards == 0 ? NoTrump : game->getPlayedCardsHistory().at((numberOfPlayedCards-1) - (numberOfPlayedCards-1)%4).getSuit());
+	Position actualPlayer = (isDummy ? game->getContract().getDeclarer() : player);
+	
+	if(numberOfPlayedCards == 52)
 	{
-		Position firstPlayer = player;
-		for(uint8_t j = 0; j<4; ++j)
-		{
-			Suit firstSuit = (j == 0 ? NoTrump : playedCards[0].getSuit());
-			isDummy = (player == dummyPosition);
-			Position actualPlayer = (isDummy ? contract.getDeclarer() : player);
-			if(options.AI_playDelay && !players[actualPlayer]->getIsHuman()) this_thread::sleep_for(chrono::milliseconds(options.AI_playDelay));
-			do
-			{
-				playedCards[j] = (isDummy ? players[actualPlayer]->playCard(firstSuit, players[dummyPosition]->getHand()) : players[actualPlayer]->playCard(firstSuit));
-			} while(!players[player]->hasCard(playedCards[j]) || !players[player]->isValidPlay(playedCards[j], firstSuit));
-			player = nextPosition(player);
-			addCardToPlayHistory(playedCards[j]);
-			players[(j+firstPlayer)%4]->clearCard(playedCards[j]);
-		}
-		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer);
-		player = whoWonTheTrick;
-		cout << positionToString(player) << " won the trick!\n";
-		tricksMade[whoWonTheTrick%2]++;
+		/////////###########################################################################################
+		return;
 	}
-	cout << "----------------- New game -----------------\n";*/
+	
+	if(game->getPlayers()[actualPlayer]->getIsHuman())
+	{
+		cardsAreClickable = true;
+		return;
+	}
+	else cardsAreClickable = false;
+	
+	if(options.AI_playDelay && waitForAI && numberOfPlayedCards)
+	{
+		waitForAI = false;
+		QTimer::singleShot(options.AI_playDelay, this, SLOT(playingProcess()));
+		return;
+	}
+	waitForAI = true;
+	
+	Card playedCard;
+	do
+	{
+		playedCard = (isDummy ? game->getPlayers()[actualPlayer]->playCard(firstSuit, game->getPlayers()[dummyPosition]->getHand()) : game->getPlayers()[actualPlayer]->playCard(firstSuit));
+	} while(!game->getPlayers()[player]->hasCard(playedCard) || !game->getPlayers()[player]->isValidPlay(playedCard, firstSuit));
+	playCard(getCardWidgetFromCard(playedCard));
+		
+	/*whoWonTheTrick = whoWinsTheTrick(playedCard, firstPlayer);
+	player = whoWonTheTrick;
+	cout << positionToString(player) << " won the trick!\n";
+	tricksMade[whoWonTheTrick%2]++;*/
+}
+
+CardWidget* PlayWindow::getCardWidgetFromCard(Card c) const
+{
+	Position p = game->getPositionFromCard(c);
+	for (auto &o : handsWidgets[p]) if(o->getCard() == c) return o;
+	return Q_NULLPTR;
 }
