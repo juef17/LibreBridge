@@ -35,8 +35,9 @@ Card CardWidget::getCard()
 
 void CardWidget::clickCardWidget()
 {
-	stopFlashing();
 	if(!parent->getCardsAreClickable()) return;
+	stopFlashing();
+	resetColor();
 	parent->playCard(this);
 }
 

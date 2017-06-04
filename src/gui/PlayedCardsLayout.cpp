@@ -47,10 +47,17 @@ void PlayedCardsLayout::setGeometry(const QRect &r)
 	QLayoutItem *item = list.at(0);
 	QRect itemRect = (item ? item->geometry() : QRect(0, 0, 0, 0));
 	
+	Card playedCards[4];
+	int i = 0;
+	Position currentWinner;
+	CardWidget *winningCardWidget = Q_NULLPTR;
 	for (auto &o : *cardWidgets)
 	{
 		Card card = o->getCard();
 		Position position = game->getPositionFromCard(card, true);
+		for(int j = i; j<4; j++) playedCards[j] = card;
+		currentWinner = game->whoWinsTheTrick(playedCards,game->getPositionFromCard(playedCards[0], true));
+		if(position == currentWinner) winningCardWidget = o;
 		int x = -itemRect.width()/2;
 		int y = -itemRect.height()/2;
 
@@ -74,7 +81,10 @@ void PlayedCardsLayout::setGeometry(const QRect &r)
 		QRect geom(xCenter + x, yCenter + y, itemRect.width(), itemRect.height());
 		o->setGeometry(geom);
 		o->raise();
+		o->resetColor();
+		i++;
 	}
+	if(i) winningCardWidget->setEmphasisColor();
 }
 
 QSize PlayedCardsLayout::sizeHint() const
