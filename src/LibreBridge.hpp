@@ -49,7 +49,9 @@ struct Options
 	
 	bool useGui;								// False if we're running in text-only
 	
-	std::string theme_cards;
+	std::string theme_cards;			// Set of cards we're using
+	std::string theme_emphasisColor;	// Color to replace white for hints / winning card, etc
+	int theme_flashingDelay = 100;		// How many milliseconds between any color changing on the cards
 } extern options;
 
 #endif

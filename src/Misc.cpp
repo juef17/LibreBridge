@@ -171,7 +171,10 @@ void initializeOptions()
 		options.constraints.teamVoidsMin[i] = 0;
 		options.constraints.teamVoidsMax[i] = 6;
 	}
+	
 	options.theme_cards = "default";
+	options.theme_emphasisColor = "#ffff80";
+	options.theme_flashingDelay = 100;
 }
 
 
