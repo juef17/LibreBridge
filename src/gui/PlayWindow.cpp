@@ -14,6 +14,7 @@
 #include "BidWindow.hpp"
 #include "CardLayout.hpp"
 #include "PlayedCardsLayout.hpp"
+#include "PauseClickGrabber.hpp"
 #include "../Card.hpp"
 #include "../Game.hpp"
 #include "../Misc.hpp"
@@ -37,6 +38,7 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	tricksMade[0] = 0;
 	tricksMade[1] = 0;
 	waitForAI = true;
+	isPaused = false;
 	
 	// Menu
 	/*menuBar = new QMenuBar(centralWidget);
@@ -100,6 +102,8 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	
 	dealSelectionWindow = new DealSelectionWindow(this);
 	dealSelectionWindow->show();
+	PauseClickGrabber *g = new PauseClickGrabber(this);
+	installEventFilter(g);
 }
 
 PlayWindow::~PlayWindow()
@@ -266,4 +270,9 @@ CardWidget* PlayWindow::getCardWidgetFromCard(Card c) const
 	Position p = game->getPositionFromCard(c);
 	for (auto &o : handsWidgets[p]) if(o->getCard() == c) return o;
 	return Q_NULLPTR;
+}
+
+void PlayWindow::resumeFromPause()
+{
+	std::cout << std::flush << "PlayWindow::resumeFromPause" << std::endl << std::flush;
 }

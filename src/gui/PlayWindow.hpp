@@ -35,6 +35,7 @@ class PlayWindow : public QMainWindow
 		void updateContractInfoLabel();
 		void playCard(CardWidget* c);
 		void updateCurrentPlayerArrow();
+		void resumeFromPause();
 	signals:
 	public slots:
 		void playingProcess();
@@ -59,6 +60,7 @@ class PlayWindow : public QMainWindow
 		QLabel *arrows[4];
 		int tricksMade[2]; // %2 for team
 		bool waitForAI;
+		bool isPaused; // between hands
 		CardWidget* getCardWidgetFromCard(Card c) const;
 };
 

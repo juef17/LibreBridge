@@ -39,6 +39,7 @@ void CardWidget::clickCardWidget()
 	stopFlashing();
 	resetColor();
 	parent->playCard(this);
+	parent->resumeFromPause();
 }
 
 void CardWidget::setEmphasisColor()
