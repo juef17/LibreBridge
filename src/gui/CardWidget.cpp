@@ -38,8 +38,8 @@ void CardWidget::clickCardWidget()
 	if(!parent->getCardsAreClickable()) return;
 	stopFlashing();
 	resetColor();
-	parent->playCard(this);
 	parent->resumeFromPause();
+	parent->playCard(this);
 }
 
 void CardWidget::setEmphasisColor()

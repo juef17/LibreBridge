@@ -21,6 +21,7 @@ class PlayedCardsLayout : public QLayout
 		QLayoutItem *takeAt(int);
 		void setGeometry(const QRect &rect);
 		int spacing() const;
+		void clearPlayedCardsWidgets();
 
 	private:
 		QList<QLayoutItem*> list;

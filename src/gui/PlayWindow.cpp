@@ -213,13 +213,15 @@ void PlayWindow::playCard(CardWidget *c)
 	player->clearCard(card);
 	game->addCardToPlayHistory(card);
 	updateCurrentPlayerArrow();
-	playingProcess();
+	if(game->getPlayedCardsHistory().size() % 4 == 0) isPaused = true;
+	else playingProcess();
 }
 
 void PlayWindow::updateCurrentPlayerArrow()
 {
 	Position p = game->whoseTurnIsItToPlay();
-	for(int i=0; i<4; i++) arrows[i]->setVisible(Position(i) == p);
+	int numberOfPlayedCards = game->getPlayedCardsHistory().size();
+	for(int i=0; i<4; i++) arrows[i]->setVisible(Position(i) == p && numberOfPlayedCards != 52);
 }
 
 void PlayWindow::playingProcess()
@@ -274,5 +276,11 @@ CardWidget* PlayWindow::getCardWidgetFromCard(Card c) const
 
 void PlayWindow::resumeFromPause()
 {
-	std::cout << std::flush << "PlayWindow::resumeFromPause" << std::endl << std::flush;
+	if(isPaused)
+	{
+		playedCardsLayout->clearPlayedCardsWidgets();
+		isPaused = false;
+		updateCurrentPlayerArrow();
+		playingProcess();
+	}
 }

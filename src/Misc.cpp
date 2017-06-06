@@ -145,7 +145,7 @@ uint8_t randomUint8(uint8_t min, uint8_t max, RANDOMNESS_SIZE seed)
 
 void initializeOptions()
 {
-	options.AI_playDelay = 150;
+	options.AI_playDelay = 250;
 	options.AI_bidDelay = 150;
 	options.AI_letGamesRun = false;
 	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";

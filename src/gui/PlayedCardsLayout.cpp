@@ -112,3 +112,13 @@ int PlayedCardsLayout::spacing() const
 {
 	return 16;
 }
+
+void PlayedCardsLayout::clearPlayedCardsWidgets()
+{
+	for(auto &o : *cardWidgets)
+	{
+		removeWidget((QWidget*)o);
+		delete o;
+	}
+	cardWidgets->clear();
+}
