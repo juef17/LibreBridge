@@ -81,13 +81,15 @@ void ContractWindow::restartBidding()
 
 void ContractWindow::OK()
 {
-	parent->getPlayWindow()->setCardsAreClickable(true);
-	parent->getPlayWindow()->getGame()->setContract(contract);
-	parent->getPlayWindow()->updateContractInfoLabel();
-	parent->getPlayWindow()->updateCurrentPlayerArrow();
+	PlayWindow *playWindow = parent->getPlayWindow();
+	playWindow->setCardsAreClickable(true);
+	playWindow->getGame()->setContract(contract);
+	playWindow->updateContractInfoLabel();
+	playWindow->updateCurrentPlayerArrow();
 	parent->close();
 	this->close();
-	parent->getPlayWindow()->playingProcess();
+	//playWindow->activateWindow();
+	playWindow->playingProcess();
 }
 
 void ContractWindow::closeEvent(QCloseEvent *)
