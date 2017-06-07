@@ -88,7 +88,7 @@ void ContractWindow::OK()
 	playWindow->updateCurrentPlayerArrow();
 	parent->close();
 	this->close();
-	//playWindow->activateWindow();
+	playWindow->activateWindow();
 	playWindow->playingProcess();
 }
 
