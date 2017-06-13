@@ -38,6 +38,7 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	tricksMade[0] = 0;
 	tricksMade[1] = 0;
 	waitForAI = true;
+	waitForAutoplaySingles = true;
 	isPaused = false;
 	
 	// Menu
@@ -201,7 +202,7 @@ void PlayWindow::playCard(CardWidget *c)
 	Card card = c->getCard();
 	Position p = game->getPositionFromCard(card);
 	Player *player = game->getPlayers()[p];
-	if(game->getPlayedCardsHistory().size() % 4 == 0) firstSuit = NoTrump;
+	if(game->getPlayedCardsHistory().size() % 4 == 0) firstSuit = NoTrump; // So player can choose card of any suit
 	if(game->whoseTurnIsItToPlay() != p) return;
 	if(!player->hasCard(card)) return;
 	if(!player->isValidPlay(card, firstSuit)) return;
@@ -230,7 +231,7 @@ void PlayWindow::playingProcess()
 	Position player = game->whoseTurnIsItToPlay();
 	Position dummyPosition = nextTeammate(game->getContract().getDeclarer());
 	bool isDummy = (player == dummyPosition);
-	Suit firstSuit = (numberOfPlayedCards == 0 ? NoTrump : game->getPlayedCardsHistory().at((numberOfPlayedCards-1) - (numberOfPlayedCards-1)%4).getSuit());
+	Suit firstSuit = (numberOfPlayedCards%4 == 0 ? NoTrump : game->getPlayedCardsHistory().at((numberOfPlayedCards-1) - (numberOfPlayedCards-1)%4).getSuit());
 	Position actualPlayer = (isDummy ? game->getContract().getDeclarer() : player);
 	
 	if(numberOfPlayedCards == 52)
@@ -241,8 +242,26 @@ void PlayWindow::playingProcess()
 	
 	if(game->getPlayers()[actualPlayer]->getIsHuman())
 	{
-		cardsAreClickable = true;
-		return;
+		if(options.autoplaySingles && game->getPlayers()[player]->getPlayableCards(firstSuit).size() == 1)
+		{
+			// Autoplay single
+			if(options.minimalWait && waitForAutoplaySingles && numberOfPlayedCards)
+			{
+				waitForAutoplaySingles = false;
+				QTimer::singleShot(options.minimalWait, this, SLOT(playingProcess()));
+				return;
+			}
+			waitForAutoplaySingles = true;
+			Card card = game->getPlayers()[player]->getPlayableCards(firstSuit).front();
+			playCard(getCardWidgetFromCard(card)); // Validity has already been checked since it's the only playable card
+			cardsAreClickable = false;
+			return;
+		}
+		else
+		{
+			cardsAreClickable = true;
+			return;
+		}
 	}
 	else cardsAreClickable = false;
 	
@@ -271,6 +290,7 @@ CardWidget* PlayWindow::getCardWidgetFromCard(Card c) const
 {
 	Position p = game->getPositionFromCard(c);
 	for (auto &o : handsWidgets[p]) if(o->getCard() == c) return o;
+	if(DEBUG_COUT) cout << flush << "PlayWindow::getCardWidgetFromCard ERROR" << endl << flush;
 	return Q_NULLPTR;
 }
 

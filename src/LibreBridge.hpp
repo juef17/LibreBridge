@@ -37,7 +37,8 @@ struct Options
 {
 	int AI_playDelay;							// Milliseconds before each AI play
 	int AI_bidDelay;							// Milliseconds before each AI bid
-	bool AI_letGamesRun;						// If true, no user input between AI-only games. Overrides AI_playDelay and AI_bidDelay
+	bool AI_letGamesRun;						// If true, no user input between AI-only games (then overrides AI_playDelay and AI_bidDelay)
+	
 	std::string playerTypes[4];					// Contains "Human" (or "HumanPlayer") or the name of the AI to use
 	std::vector<std::string> AI_availableTypes;	// Contains the names of the usable AI players
 	
@@ -47,8 +48,10 @@ struct Options
 	bool useDealConstraints;	// Use DealConstraints to make deals not 100% random
 	DealConstraints constraints;// Constraints to use for deals
 	
-	bool useGui;								// False if we're running in text-only
+	bool autoplaySingles;		// If there's a single possible card to play, play it automatically. GUI only.
+	int minimalWait;			// Wait time for autoplaySingles
 	
+	bool useGui;						// False if we're running in text-only
 	std::string theme_cards;			// Set of cards we're using
 	std::string theme_emphasisColor;	// Color to replace white for hints / winning card, etc
 	int theme_flashingDelay = 100;		// How many milliseconds between any color changing on the cards

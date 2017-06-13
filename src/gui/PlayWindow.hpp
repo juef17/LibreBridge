@@ -60,6 +60,7 @@ class PlayWindow : public QMainWindow
 		QLabel *arrows[4];
 		int tricksMade[2]; // %2 for team
 		bool waitForAI;
+		bool waitForAutoplaySingles;
 		bool isPaused; // between hands
 		CardWidget* getCardWidgetFromCard(Card c) const;
 };

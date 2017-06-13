@@ -146,6 +146,7 @@ void initializeOptions()
 	options.AI_playDelay = 250;
 	options.AI_bidDelay = 150;
 	options.AI_letGamesRun = false;
+	
 	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
 	options.playerTypes[South] = "HumanPlayer";
 	
@@ -169,6 +170,9 @@ void initializeOptions()
 		options.constraints.teamVoidsMin[i] = 0;
 		options.constraints.teamVoidsMax[i] = 6;
 	}
+	
+	options.autoplaySingles = true;
+	options.minimalWait = 150;
 	
 	options.theme_cards = "default";
 	options.theme_emphasisColor = "#ffff80";
