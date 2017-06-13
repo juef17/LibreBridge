@@ -29,7 +29,6 @@ class Game
 		GameType getGameType();
 		Game();
 		void prepareForNextGame();
-		Position whoWinsTheTrick(Card playedCards[], Position firstPlayer) const;
 		bool isAllAI() const;
 		bool areConstraintsRespected() const;
 		Player** getPlayers();
@@ -42,7 +41,6 @@ class Game
 		void setContract(Contract c);
 		Contract getContract() const;
 		Position getPositionFromCard(Card c, bool mayHaveBeenPlayed = false) const;
-		std::vector<Card> recreateHand(Position p) const;
 		void addCardToPlayHistory(Card c);
 		Position whoseTurnIsItToPlay() const;
 		std::vector<Card> getPlayedCardsHistory() const;

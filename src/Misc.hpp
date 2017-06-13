@@ -4,7 +4,8 @@
 #include <cstdint>
 #include <string>
 #include "LibreBridge.hpp"
-
+#include "Card.hpp"
+#include "Contract.hpp"
 
 Position nextPosition(Position p);
 Position nextTeammate(Position p);
@@ -22,5 +23,7 @@ RANDOMNESS_SIZE getSeed();
 void randomizeSeed();
 std::string suitToUnicodeString(Suit suit);
 std::string vulnerabilityToString(Vulnerability v);
+std::vector<Card> recreateHand(Position p, std::vector<Card> playedCardsHistory, Contract contract);
+Position whoWinsTheTrick(Card playedCards[], Position firstPlayer, Contract contract);
 
 #endif

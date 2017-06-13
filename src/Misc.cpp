@@ -4,8 +4,6 @@
 #include <cmath>
 #include <random>
 #include "Misc.hpp"
-#include "Card.hpp"
-#include "Contract.hpp"
 
 using namespace std;
 
@@ -262,4 +260,40 @@ string vulnerabilityToString(Vulnerability v)
 			if(DEBUG_COUT) cout << flush << "vulnerabilityToString ERROR\n" << endl << flush;
 			return "ERROR";
 	}
+}
+
+vector<Card> recreateHand(Position p, vector<Card> playedCardsHistory, Contract contract)
+{
+	vector<Card> previouslyHeldCards[4];
+	int i = 0;
+	Position firstPlayer = nextPosition(contract.getDeclarer());
+	Position player = firstPlayer;
+	Card playedCards[4];
+	for(auto &card : playedCardsHistory)
+	{
+		previouslyHeldCards[player].push_back(card);
+		playedCards[i%4] = card;
+		if(i%4 == 3)
+		{
+			firstPlayer = whoWinsTheTrick(playedCards, firstPlayer, contract);
+			player = firstPlayer;
+		}
+		else player = nextPosition(player);
+		i++;
+	}
+	return previouslyHeldCards[p];
+}
+
+Position whoWinsTheTrick(Card playedCards[], Position firstPlayer, Contract contract)
+{
+	uint8_t winnerIndex = 0;
+	for(uint8_t i=1; i<4; ++i)
+	{
+		if(	(playedCards[i].getSuit() == playedCards[winnerIndex].getSuit() && playedCards[i].getValue() > playedCards[winnerIndex].getValue())
+		||	(playedCards[i].getSuit() == contract.getSuit() && playedCards[winnerIndex].getSuit() != contract.getSuit())	)
+		{
+			winnerIndex = i;
+		}
+	}
+	return Position((uint8_t(firstPlayer)+winnerIndex)%4);
 }

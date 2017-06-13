@@ -41,7 +41,7 @@ class Player
 		bool getIsHuman();
 		virtual ~Player(){}
 		bool playingForDummy(std::vector<Card> dummyHand) const;
-		std::vector<Card> getHand();
+		std::vector<Card> getHand() const;
 		static Player* getNewPlayer(std::string playerType);
 		static void listAvailableAIPlayers();
 };

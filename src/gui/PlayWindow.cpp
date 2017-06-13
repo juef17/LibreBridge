@@ -261,7 +261,7 @@ void PlayWindow::playingProcess()
 	} while(!game->getPlayers()[player]->hasCard(playedCard) || !game->getPlayers()[player]->isValidPlay(playedCard, firstSuit));
 	playCard(getCardWidgetFromCard(playedCard));
 		
-	/*whoWonTheTrick = whoWinsTheTrick(playedCard, firstPlayer);
+	/*whoWonTheTrick = whoWinsTheTrick(playedCard, firstPlayer, game->getContract());
 	player = whoWonTheTrick;
 	cout << positionToString(player) << " won the trick!\n";
 	tricksMade[whoWonTheTrick%2]++;*/

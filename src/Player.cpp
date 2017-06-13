@@ -163,7 +163,7 @@ bool Player::playingForDummy(vector<Card> dummyHand) const
 	return !dummyHand.empty();
 }
 
-vector<Card> Player::getHand()
+vector<Card> Player::getHand() const
 {
 	return hand;
 }

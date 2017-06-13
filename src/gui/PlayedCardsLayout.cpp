@@ -1,6 +1,7 @@
 #include "PlayedCardsLayout.hpp"
 #include "../Player.hpp"
 #include "../Game.hpp"
+#include "../Misc.hpp"
 #include <iostream>
 
 PlayedCardsLayout::PlayedCardsLayout(std::vector<CardWidget*> *playedCardsWidgets, Game *g, QWidget *parent): QLayout(parent)
@@ -56,7 +57,7 @@ void PlayedCardsLayout::setGeometry(const QRect &r)
 		Card card = o->getCard();
 		Position position = game->getPositionFromCard(card, true);
 		for(int j = i; j<4; j++) playedCards[j] = card;
-		currentWinner = game->whoWinsTheTrick(playedCards,game->getPositionFromCard(playedCards[0], true));
+		currentWinner = whoWinsTheTrick(playedCards,game->getPositionFromCard(playedCards[0], true), game->getContract());
 		if(position == currentWinner) winningCardWidget = o;
 		int x = -itemRect.width()/2;
 		int y = -itemRect.height()/2;

@@ -175,7 +175,7 @@ void Game::playCards()
 			addCardToPlayHistory(playedCards[j]);
 			players[(j+firstPlayer)%4]->clearCard(playedCards[j]);
 		}
-		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer);
+		whoWonTheTrick = whoWinsTheTrick(playedCards, firstPlayer, contract);
 		player = whoWonTheTrick;
 		cout << positionToString(player) << " won the trick!\n";
 		tricksMade[whoWonTheTrick%2]++;
@@ -188,20 +188,6 @@ void Game::playCards()
 		cout << intToTeamString(i) << " has made " << to_string(tricksMade[i]) << " tricks and " << to_string(pts) << " points (" << to_string(imp) << " IMP)!\n";
 	}
 	cout << "----------------- New game -----------------\n";
-}
-
-Position Game::whoWinsTheTrick(Card playedCards[], Position firstPlayer) const
-{
-	uint8_t winnerIndex = 0;
-	for(uint8_t i=1; i<4; ++i)
-	{
-		if(	(playedCards[i].getSuit() == playedCards[winnerIndex].getSuit() && playedCards[i].getValue() > playedCards[winnerIndex].getValue())
-		||	(playedCards[i].getSuit() == contract.getSuit() && playedCards[winnerIndex].getSuit() != contract.getSuit())	)
-		{
-			winnerIndex = i;
-		}
-	}
-	return Position((uint8_t(firstPlayer)+winnerIndex)%4);
 }
 
 bool Game::isAllAI() const
@@ -301,35 +287,13 @@ Position Game::getPositionFromCard(Card c, bool mayHaveBeenPlayed) const
 	// 2. Look through played cards
 	if(mayHaveBeenPlayed)
 	{
-		for(int i=0; i<4; i++) for(auto &card : recreateHand(Position(i)))
+		for(int i=0; i<4; i++) for(auto &card : recreateHand(Position(i), playedCardsHistory, contract))
 		{
 			if(card == c) return Position(i);
 		}
 	}
 	
 	return Position(10); // Error
-}
-
-vector<Card> Game::recreateHand(Position p) const
-{
-	vector<Card> previouslyHeldCards[4];
-	int i = 0;
-	Position firstPlayer = nextPosition(contract.getDeclarer());
-	Position player = firstPlayer;
-	Card playedCards[4];
-	for(auto &card : playedCardsHistory)
-	{
-		previouslyHeldCards[player].push_back(card);
-		playedCards[i%4] = card;
-		if(i%4 == 3)
-		{
-			firstPlayer = whoWinsTheTrick(playedCards, firstPlayer);
-			player = firstPlayer;
-		}
-		else player = nextPosition(player);
-		i++;
-	}
-	return previouslyHeldCards[p];
 }
 
 void Game::addCardToPlayHistory(Card c)
@@ -348,7 +312,7 @@ Position Game::whoseTurnIsItToPlay() const
 		playedCards[i%4] = card;
 		if(i%4 == 3)
 		{
-			firstPlayer = whoWinsTheTrick(playedCards, firstPlayer);
+			firstPlayer = whoWinsTheTrick(playedCards, firstPlayer, contract);
 			player = firstPlayer;
 		}
 		else player = nextPosition(player);
