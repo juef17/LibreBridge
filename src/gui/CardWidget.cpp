@@ -35,10 +35,14 @@ Card CardWidget::getCard()
 
 void CardWidget::clickCardWidget()
 {
+	if(parent->getIsPaused())
+	{
+		parent->resumeFromPause();
+		return; // We just wanted to unpause, not play the card
+	}
 	if(!parent->getCardsAreClickable()) return;
 	stopFlashing();
 	resetColor();
-	parent->resumeFromPause();
 	parent->playCard(this);
 }
 

@@ -304,3 +304,8 @@ void PlayWindow::resumeFromPause()
 		playingProcess();
 	}
 }
+
+bool PlayWindow::getIsPaused() const
+{
+	return isPaused;
+}

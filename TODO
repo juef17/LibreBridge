@@ -4,6 +4,7 @@ afficher les mains après la donne
 fenêtre quoi faire après la donne
 fenêtre score
 partir prochaine donne
+grosseur cartes
 
 Des fois ça fait QXcbConnection: XCB error [...] quand je ferme la ContractWindow
 Ajouter undo button pour les enchères

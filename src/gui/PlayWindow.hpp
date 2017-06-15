@@ -36,6 +36,7 @@ class PlayWindow : public QMainWindow
 		void playCard(CardWidget* c);
 		void updateCurrentPlayerArrow();
 		void resumeFromPause();
+		bool getIsPaused() const;
 	signals:
 	public slots:
 		void playingProcess();
