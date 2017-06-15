@@ -58,6 +58,9 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	gridLayout.addWidget(contractInfoLabel, 2, 2);
 	gridLayout.setAlignment(dealInfoLabel, Qt::AlignRight);
 	
+	tricksInfoLabel = new QLabel("", this);
+	gridLayout.addWidget(tricksInfoLabel, 0, 0);
+	
 	playedCardsLayout = new PlayedCardsLayout(&playedCardsWidgets, game, Q_NULLPTR);
 	gridLayout.addLayout(playedCardsLayout, 1, 1);
 	
@@ -214,7 +217,12 @@ void PlayWindow::playCard(CardWidget *c)
 	player->clearCard(card);
 	game->addCardToPlayHistory(card);
 	updateCurrentPlayerArrow();
-	if(game->getPlayedCardsHistory().size() % 4 == 0) isPaused = true;
+	if(game->getPlayedCardsHistory().size() % 4 == 0)
+	{
+		tricksMade[game->whoseTurnIsItToPlay() % 2]++; // The one whose turn it is is necessarily the one who one the trick
+		updateTricksInfoLabel();
+		isPaused = true;
+	}
 	else playingProcess();
 }
 
@@ -227,6 +235,7 @@ void PlayWindow::updateCurrentPlayerArrow()
 
 void PlayWindow::playingProcess()
 {
+	updateTricksInfoLabel();
 	int numberOfPlayedCards = game->getPlayedCardsHistory().size();
 	Position player = game->whoseTurnIsItToPlay();
 	Position dummyPosition = nextTeammate(game->getContract().getDeclarer());
@@ -279,11 +288,6 @@ void PlayWindow::playingProcess()
 		playedCard = (isDummy ? game->getPlayers()[actualPlayer]->playCard(firstSuit, game->getPlayers()[dummyPosition]->getHand()) : game->getPlayers()[actualPlayer]->playCard(firstSuit));
 	} while(!game->getPlayers()[player]->hasCard(playedCard) || !game->getPlayers()[player]->isValidPlay(playedCard, firstSuit));
 	playCard(getCardWidgetFromCard(playedCard));
-		
-	/*whoWonTheTrick = whoWinsTheTrick(playedCard, firstPlayer, game->getContract());
-	player = whoWonTheTrick;
-	cout << positionToString(player) << " won the trick!\n";
-	tricksMade[whoWonTheTrick%2]++;*/
 }
 
 CardWidget* PlayWindow::getCardWidgetFromCard(Card c) const
@@ -308,4 +312,9 @@ void PlayWindow::resumeFromPause()
 bool PlayWindow::getIsPaused() const
 {
 	return isPaused;
+}
+
+void PlayWindow::updateTricksInfoLabel() const
+{
+	tricksInfoLabel->setText(QString::fromStdString("NS tricks: " + to_string(tricksMade[0]) + "\nEW tricks: " + to_string(tricksMade[1])));
 }

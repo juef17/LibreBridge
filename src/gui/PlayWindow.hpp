@@ -55,6 +55,7 @@ class PlayWindow : public QMainWindow
 		bool cardsAreClickable;
 		QLabel *dealInfoLabel;
 		QLabel *contractInfoLabel;
+		QLabel *tricksInfoLabel;
 		PlayedCardsLayout *playedCardsLayout;
 		std::vector<CardWidget*> playedCardsWidgets;
 		Suit firstSuit;
@@ -64,6 +65,7 @@ class PlayWindow : public QMainWindow
 		bool waitForAutoplaySingles;
 		bool isPaused; // between hands
 		CardWidget* getCardWidgetFromCard(Card c) const;
+		void updateTricksInfoLabel() const;
 };
 
 #endif
