@@ -91,7 +91,7 @@ Card Card::stringToCard(string s)
 	return goodCard;
 }
 
-int Card::getImageNumber()
+int Card::getImageNumber() const
 {
 	switch(suit)
 	{
@@ -101,9 +101,4 @@ int Card::getImageNumber()
 		case Clubs:		return 37 + value;
 		default: return -1;
 	}
-}
-
-string Card::getImagePath()
-{
-	return "./images/cards/" + options.theme_cards + "/" + to_string(getImageNumber()) + ".png";
 }

@@ -16,6 +16,7 @@ class CardWidget : public QPushButton
 		void stopFlashing();
 		void resetColor();
 		void setEmphasisColor();
+		void setCardImageFaceUp(bool faceUp = true);
 	signals:
 	public slots:
 		void clickCardWidget();
@@ -27,6 +28,8 @@ class CardWidget : public QPushButton
 		QPixmap cardImage;
 		bool isFlashing;
 		bool isEmphasized;
+		bool isFaceUp;
+		std::string getImagePath(bool faceUp = true) const;
 };
 
 #endif

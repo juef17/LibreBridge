@@ -16,10 +16,9 @@ CardWidget::CardWidget(Card c, QWidget *parent) : QPushButton("", parent)
 	isFlashing = false;
 	isEmphasized = false;
 	
-	cardImage = QPixmap(QString::fromStdString(card.getImagePath()));
+	setCardImageFaceUp();
 	setStyleSheet("QPushButton {background-color: black;}");
 	QSize size = cardImage.rect().size();
-	setIcon(QIcon(cardImage));
 	setIconSize(size);
 	resize(size);
 	setMinimumSize(size);
@@ -92,4 +91,20 @@ void CardWidget::stopFlashing()
 {
 	isFlashing = false;
 	resetColor();
+}
+
+void CardWidget::setCardImageFaceUp(bool faceUp)
+{
+	if(isFaceUp != faceUp)
+	{
+		cardImage = QPixmap(QString::fromStdString(getImagePath(faceUp)));
+		setIcon(QIcon(cardImage));
+		isFaceUp = faceUp;
+	}
+}
+
+std::string CardWidget::getImagePath(bool faceUp) const
+{
+	if(faceUp) return "./images/cards/" + options.theme_cards + "/" + std::to_string(card.getImageNumber()) + ".png";
+	else return "./images/cards/" + options.theme_cards + "/flipside.png";
 }

@@ -1,11 +1,16 @@
 #include "CardLayout.hpp"
+#include "PlayWindow.hpp"
 #include "../Player.hpp"
+#include "PlayWindow.hpp"
+#include "../Game.hpp"
+#include "../Misc.hpp"
 #include <iostream>
 
-CardLayout::CardLayout(Player *p, std::vector<CardWidget*> *h, QWidget *parent): QLayout(parent)
+CardLayout::CardLayout(Player *p, std::vector<CardWidget*> *h, PlayWindow *playWindow, QWidget *parent): QLayout(parent)
 {
 	handWidgets = h;
 	player = p;
+	this->playWindow = playWindow;
 }
 
 int CardLayout::count() const
@@ -65,6 +70,8 @@ void CardLayout::setGeometry(const QRect &r)
 		default: break;
 	}
 	
+	Position dummyPosition = nextTeammate(playWindow->getGame()->getContract().getDeclarer());
+	bool showCardsFaceUp = player->getIsHuman() || player->getPosition() == dummyPosition;
 	for (auto &o : *handWidgets)
 	{
 		Card card = o->getCard();
@@ -107,6 +114,7 @@ void CardLayout::setGeometry(const QRect &r)
 		
 		QRect geom(xStart + x, yStart + y, itemRect.width(), itemRect.height());
 		o->setGeometry(geom);
+		o->setCardImageFaceUp(showCardsFaceUp);
 		i++;
 	}
 }

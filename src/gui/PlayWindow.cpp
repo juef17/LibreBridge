@@ -133,7 +133,7 @@ void PlayWindow::createAllHandWidgets()
 void PlayWindow::createHandWidgets(Position p)
 {
 	Player *player = game->getPlayers()[p];
-	cardLayouts[p] = new CardLayout(player, &handsWidgets[p]);
+	cardLayouts[p] = new CardLayout(player, &handsWidgets[p], this);
 	for (auto &card : player->getHand())
 	{
 		CardWidget* cardWidget = new CardWidget(card, this);
@@ -213,6 +213,7 @@ void PlayWindow::playCard(CardWidget *c)
 	if(game->getPlayedCardsHistory().size() % 4 == 0) firstSuit = card.getSuit();
 	cardLayouts[p]->removeCardWidget(c);
 	playedCardsWidgets.push_back(c);
+	c->setCardImageFaceUp();
 	playedCardsLayout->addWidget(c);
 	player->clearCard(card);
 	game->addCardToPlayHistory(card);
