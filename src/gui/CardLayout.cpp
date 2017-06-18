@@ -50,7 +50,15 @@ void CardLayout::setGeometry(const QRect &r)
 	int yStart = r.y();
 	QLayoutItem *item = list.at(0);
 	QRect itemRect = (item ? item->geometry() : QRect(0, 0, 0, 0));
+	int itemRectWidth = itemRect.width();
+	int itemRectHeight = itemRect.height();
+	int rWidth = r.width();
+	int rHeight = r.height();
+	int spacing = this->spacing();
 	Position playerPosition = player->getPosition();
+	Contract contract = playWindow->getGame()->getContract();
+	Position dummyPosition = contract.getIsSet() ? nextTeammate(contract.getDeclarer()) : North;
+	bool showCardsFaceUp = player->getIsHuman() || (contract.getIsSet() && player->getPosition() == dummyPosition);
 	int i = 0;
 	int suitOrder[4] = {-1, -1, -1, -1}; // Suit-1 for index, gives order for that suit, -1 = none added yet
 	int cardCountX[4] = {-1, -1, -1, -1}; // which "level" of card are we at horizontally, -1 = none added yet
@@ -60,59 +68,76 @@ void CardLayout::setGeometry(const QRect &r)
 	{
 		case North:
 		case South:
-			xStart += (r.width() - (listSize - 1) * spacing() - (player->countSuits()) * itemRect.width()) / 2;
+			if(showCardsFaceUp) xStart += (rWidth - (listSize - 1) * spacing - (player->countSuits()) * itemRectWidth) / 2;
+			else xStart += (rWidth - (listSize - 1) * spacing - itemRectWidth) / 2;
 			break;
 		case East:
-			xStart += r.width() - itemRect.width();
+			xStart += rWidth - itemRectWidth;
 		case West:
-			yStart += (r.height() - itemRect.height() - (player->countSuits() - 1) * 2 * spacing()) / 2;
+			if(showCardsFaceUp) yStart += (rHeight - itemRectHeight - (player->countSuits() - 1) * 2 * spacing) / 2;
+			else yStart += (rHeight - itemRectHeight - (listSize - 1) * spacing/2) / 2;
 			break;
 		default: break;
 	}
-	
-	Position dummyPosition = nextTeammate(playWindow->getGame()->getContract().getDeclarer());
-	bool showCardsFaceUp = player->getIsHuman() || player->getPosition() == dummyPosition;
 	for (auto &o : *handWidgets)
 	{
-		Card card = o->getCard();
-		Suit suit = card.getSuit();
-		int suitMinus1 = suit - 1;
-		if(suitOrder[suitMinus1] == -1)
-		{
-			suitOrder[suitMinus1] = currentOrder;
-			currentOrder++;
-		}
-		cardCountX[suitMinus1]++;
 		int x = 0;
 		int y = 0;
-
-		// For x
-		switch(playerPosition)
+		if(showCardsFaceUp)
 		{
-			case North:
-			case South:
-				x = i * spacing() + std::max(0, currentOrder-1) * itemRect.width();
-				break;
-			case East:
-				x = -(player->countCards(suit) - cardCountX[suitMinus1] - 1) * spacing();
-				break;
-			case West:
-				x = cardCountX[suitMinus1] * spacing();
-				break;
-			default: break;
+			Card card = o->getCard();
+			Suit suit = card.getSuit();
+			int suitMinus1 = suit - 1;
+			if(suitOrder[suitMinus1] == -1)
+			{
+				suitOrder[suitMinus1] = currentOrder;
+				currentOrder++;
+			}
+			cardCountX[suitMinus1]++;
+
+			// For x
+			switch(playerPosition)
+			{
+				case North:
+				case South:
+					x = i * spacing + std::max(0, currentOrder-1) * itemRectWidth;
+					break;
+				case East:
+					x = -(player->countCards(suit) - cardCountX[suitMinus1] - 1) * spacing;
+					break;
+				case West:
+					x = cardCountX[suitMinus1] * spacing;
+					break;
+				default: break;
+			}
+
+			// For y
+			switch(playerPosition)
+			{
+				case East:
+				case West:
+					y = suitOrder[suitMinus1] * 2 * spacing;
+					break;
+				default: break;
+			}
 		}
-
-		// For y
-		switch(playerPosition)
+		else
 		{
-			case East:
-			case West:
-				y = suitOrder[suitMinus1] * 2 * spacing();
-				break;
-			default: break;
+			switch(playerPosition)
+			{
+				case North:
+				case South:
+					x = i * spacing;
+					break;
+				case East:
+				case West:
+					y = i * spacing / 2;
+					break;
+				default: break;
+			}
 		}
 		
-		QRect geom(xStart + x, yStart + y, itemRect.width(), itemRect.height());
+		QRect geom(xStart + x, yStart + y, itemRectWidth, itemRectHeight);
 		o->setGeometry(geom);
 		o->setCardImageFaceUp(showCardsFaceUp);
 		i++;
@@ -131,7 +156,7 @@ QSize CardLayout::sizeHint() const
 		s = s.expandedTo(o->sizeHint());
 		++i;
 	}
-	return s + (n-1)*QSize(spacing(), 0);*/
+	return s + (n-1)*QSize(spacing, 0);*/
 }
 
 QSize CardLayout::minimumSize() const
@@ -147,22 +172,43 @@ QSize CardLayout::minimumSize() const
 		//s = s.expandedTo(o->minimumSize());
 		++i;
 	}
+	int itemRectWidth = itemRect.width();
+	int itemRectHeight = itemRect.height();
+	int spacing = this->spacing();
 	int w=0, h=0;
 	Position playerPosition = player->getPosition();
-	if(n) switch(playerPosition)
+	Position dummyPosition = nextTeammate(playWindow->getGame()->getContract().getDeclarer());
+	bool showCardsFaceUp = player->getIsHuman() || player->getPosition() == dummyPosition;
+	if(n)
 	{
-		case North:
-		case South:
-			w = 12 * spacing() + player->countSuits() * itemRect.width();
-			h = itemRect.height();
-			break;
-		case East:
-		case West:
-			w = (player->countLongestSuit() - 1) * spacing() + itemRect.width();
-			h = itemRect.height() + (player->countSuits() - 1) * 2 * spacing();
-			h = std::max(h, itemRect.height() + 2 * spacing());
-			break;
-		default: break;
+		if(showCardsFaceUp) switch(playerPosition)
+		{
+			case North:
+			case South:
+				w = 12 * spacing + player->countSuits() * itemRectWidth;
+				h = itemRectHeight;
+				break;
+			case East:
+			case West:
+				w = (player->countLongestSuit() - 1) * spacing + itemRectWidth;
+				h = itemRectHeight + (player->countSuits() - 1) * 2 * spacing;
+				break;
+			default: break;
+		}
+		else switch(playerPosition)
+		{
+			case North:
+			case South:
+				w = 12 * spacing + itemRectWidth;
+				h = itemRectHeight;
+				break;
+			case East:
+			case West:
+				w = itemRectWidth;
+				h = itemRectHeight + 6 * spacing;
+				break;
+			default: break;
+		}
 	}
 	return s + QSize(std::max(w, s.width()), std::max(h, s.height()));
 }
@@ -174,9 +220,6 @@ int CardLayout::spacing() const
 
 void CardLayout::removeCardWidget(CardWidget *c)
 {
-	//int index = list.indexOf((QLayoutItem*)c);
-	//if(index >= 0) list.takeAt(index);
 	removeWidget(c);
-	
 	handWidgets->erase(std::remove(handWidgets->begin(), handWidgets->end(), c), handWidgets->end());
 }

@@ -13,6 +13,7 @@ class Contract
 		bool doubled;
 		bool redoubled;
 		Vulnerability vulnerability;
+		bool isSet;
 	protected:
 	public:
 		int16_t calculateScore(Position pos, uint8_t tricks);
@@ -24,6 +25,8 @@ class Contract
 		uint8_t getLevel() const;
 		bool isTeamVulnerable(Position p) const;
 		std::string toString() const;
+		Contract();
+		bool getIsSet() const;
 };
 
 #endif

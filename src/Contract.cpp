@@ -184,6 +184,7 @@ void Contract::setContract(uint8_t lev, Suit sui, Position pos, bool doubl, bool
 	doubled = doubl;
 	redoubled = redoubl;
 	vulnerability = vuln;
+	isSet = true;
 }
 
 void Contract::print()
@@ -231,4 +232,14 @@ bool Contract::isTeamVulnerable(Position p) const
 		case EW: return (p == East || p == West);
 		default: return false;
 	}
+}
+
+Contract::Contract()
+{
+	isSet = false;
+}
+
+bool Contract::getIsSet() const
+{
+	return isSet;
 }

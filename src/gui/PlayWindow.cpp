@@ -96,7 +96,6 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	
 	/*QPushButton* test = new QPushButton("test");
 	test->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	test->setFlat(true);
 	gridLayout.addWidget(test, 1, 1);*/
 		
 	gridLayout.setColumnStretch(1, 1);
