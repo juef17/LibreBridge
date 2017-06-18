@@ -15,6 +15,7 @@ CardWidget::CardWidget(Card c, QWidget *parent) : QPushButton("", parent)
 	card = c;
 	isFlashing = false;
 	isEmphasized = false;
+		isFaceUp = false;
 	
 	setCardImageFaceUp();
 	setStyleSheet("QPushButton {background-color: black;}");
