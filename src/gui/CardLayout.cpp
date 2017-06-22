@@ -58,7 +58,7 @@ void CardLayout::setGeometry(const QRect &r)
 	Position playerPosition = player->getPosition();
 	Contract contract = playWindow->getGame()->getContract();
 	Position dummyPosition = contract.getIsSet() ? nextTeammate(contract.getDeclarer()) : North;
-	bool showCardsFaceUp = player->getIsHuman() || (contract.getIsSet() && player->getPosition() == dummyPosition);
+	bool showCardsFaceUp = player->getIsHuman() || (contract.getIsSet() && player->getPosition() == dummyPosition) || playWindow->getGame()->getPlayedCardsHistory().size() == 52;
 	int i = 0;
 	int suitOrder[4] = {-1, -1, -1, -1}; // Suit-1 for index, gives order for that suit, -1 = none added yet
 	int cardCountX[4] = {-1, -1, -1, -1}; // which "level" of card are we at horizontally, -1 = none added yet
@@ -178,7 +178,7 @@ QSize CardLayout::minimumSize() const
 	int w=0, h=0;
 	Position playerPosition = player->getPosition();
 	Position dummyPosition = nextTeammate(playWindow->getGame()->getContract().getDeclarer());
-	bool showCardsFaceUp = player->getIsHuman() || player->getPosition() == dummyPosition;
+	bool showCardsFaceUp = player->getIsHuman() || player->getPosition() == dummyPosition || playWindow->getGame()->getPlayedCardsHistory().size() == 52;
 	if(n)
 	{
 		if(showCardsFaceUp) switch(playerPosition)

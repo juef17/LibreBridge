@@ -245,6 +245,14 @@ void PlayWindow::playingProcess()
 	
 	if(numberOfPlayedCards == 52)
 	{
+		Player **players = game->getPlayers();
+		destroyAllHandWidgets();
+		for(int i=0; i<4; i++)
+		{
+			for(auto &card : recreateHand(Position(i), game->getPlayedCardsHistory(), game->getContract())) players[i]->addCardToHand(card);
+			players[i]->sortHand(game->getContract().getSuit());
+		}
+		createAllHandWidgets();
 		/////////###########################################################################################
 		return;
 	}
