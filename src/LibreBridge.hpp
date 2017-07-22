@@ -50,6 +50,7 @@ struct Options
 	
 	bool autoplaySingles;		// If there's a single possible card to play, play it automatically. GUI only.
 	int minimalWait;			// Wait time for autoplaySingles
+	bool waitAfterTrick;		// Wait for input after a trick
 	
 	bool useGui;						// False if we're running in text-only
 	std::string theme_cards;			// Set of cards we're using

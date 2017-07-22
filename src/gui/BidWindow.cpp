@@ -4,9 +4,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QGridLayout>
-#include <QApplication>
 #include <QCloseEvent>
-#include <QDesktopWidget>
 #include <QTimer>
 #include "BidWindow.hpp"
 #include "BidButton.hpp"
@@ -36,13 +34,9 @@ BidWindow::BidWindow(QWidget *parent): QDialog (parent)
 	waitForAI = true;
 	
 	// This window
-	int x, y;
 	setFixedSize(370, 240);
 	setTitle(this, "Bidding");
-	QRect screenGeometry = QApplication::desktop()->screenGeometry();
-	x = (screenGeometry.width()-width()) / 2;
-	y = (screenGeometry.height()-height()) / 2;
-	move(x, y);
+	centerWindow(this);
 
 	// evalButton
 	evalButton = new QPushButton("Evaluate", this);
@@ -280,4 +274,22 @@ void BidWindow::bidDouble()
 PlayWindow* BidWindow::getPlayWindow() const
 {
 	return parent;
+}
+
+void BidWindow::reset()
+{
+	showWelcomeWindowWhenDone = true;
+	isDoubleLegal = false;
+	isRedoubleLegal = false;
+	currentBidHistoryLabel = game->getDealer();
+	playerWhoBetNormallyLast = game->getDealer();
+	playerPos = game->getDealer();
+	lastDoubled = false;
+	lastRedoubled = false;
+	lastLevel = 0;
+	lastSuit = NoTrump;
+	waitForAI = true;
+	enableButtons();
+	for(int i=0; i<28; i++) bidHistoryLabels[i]->setText("");
+	biddingProcess();
 }

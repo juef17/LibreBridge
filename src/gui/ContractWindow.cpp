@@ -6,8 +6,6 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QCloseEvent>
-#include <QDesktopWidget>
-#include <QApplication>
 
 ContractWindow::ContractWindow(Contract c, QWidget *parent): QDialog (parent)
 {
@@ -15,13 +13,9 @@ ContractWindow::ContractWindow(Contract c, QWidget *parent): QDialog (parent)
 	this->parent = (BidWindow*)parent;
 	
 	// This window
-	int x, y;
 	setFixedSize(300, 200);
 	setTitle(this, "Contract");
-	QRect screenGeometry = QApplication::desktop()->screenGeometry();
-	x = (screenGeometry.width()-width()) / 2;
-	y = (screenGeometry.height()-height()) / 2;
-	move(x, y);
+	centerWindow(this);
 	setModal(true);
 	
 	// OK button

@@ -38,6 +38,7 @@ HEADERS +=	src/AIPlayer.hpp \
 			src/gui/CardLayout.hpp \
 			src/gui/CardWidget.hpp \
 			src/gui/ContractWindow.hpp \
+			src/gui/DealOverWindow.hpp \
 			src/gui/WelcomeWindow.hpp \
 			src/gui/PlayedCardsLayout.hpp \
 			src/gui/PlayWindow.hpp \
@@ -61,6 +62,7 @@ SOURCES +=	src/AIPlayer.cpp \
 			src/gui/CardLayout.cpp \
 			src/gui/CardWidget.cpp \
 			src/gui/ContractWindow.cpp \
+			src/gui/DealOverWindow.cpp \
 			src/gui/WelcomeWindow.cpp \
 			src/gui/PlayedCardsLayout.cpp \
 			src/gui/PlayWindow.cpp \

@@ -1,7 +1,6 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMenu>
-#include <QApplication>
 #include <QResizeEvent>
 #include <QGridLayout>
 #include <QLabel>
@@ -12,6 +11,7 @@
 #include "PlayWindow.hpp"
 #include "DealSelectionWindow.hpp"
 #include "BidWindow.hpp"
+#include "DealOverWindow.hpp"
 #include "CardLayout.hpp"
 #include "PlayedCardsLayout.hpp"
 #include "PauseClickGrabber.hpp"
@@ -101,12 +101,15 @@ PlayWindow::PlayWindow(QWidget *parent): QMainWindow(parent)
 	gridLayout.setColumnStretch(1, 1);
 	gridLayout.setRowStretch(1, 1);
 	centralWidget->setLayout(&gridLayout);
+	centerWindow(this);
 	show();
 	
 	dealSelectionWindow = new DealSelectionWindow(this);
 	dealSelectionWindow->show();
 	PauseClickGrabber *g = new PauseClickGrabber(this);
 	installEventFilter(g);
+	
+	dealOverWindow = new DealOverWindow(this);
 }
 
 PlayWindow::~PlayWindow()
@@ -222,6 +225,7 @@ void PlayWindow::playCard(CardWidget *c)
 		tricksMade[game->whoseTurnIsItToPlay() % 2]++; // The one whose turn it is is necessarily the one who one the trick
 		updateTricksInfoLabel();
 		isPaused = true;
+		if(!options.waitAfterTrick) QTimer::singleShot(options.minimalWait, this, SLOT(resumeFromPause()));
 	}
 	else playingProcess();
 }
@@ -253,7 +257,7 @@ void PlayWindow::playingProcess()
 			players[i]->sortHand(game->getContract().getSuit());
 		}
 		createAllHandWidgets();
-		/////////###########################################################################################
+		dealOverWindow->show();
 		return;
 	}
 	
@@ -325,4 +329,30 @@ bool PlayWindow::getIsPaused() const
 void PlayWindow::updateTricksInfoLabel() const
 {
 	tricksInfoLabel->setText(QString::fromStdString("NS tricks: " + to_string(tricksMade[0]) + "\nEW tricks: " + to_string(tricksMade[1])));
+}
+
+void PlayWindow::startNewGame(RANDOMNESS_SIZE currentDeal)
+{
+	destroyAllHandWidgets();
+	setSeed(currentDeal);
+	game->prepareForNextGame();
+	game->findNextDeal();
+	
+	cardsAreClickable = false;
+	firstSuit = NoTrump;
+	tricksMade[0] = 0;
+	tricksMade[1] = 0;
+	waitForAI = true;
+	waitForAutoplaySingles = true;
+	isPaused = false;
+	
+	createAllHandWidgets();
+	updateDealInfoLabel();
+	contractInfoLabel->setText("");
+	updateTricksInfoLabel();
+	for(int i=0; i<4; i++) arrows[i]->setVisible(false);
+	
+	bidWindow->reset();
+	bidWindow->show();
+	
 }

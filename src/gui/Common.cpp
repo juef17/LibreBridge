@@ -4,6 +4,8 @@
 #include <QLabel>
 #include <QFont>
 #include <QFontDatabase>
+#include <QApplication>
+#include <QDesktopWidget>
 #include "Common.hpp"
 #include "../Bid.hpp"
 #include "../Misc.hpp"
@@ -72,4 +74,21 @@ void setBidHistoryText(QLabel *l, Bid bid)
 			l->setText("");
 			if(DEBUG_COUT) std::cout << std::flush << "INVALID BET WHILE SETTING BID HISTORY TEXT, SHOULDN'T HAPPEN" << std::endl << std::flush;
 	}
+}
+
+void centerWindow(QWidget *window)
+{
+	QRect screenGeometry = QApplication::desktop()->screenGeometry();
+	QRect windowGeometry = window->frameGeometry();
+	int x = (screenGeometry.width()-windowGeometry.width()) / 2;
+	int y = (screenGeometry.height()-windowGeometry.height()) / 2;
+	/*if(DEBUG_COUT)
+	{
+		std::cout << std::flush << "screenGeometry.width(): " << std::to_string(screenGeometry.width()) << std::endl << std::flush;
+		std::cout << std::flush << "screenGeometry.height(): " << std::to_string(screenGeometry.height()) << std::endl << std::flush;
+		std::cout << std::flush << "windowGeometry.width(): " << std::to_string(windowGeometry.width()) << std::endl << std::flush;
+		std::cout << std::flush << "windowGeometry.height(): " << std::to_string(windowGeometry.height()) << std::endl << std::flush;
+		std::cout << std::flush << "x: " << std::to_string(x) << ", y: " << std::to_string(y) << std::endl << std::flush;
+	}*/
+	window->move(x, y);
 }

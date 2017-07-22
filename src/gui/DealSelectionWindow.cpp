@@ -6,30 +6,24 @@
 #include "../Game.hpp"
 #include "../Misc.hpp"
 #include <QPushButton>
-#include <QApplication>
 #include <QResizeEvent>
 #include <QLineEdit>
 #include <QCloseEvent>
-#include <QDesktopWidget>
 
 DealSelectionWindow::DealSelectionWindow(QWidget *parent): QDialog (parent)
 {
-	int x, y;
 	this->parent = (PlayWindow*)parent;
 	showWelcomeWindowWhenDone = true;
 	
 	// This window
 	setFixedSize(300, 100);
 	setTitle(this, "Deal selection");
-	QRect screenGeometry = QApplication::desktop()->screenGeometry();
-	x = (screenGeometry.width()-width()) / 2;
-	y = (screenGeometry.height()-height()) / 2;
-	move(x, y);
+	centerWindow(this);
 	
 	// Deal number
 	seedTextBox = new QLineEdit(this);
 	seedTextBox->setFixedSize(getSeedTextMaxWidth(), 30);
-	x = (width()-seedTextBox->width()) / 2;
+	int x = (width()-seedTextBox->width()) / 2;
 	seedTextBox->move(x, 10);
 	seedTextBox->setMaxLength(getSeedTextMaxLength()+10);
 	seedTextBox->setText(QString("%1").arg(getSeed()));

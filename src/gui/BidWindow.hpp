@@ -23,6 +23,7 @@ class BidWindow : public QDialog
 		void enableButtons();
 		void bidClick(BetType betType, uint8_t level, Suit suit);
 		PlayWindow* getPlayWindow() const;
+		void reset();
 	signals:
 	public slots:
 		void bidPass();

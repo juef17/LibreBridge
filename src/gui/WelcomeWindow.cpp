@@ -35,6 +35,7 @@ WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 	
 	setTitle(this);
 	show();
+	centerWindow(this);
 }
 
 void WelcomeWindow::resizeEvent(QResizeEvent* event)

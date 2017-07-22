@@ -143,7 +143,7 @@ uint8_t randomUint8(uint8_t min, uint8_t max, RANDOMNESS_SIZE seed)
 
 void initializeOptions()
 {
-	options.AI_playDelay = 250;
+	options.AI_playDelay = 150;
 	options.AI_bidDelay = 150;
 	options.AI_letGamesRun = false;
 	
@@ -172,7 +172,8 @@ void initializeOptions()
 	}
 	
 	options.autoplaySingles = true;
-	options.minimalWait = 150;
+	options.minimalWait = 0;
+	options.waitAfterTrick = false;
 	
 	options.theme_cards = "default";
 	options.theme_emphasisColor = "#ffff80";

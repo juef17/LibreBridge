@@ -17,5 +17,6 @@ int getSeedTextMaxWidth();
 int getSeedTextMaxLength();
 void copyWindowGeometry(QWidget *w1, QWidget *w2);
 void setBidHistoryText(QLabel *l, Bid bid);
+void centerWindow(QWidget *window);
 
 #endif

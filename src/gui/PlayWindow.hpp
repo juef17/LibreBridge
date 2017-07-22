@@ -13,6 +13,7 @@ class QLabel;
 class CardWidget;
 class DealSelectionWindow;
 class BidWindow;
+class DealOverWindow;
 class Game;
 class PlayedCardsLayout;
 
@@ -35,16 +36,18 @@ class PlayWindow : public QMainWindow
 		void updateContractInfoLabel();
 		void playCard(CardWidget* c);
 		void updateCurrentPlayerArrow();
-		void resumeFromPause();
 		bool getIsPaused() const;
+		void startNewGame(RANDOMNESS_SIZE currentDeal);
 	signals:
 	public slots:
 		void playingProcess();
+		void resumeFromPause();
 	protected:
 		void resizeEvent(QResizeEvent *event) override;
 	private:
 		DealSelectionWindow *dealSelectionWindow;
 		BidWindow *bidWindow;
+		DealOverWindow *dealOverWindow;
 		QMenuBar *menuBar;
 		QMenu *fileMenu;
 		QWidget *centralWidget;
