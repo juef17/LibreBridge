@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 // Card values are 2-14, to be interpreted into T,J,Q,K,A with Card::valueToChar
 #define RANDOMNESS_SIZE unsigned long long

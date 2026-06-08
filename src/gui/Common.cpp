@@ -5,7 +5,8 @@
 #include <QFont>
 #include <QFontDatabase>
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
+#include <QGuiApplication>
 #include "Common.hpp"
 #include "../Bid.hpp"
 #include "../Misc.hpp"
@@ -23,7 +24,7 @@ int getSeedTextMaxWidth()
 	QFontMetrics fontMetrics(font);
 	RANDOMNESS_SIZE l = (RANDOMNESS_SIZE)(pow(2, 8*sizeof(RANDOMNESS_SIZE))-1);
 	QString s = QString("%1").arg(l);
-	return fontMetrics.width(s.append("9"));
+	return fontMetrics.horizontalAdvance(s.append("9"));
 }
 
 int getSeedTextMaxLength()
@@ -78,7 +79,7 @@ void setBidHistoryText(QLabel *l, Bid bid)
 
 void centerWindow(QWidget *window)
 {
-	QRect screenGeometry = QApplication::desktop()->screenGeometry();
+	QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
 	QRect windowGeometry = window->frameGeometry();
 	int x = (screenGeometry.width()-windowGeometry.width()) / 2;
 	int y = (screenGeometry.height()-windowGeometry.height()) / 2;

@@ -12,7 +12,7 @@ WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 	QPixmap tmpBackground("./images/LibreBridge.png");
 	background = tmpBackground.scaled(MIN_WIDTH, MIN_HEIGHT, Qt::IgnoreAspectRatio);
 	QPalette palette;
-	palette.setBrush(QPalette::Background, background);
+	palette.setBrush(QPalette::Window, background);
 	this->setPalette(palette);
 
 	// quitButton
@@ -47,7 +47,7 @@ void WelcomeWindow::resizeEvent(QResizeEvent* event)
 	QPixmap tmpBackground("./images/LibreBridge.png");
 	background = tmpBackground.scaled(size.width(), size.height(), Qt::IgnoreAspectRatio);
 	QPalette palette;
-	palette.setBrush(QPalette::Background, background);
+	palette.setBrush(QPalette::Window, background);
 	this->setPalette(palette);
 }
 

@@ -73,6 +73,7 @@ void CardLayout::setGeometry(const QRect &r)
 			break;
 		case East:
 			xStart += rWidth - itemRectWidth;
+			[[fallthrough]];
 		case West:
 			if(showCardsFaceUp) yStart += (rHeight - itemRectHeight - (player->countSuits() - 1) * 2 * spacing) / 2;
 			else yStart += (rHeight - itemRectHeight - (listSize - 1) * spacing/2) / 2;
