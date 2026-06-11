@@ -141,46 +141,6 @@ uint8_t randomUint8(uint8_t min, uint8_t max, RANDOMNESS_SIZE seed)
 	return distribution(generator);
 }
 
-void initializeOptions()
-{
-	options.AI_playDelay = 150;
-	options.AI_bidDelay = 150;
-	options.AI_letGamesRun = false;
-	
-	for(uint8_t i=0; i<4; i++) options.playerTypes[i] = "AI_Random";
-	options.playerTypes[South] = "HumanPlayer";
-	
-	randomizeSeed();
-	options.seedIncrementStep = 1;
-	
-	options.useDealConstraints = true;
-	for(uint8_t i=0; i<4; i++)
-	{
-		options.constraints.playerHonorPointsMin[i] = 0;
-		options.constraints.playerHonorPointsMax[i] = 40;
-		options.constraints.playerVoidsMin[i] = 0;
-		options.constraints.playerVoidsMax[i] = 3;
-		options.constraints.playerLongestSuitCountMin[i] = 4;
-		options.constraints.playerLongestSuitCountMax[i] = 13;
-	}
-	for(uint8_t i=0; i<2; i++)
-	{
-		options.constraints.teamHonorPointsMin[i] = 0;
-		options.constraints.teamHonorPointsMax[i] = 40;
-		options.constraints.teamVoidsMin[i] = 0;
-		options.constraints.teamVoidsMax[i] = 6;
-	}
-	
-	options.autoplaySingles = true;
-	options.minimalWait = 0;
-	options.waitAfterTrick = false;
-	
-	options.theme_cards = "default";
-	options.theme_emphasisColor = "#ffff80";
-	options.theme_flashingDelay = 100;
-}
-
-
 bool areDealConstraintsValid()
 {
 	if(!options.useDealConstraints) return true; // If we don't use them, don't check them

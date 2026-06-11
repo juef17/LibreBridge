@@ -33,12 +33,12 @@ class Card
 		{
 			return u8'a';
 		}*/
-		bool operator == (const Card& card);
-		bool operator < (const Card& card);
+		bool operator == (const Card& card) const;
+		bool operator < (const Card& card) const;
 		uint8_t getValue() const;
 		Suit getSuit() const;
 		static Card stringToCard(std::string s);
-		int getImageNumber() const; // Compatible with PokerTH sets
+		int getImageNumber() const; // Compatible with PokerTH sets: 0-51, (2 → king, A) clubs, diamonds, hearts, spades
 };
 
 #endif

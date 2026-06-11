@@ -1,15 +1,19 @@
-#include "Common.hpp"
-#include "WelcomeWindow.hpp"
-#include "PlayWindow.hpp"
+#include <filesystem>
 #include <QPushButton>
 #include <QApplication>
 #include <QResizeEvent>
+#include <QDir>
+#include "PlayWindow.hpp"
+#include "../Settings.hpp"
+#include "Common.hpp"
+#include "WelcomeWindow.hpp"
+#include "PlayWindow.hpp"
 
 WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 {	
 	// Background
 	setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
-	QPixmap tmpBackground("./images/LibreBridge.png");
+	QPixmap tmpBackground(QDir::toNativeSeparators("./images/LibreBridge.png"));
 	background = tmpBackground.scaled(MIN_WIDTH, MIN_HEIGHT, Qt::IgnoreAspectRatio);
 	QPalette palette;
 	palette.setBrush(QPalette::Window, background);
@@ -22,7 +26,7 @@ WelcomeWindow::WelcomeWindow(QWidget *parent): QWidget(parent)
 	quitButton->setToolTip("Panus");
 	QFont font("Courier");
 	quitButton->setFont(font);
-	QIcon icon("./images/LibreBridge.ico");
+	QIcon icon(QDir::toNativeSeparators("./images/LibreBridge.ico"));
 	quitButton->setIcon(icon);*/
 	connect(quitButton, SIGNAL (clicked()), QApplication::instance(), SLOT (quit()));
 
@@ -44,7 +48,7 @@ void WelcomeWindow::resizeEvent(QResizeEvent* event)
 	
 	// Resize background image
 	QSize size = event->size();
-	QPixmap tmpBackground("./images/LibreBridge.png");
+	QPixmap tmpBackground(QDir::toNativeSeparators("./images/LibreBridge.png"));
 	background = tmpBackground.scaled(size.width(), size.height(), Qt::IgnoreAspectRatio);
 	QPalette palette;
 	palette.setBrush(QPalette::Window, background);

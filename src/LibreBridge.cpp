@@ -6,6 +6,7 @@
 #include "LibreBridge.hpp"
 #include "Misc.hpp"
 #include "Game.hpp"
+#include "Settings.hpp"
 #include "gui/WelcomeWindow.hpp"
 
 using namespace std;
@@ -14,7 +15,8 @@ Options options;
 
 int main(int argc, char *argv[])
 {
-	initializeOptions();
+	loadSettings();
+	
 	options.useGui = (argc <= 1);
 	
 	if(options.useGui)
@@ -24,7 +26,11 @@ int main(int argc, char *argv[])
 		
 		WelcomeWindow welcomeWindow;
 		
-		return libreBridgeGUI.exec();
+		int retval = libreBridgeGUI.exec();
+	
+		saveSettings();
+		
+		return retval;
 	}
 	
 	for(uint8_t i=1; i<argc; i++)

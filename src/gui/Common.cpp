@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QFont>
+#include <QDir>
 #include <QFontDatabase>
 #include <QApplication>
 #include <QScreen>
@@ -40,7 +41,7 @@ void copyWindowGeometry(QWidget *w1, QWidget *w2)
 void setBidHistoryText(QLabel *l, Bid bid)
 {
 	QString level, suit, labelText;
-	int id = QFontDatabase::addApplicationFont("./fonts/SourceCodePro-Regular.ttf");
+	int id = QFontDatabase::addApplicationFont(QDir::toNativeSeparators("./fonts/SourceCodePro-Regular.ttf"));
 	if(id >= 0)
 	{
 		QString family = QFontDatabase::applicationFontFamilies(id).at(0);

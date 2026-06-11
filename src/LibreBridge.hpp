@@ -49,7 +49,7 @@ struct Options
 	bool useDealConstraints;	// Use DealConstraints to make deals not 100% random
 	DealConstraints constraints;// Constraints to use for deals
 	
-	bool autoplaySingles;		// If there's a single possible card to play, play it automatically. GUI only.
+	bool autoplaySingles;		// If there's a single possible card to play, play it automatically.
 	int minimalWait;			// Wait time for autoplaySingles
 	bool waitAfterTrick;		// Wait for input after a trick
 	

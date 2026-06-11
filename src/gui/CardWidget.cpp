@@ -1,3 +1,6 @@
+#include <filesystem>
+#include <string>
+#include <iostream>
 #include <QPixmap>
 #include <QBitmap>
 #include <QPainter>
@@ -5,7 +8,6 @@
 #include <QSize>
 #include <QString>
 #include <QTimer>
-#include <iostream>
 #include "CardWidget.hpp"
 #include "PlayWindow.hpp"
 
@@ -106,6 +108,12 @@ void CardWidget::setCardImageFaceUp(bool faceUp)
 
 std::string CardWidget::getImagePath(bool faceUp) const
 {
-	if(faceUp) return "./images/cards/" + options.theme_cards + "/" + std::to_string(card.getImageNumber()) + ".png";
-	else return "./images/cards/" + options.theme_cards + "/flipside.png";
+	std::filesystem::path p = "images";
+	p = p / "cards";
+	p /= options.theme_cards;
+	
+	if(faceUp) p /= (std::to_string(card.getImageNumber()) + ".png");
+	else p /= "/flipside.png";
+	
+	return p;
 }

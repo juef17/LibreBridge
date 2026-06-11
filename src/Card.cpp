@@ -51,7 +51,7 @@ char Card::suitToChar(Suit suit)
 	}
 }
 
-bool Card::operator == (const Card& card)
+bool Card::operator == (const Card& card) const
 {
 	return(suit == card.suit && value == card.value);
 }
@@ -62,7 +62,7 @@ void Card::printCard()
 	//  << "♥" << "♥"+1
 }
 
-bool Card::operator < (const Card& card)
+bool Card::operator < (const Card& card) const
 {
 	if(suit < card.suit) return true;
 	if(suit > card.suit) return false;

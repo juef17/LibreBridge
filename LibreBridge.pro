@@ -17,7 +17,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += release
 CONFIG += warn_on
-CONFIG += c++14
+CONFIG += c++20
 
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -fPIC
 #QMAKE_CXX = g++
@@ -32,6 +32,7 @@ HEADERS +=	src/AIPlayer.hpp \
 			src/LibreBridge.hpp \
 			src/Misc.hpp \
 			src/Player.hpp \
+			src/Settings.hpp \
 			src/AIPlayers/AI_Random.hpp \
 			src/gui/BidButton.hpp \
 			src/gui/BidWindow.hpp \
@@ -56,6 +57,7 @@ SOURCES +=	src/AIPlayer.cpp \
 			src/LibreBridge.cpp \
 			src/Misc.cpp \
 			src/Player.cpp \
+			src/Settings.cpp \
 			src/AIPlayers/AI_Random.cpp \
 			src/gui/BidButton.cpp \
 			src/gui/BidWindow.cpp \
